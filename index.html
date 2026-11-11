@@ -754,7 +754,54 @@ function jumpToDay() {
       document.getElementById("tab-" + tabName).classList.add("active");
       document.getElementById("nav-" + tabName).classList.add("active");
     }
+    const notepadEl = document.getElementById("freeNotepad");
+    const notepadStatus = document.getElementById("notepadStatus");
+    const notepadWordCount = document.getElementById("notepadWordCount");
 
+    function updateWordCount(text) {
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      notepadWordCount.textContent = words + (words === 1 ? " word" : " words");
+    }
+
+    if (notepadEl) {
+      notepadEl.value = localStorage.getItem("alchemy_free_notepad") || "";
+      updateWordCount(notepadEl.value);
+
+      notepadEl.addEventListener("input", () => {
+        localStorage.setItem("alchemy_free_notepad", notepadEl.value);
+        updateWordCount(notepadEl.value);
+        notepadStatus.textContent = "✓ Saved locally";
+      });
+    }
+
+    function copyNotepad() {
+      const box = document.getElementById("freeNotepad");
+      if (!box || !box.value) return;
+      navigator.clipboard.writeText(box.value);
+      document.getElementById("notepadStatus").textContent = "✓ Copied to clipboard!";
+    }
+
+    function downloadNotepad() {
+      const box = document.getElementById("freeNotepad");
+      if (!box) return;
+      const blob = new Blob([box.value], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "alchemy-writing-notes.txt";
+      link.click();
+    }
+
+    function clearNotepad() {
+      const box = document.getElementById("freeNotepad");
+      if (!box || !box.value) return;
+      if (confirm("Clear your entire notepad? Make sure you copied or downloaded it first.")) {
+        box.value = "";
+        localStorage.removeItem("alchemy_free_notepad");
+        updateWordCount("");
+        document.getElementById("notepadStatus").textContent = "Notepad cleared";
+      }
+    }
+      
     renderToday();
     renderArchive();
     renderTomes();
