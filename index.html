@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alchemy Writing Studio | Alchemy Productions</title>
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-obsidian: #0B0D0C;
+      --bg-card: #121614;
+      --bg-elevated: #181E1B;
+      --border-subtle: #232D28;
+      --emerald: #10B981;
+      --emerald-dark: #047857;
+      --emerald-glow: rgba(16, 185, 129, 0.14);
+      --text-white: #FFFFFF;
+      --text-muted: #A1B0A8;
+      --text-dim: #6B7A72;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-obsidian);
+      color: var(--text-white);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.65;
+      padding-bottom: 92px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(11, 13, 12, 0.94);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 20px;
+    }
+
+    .header-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    .brand-sub {
+      font-size: 0.72rem;
+      color: var(--emerald);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      font-weight: 600;
+    }
+
+    .stats-bar { display: flex; align-items: center; gap: 8px; }
+
+    .badge {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-white);
+      white-space: nowrap;
+    }
+
+    .badge-emerald {
+      background: var(--emerald-glow);
+      border-color: var(--emerald-dark);
+      color: var(--emerald);
+    }
+
+    .app-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 22px 18px;
+    }
+
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .card-emerald { border-color: rgba(16, 185, 129, 0.35); }
+
+    .category-pill {
+      display: inline-block;
+      background: var(--emerald-glow);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    h1.tip-headline {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.6rem;
+      line-height: 1.3;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 14px;
+    }
+
+    .section-label {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--emerald);
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .deep-dive-text p {
+      color: #E5ECE8;
+      font-size: 0.98rem;
+      margin-bottom: 14px;
+    }
+
+    .craft-quote {
+      border-left: 3px solid var(--emerald);
+      padding-left: 14px;
+      margin: 14px 0;
+      color: var(--text-muted);
+      font-style: italic;
+      font-family: 'Lora', Georgia, serif;
+    }
+
+    .prompt-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+      color: var(--text-white);
+      font-size: 0.96rem;
+    }
+
+    .timer-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .timer-display {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--emerald);
+    }
+
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    button, .btn-link {
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 10px 16px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: var(--emerald);
+      color: #05140E;
+      font-weight: 700;
+    }
+
+    .btn-secondary {
+      background: var(--bg-elevated);
+      color: var(--text-white);
+      border-color: var(--border-subtle);
+    }
+
+    .btn-full { width: 100%; padding: 13px; font-size: 0.95rem; }
+
+    .sprint-pad {
+      width: 100%;
+      min-height: 130px;
+      background: var(--bg-obsidian);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px;
+      color: var(--text-white);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      resize: vertical;
+      margin-bottom: 12px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--text-white);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+    }
+
+    .archive-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+
+    .archive-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 0.78rem;
+    }
+
+    .archive-day { color: var(--emerald); font-weight: 700; }
+    .archive-cat { color: var(--text-muted); }
+
+    .archive-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    .tome-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .tome-cover {
+      width: 74px;
+      height: 108px;
+      border-radius: 8px;
+      background: linear-gradient(145deg, #132A20, #0B0D0C);
+      border: 1px solid var(--emerald-dark);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8px;
+      font-family: 'Lora', Georgia, serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--emerald);
+    }
+
+    .tome-info { flex: 1; }
+    .tome-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--emerald); font-weight: 700; margin-bottom: 3px; }
+    .tome-title { font-family: 'Lora', Georgia, serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 2px; }
+    .tome-author { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px; }
+    .tome-blurb { font-size: 0.88rem; color: #D1DDD6; margin-bottom: 12px; }
+
+    .ad-banner {
+      background: linear-gradient(135deg, #0E231A 0%, #121614 100%);
+      border: 1px solid var(--emerald);
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 22px;
+      text-align: center;
+    }
+
+    .ad-banner h3 { font-family: 'Lora', Georgia, serif; font-size: 1.18rem; margin-bottom: 6px; }
+    .ad-banner p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px; }
+
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 13, 12, 0.96);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: center;
+      z-index: 30;
+    }
+
+    .nav-inner {
+      width: 100%;
+      max-width: 720px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 14px 8px;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-weight: 600;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-btn.active {
+      color: var(--emerald);
+      border-top: 2px solid var(--emerald);
+    }
+
+    .nav-icon { font-size: 1.15rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div>
+        <div class="brand-sub">Alchemy Productions</div>
+        <div class="brand-title">Alchemy Writing Studio</div>
+      </div>
+      <div class="stats-bar">
+        <span class="badge badge-emerald" id="dayBadge">Day 1 of 1,095</span>
+        <span class="badge" id="streakBadge">🔥 0 Streak</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <section id="tab-today" class="tab-section active">
+      <div class="card card-emerald">
+        <span class="category-pill" id="todayCategory">Literary Craft</span>
+        <h1 class="tip-headline" id="todayHeadline">Loading Tip...</h1>
+        <span class="section-label">English-Major Deep-Dive</span>
+        <div class="deep-dive-text" id="todayDeepDive"></div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">15-Minute Writing Sprint</span>
+        <div class="prompt-box" id="todayPrompt"></div>
+
+        <div class="timer-row">
+          <div class="timer-display" id="timerDisplay">15:00</div>
+          <div class="btn-group">
+            <button class="btn-primary" onclick="startTimer()">Start</button>
+            <button class="btn-secondary" onclick="pauseTimer()">Pause</button>
+            <button class="btn-secondary" onclick="resetTimer()">Reset</button>
+          </div>
+        </div>
+
+        <textarea class="sprint-pad" id="sprintNotes" placeholder="Draft your 15-minute sprint right here (saved automatically on your device)..."></textarea>
+
+        <button class="btn-primary btn-full" id="completeDayBtn" onclick="completeCurrentDay()">
+          Mark Day Complete &amp; Unlock Next Lesson
+        </button>
+      </div>
+    </section>
+
+    <section id="tab-archive" class="tab-section">
+      <div style="margin-bottom: 14px;">
+        <span class="section-label">Unlocked Grimoire</span>
+        <h1 class="tip-headline" style="font-size: 1.4rem;">Your Completed &amp; Active Lessons</h1>
+      </div>
+      <input type="text" class="search-input" id="archiveSearch" placeholder="Search unlocked tips by title or category..." oninput="renderArchive()" />
+      <div id="archiveList"></div>
+    </section>
+
+    <section id="tab-tomes" class="tab-section">
+      <div style="margin-bottom: 16px;">
+        <span class="section-label">Curated Reading Shelf</span>
+        <h1 class="tip-headline" style="font-size: 1.4rem;">Promoted Tomes</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Hand-picked indie fiction and dark speculative reads. All links open externally in your browser.</p>
+      </div>
+
+      <div id="tomesList"></div>
+
+      <div class="ad-banner">
+        <span class="category-pill" style="margin-bottom: 8px;">Author Spotlight</span>
+        <h3>Feature Your Book Here — $10 for 2 Weeks</h3>
+        <p>Reach dedicated daily writers and readers with a 2-week pinned showcase card on Alchemy Writing Studio. Only 5 slots available at a time.</p>
+        <a class="btn-primary" href="mailto:AlchemyProductions102@://gmail.com">
+          Reserve a Slot via Email
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="nav-inner">
+      <button class="nav-btn active" id="nav-today" onclick="switchTab('today')">
+        <span class="nav-icon">✦</span>
+        <span>Today</span>
+      </button>
+      <button class="nav-btn" id="nav-archive" onclick="switchTab('archive')">
+        <span class="nav-icon">📖</span>
+        <span>Archive</span>
+      </button>
+      <button class="nav-btn" id="nav-tomes" onclick="switchTab('tomes')">
+        <span class="nav-icon">🕯️</span>
+        <span>Promoted Tomes</span>
+      </button>
+    </div>
+  </nav>
+
+    <script>
+    const DAILY_TIPS = [
+      {
+        day: 1,
+        category: "Gothic & Horror Craft",
+        headline: "The Uncanny (Das Unheimliche): Making the Familiar Terrifying",
+        deepDive: [
+          "In his 1919 essay 'Das Unheimliche,' Sigmund Freud defined the uncanny not as something foreign or alien, but as something deeply familiar and comforting that has been subtly twisted into something unfamiliar.",
+          "Modern horror often relies on shock gore, yet gothic literature achieves lasting dread by taking a safe domestic space—a childhood bedroom, a steady heartbeat, a trusted parent's voice—and altering one small detail so it feels wrong."
+        ],
+        quote: "The uncanny is that class of the terrifying which leads back to something long known to us, once very familiar.",
+        prompt: "Write a 15-minute scene in which a character returns to a childhood room or familiar kitchen and notices three subtle details that prove someone—or something—has been imitating their routine."
+      },
+      {
+        day: 2,
+        category: "Worldbuilding & Speculative Rules",
+        headline: "Sanderson's First Law: Satisfaction Scales with Understanding",
+        deepDive: [
+          "An author's ability to solve conflict with magic or speculative rules is directly proportional to how well the reader understands those rules beforehand.",
+          "If a protagonist escapes a lethal trap using a power never mentioned until the final paragraph, it reads as a Deus ex Machina. If you establish the cost and limitation of that ability in Chapter One, the climax feels earned."
+        ],
+        quote: "Limitations are far more interesting than powers. What a system cannot do creates the tension.",
+        prompt: "Invent a supernatural curse or magic rule with one strict physical cost. Write a scene where your protagonist must pay that cost to solve a small, immediate problem."
+      },
+      {
+        day: 3,
+        category: "Narrative Structure",
+        headline: "The MICE Quotient: Identifying Your Story's True Promise",
+        deepDive: [
+          "Orson Scott Card's MICE Quotient breaks every story into four threads: Milieu (a place explored), Inquiry (a mystery answered), Character (an internal transformation), and Event (a disrupted world restored).",
+          "Readers feel cheated when a story opens by promising an Inquiry (who killed the archivist?) but ends by resolving a Character arc without answering the murder. Always close your threads in the reverse order you opened them."
+        ],
+        quote: "Your opening page is a contract with the reader; your ending is the signature.",
+        prompt: "Write an opening paragraph that clearly establishes a Milieu or Inquiry promise, then draft the exact closing paragraph that fulfills that promise."
+      },
+      {
+        day: 4,
+        category: "Rhetoric & Diction",
+        headline: "Verisimilitude & Concrete Nouns Over Abstract Adjectives",
+        deepDive: [
+          "In classical literary theory, verisimilitude is the appearance of truth—the texture that convinces a reader a fictional world has weight and history.",
+          "Abstract adjectives like 'ancient,' 'terrifying,' or 'majestic' tell the reader what to feel without proving it. Replace them with specific, sensory nouns: instead of an 'ancient sword,' describe 'pitted bog-iron wrapped in cracked sharkskin.'"
+        ],
+        quote: "Don't tell me the moon is shining; show me the glint of light on broken glass. — Anton Chekhov",
+        prompt: "Describe an intimidating creature, fortress, or relic without using a single emotional adjective (no 'scary,' 'old,' 'huge,' or 'dark'). Rely strictly on concrete nouns and physical textures."
+      },
+      {
+        day: 5,
+        category: "Pacing & Tension",
+        headline: "Scene vs. Sequel: Controlling the Pulse of Your Chapters",
+        deepDive: [
+          "Dwight Swain divided narrative pacing into two alternating gears: Action Scenes (Goal, Conflict, Disaster) and Reflective Sequels (Reaction, Dilemma, Decision).",
+          "If a book is nonstop action scenes, readers go numb because nothing has time to hurt. Giving your character a brief Sequel to process a Disaster lets the emotional stakes sink in before the next decision."
+        ],
+        quote: "Action creates excitement; reaction creates empathy.",
+        prompt: "Write a short Sequel immediately after a character suffers a public humiliation or narrow escape. Show them processing the shock and making a flawed new decision."
+      }
+    ];
+
+    const PROMOTED_TOMES = [
+      {
+        slot: 1,
+        tag: "Featured Horror Short • $0.99",
+        title: "The Silent Slumber",
+        author: "Gavin Deel • Alchemy Productions",
+        blurb: "When guilt follows you into sleep, something ancient waits behind closed eyelids to collect its due.",
+        url: "https://itch.io",
+        coverLabel: "THE SILENT SLUMBER"
+      },
+      {
+        slot: 2,
+        tag: "Prehistoric Fantasy • Book I",
+        title: "Excavation: Dakota",
+        author: "Gavin Deel • Alchemy Productions",
+        blurb: "Unearthed from ancient stone, an Edmontosaurus awakens into a forgotten world of predators, primal magic, and survival.",
+        url: "https://itch.io",
+        coverLabel: "EXCAVATION: DAKOTA"
+      },
+      {
+        slot: 3,
+        tag: "Prehistoric Fantasy • Book II",
+        title: "Stone Dragon",
+        author: "Gavin Deel • Alchemy Productions",
+        blurb: "Armored in living rock and forged by deep time, a Borealopelta faces an encroaching shadow across the ancient coast.",
+        url: "https://itch.io",
+        coverLabel: "STONE DRAGON"
+      },
+      {
+        slot: 4,
+        tag: "Horror Anthology • 10 Tales",
+        title: "Nightmares in the Quiet",
+        author: "Gavin Deel • Alchemy Productions",
+        blurb: "Ten chilling tales of psychological dread, uncanny spaces, and the price of buried secrets.",
+        url: "https://itch.io",
+        coverLabel: "10 TALES OF DREAD"
+      },
+      {
+        slot: 5,
+        tag: "Open Author Slot • $10 / 2 Weeks",
+        title: "Your Indie Book Could Be Here",
+        author: "Alchemy Writing Studio Showcase",
+        blurb: "Reserve Slot #5 for two weeks to put your cover, blurb, and direct store link in front of daily writers.",
+        url: "mailto:AlchemyProductions102@://gmail.com",
+        coverLabel: "OPEN SLOT #5"
+      }
+    ];
+
+          let state = JSON.parse(localStorage.getItem("alchemy_studio_state")) || {
+      currentDay: 1,
+      streak: 0,
+      completedDays: [],
+      notes: {}
+    };
+
+    let viewingDay = state.currentDay;
+    let timerSeconds = 15 * 60;
+    let timerInterval = null;
+
+    function saveState() {
+      localStorage.setItem("alchemy_studio_state", JSON.stringify(state));
+    }
+
+    function getTipForDay(dayNum) {
+      const found = DAILY_TIPS.find(t => t.day === dayNum);
+      if (found) return found;
+      const fallbackIndex = (dayNum - 1) % DAILY_TIPS.length;
+      return { ...DAILY_TIPS[fallbackIndex], day: dayNum };
+    }
+
+    function renderToday() {
+      const tip = getTipForDay(viewingDay);
+      document.getElementById("dayBadge").textContent = "Day " + viewingDay + " of 1,095";
+      document.getElementById("streakBadge").textContent = "🔥 " + state.streak + " Streak";
+      document.getElementById("todayCategory").textContent = tip.category;
+      document.getElementById("todayHeadline").textContent = "Day " + viewingDay + ": " + tip.headline;
+
+      const deepDiveContainer = document.getElementById("todayDeepDive");
+      let html = tip.deepDive.map(p => "<p>" + p + "</p>").join("");
+      if (tip.quote) {
+        html += '<blockquote class="craft-quote">"' + tip.quote + '"</blockquote>';
+      }
+      deepDiveContainer.innerHTML = html;
+
+      document.getElementById("todayPrompt").textContent = tip.prompt;
+
+      const notesArea = document.getElementById("sprintNotes");
+      notesArea.value = state.notes[viewingDay] || "";
+      notesArea.oninput = () => {
+        state.notes[viewingDay] = notesArea.value;
+        saveState();
+      };
+
+      const completeBtn = document.getElementById("completeDayBtn");
+      if (state.completedDays.includes(viewingDay)) {
+        completeBtn.textContent = "✓ Day Completed (Return to Latest Active Day)";
+        completeBtn.onclick = () => {
+          viewingDay = state.currentDay;
+          resetTimer();
+          renderToday();
+        };
+      } else {
+        completeBtn.textContent = "Mark Day Complete & Unlock Next Lesson";
+        completeBtn.onclick = completeCurrentDay;
+      }
+    }
+
+    function completeCurrentDay() {
+      if (!state.completedDays.includes(viewingDay)) {
+        state.completedDays.push(viewingDay);
+        state.streak += 1;
+        if (viewingDay === state.currentDay && state.currentDay < 1095) {
+          state.currentDay += 1;
+        }
+        saveState();
+      }
+      viewingDay = state.currentDay;
+      resetTimer();
+      renderToday();
+      renderArchive();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateTimerUI() {
+      const mins = Math.floor(timerSeconds / 60).toString().padStart(2, "0");
+      const secs = (timerSeconds % 60).toString().padStart(2, "0");
+      document.getElementById("timerDisplay").textContent = mins + ":" + secs;
+    }
+
+    function startTimer() {
+      if (timerInterval) return;
+      timerInterval = setInterval(() => {
+        if (timerSeconds > 0) {
+          timerSeconds--;
+          updateTimerUI();
+        } else {
+          pauseTimer();
+          alert("15-minute sprint complete! Great work.");
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      timerSeconds = 15 * 60;
+      updateTimerUI();
+    }
+
+    function renderArchive() {
+      const query = document.getElementById("archiveSearch").value.toLowerCase();
+      const list = document.getElementById("archiveList");
+      list.innerHTML = "";
+
+      for (let d = state.currentDay; d >= 1; d--) {
+        const tip = getTipForDay(d);
+        const matches =
+          tip.headline.toLowerCase().includes(query) ||
+          tip.category.toLowerCase().includes(query) ||
+          ("day " + d).includes(query);
+
+        if (!matches) continue;
+
+        const isDone = state.completedDays.includes(d);
+        const item = document.createElement("div");
+        item.className = "archive-item";
+        item.innerHTML =
+          '<div class="archive-meta">' +
+            '<span class="archive-day">Day ' + d + (isDone ? " • ✓ Completed" : " • Active") + '</span>' +
+            '<span class="archive-cat">' + tip.category + '</span>' +
+          '</div>' +
+          '<div class="archive-title">' + tip.headline + '</div>';
+        item.onclick = () => {
+          viewingDay = d;
+          resetTimer();
+          renderToday();
+          switchTab("today");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+        list.appendChild(item);
+      }
+    }
+
+    function renderTomes() {
+      const list = document.getElementById("tomesList");
+      list.innerHTML = PROMOTED_TOMES.map(tome =>
+        '<div class="tome-card">' +
+          '<div class="tome-cover">' + tome.coverLabel + '</div>' +
+          '<div class="tome-info">' +
+            '<div class="tome-tag">' + tome.tag + '</div>' +
+            '<div class="tome-title">' + tome.title + '</div>' +
+            '<div class="tome-author">' + tome.author + '</div>' +
+            '<div class="tome-blurb">' + tome.blurb + '</div>' +
+            '<a class="btn-secondary" href="' + tome.url + '" target="_blank" rel="noopener noreferrer">Read / Buy Externally ↗</a>' +
+          '</div>' +
+        '</div>'
+      ).join("");
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll(".tab-section").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+
+      document.getElementById("tab-" + tabName).classList.add("active");
+      document.getElementById("nav-" + tabName).classList.add("active");
+    }
+
+    renderToday();
+    renderArchive();
+    renderTomes();
+  </script>
+</body>
+</html>
