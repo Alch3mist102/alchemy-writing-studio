@@ -691,13 +691,19 @@ function jumpToDay() {
       updateTimerUI();
     }
 
-    function renderArchive() {
+        function renderArchive() {
       const query = document.getElementById("archiveSearch").value.toLowerCase();
       const list = document.getElementById("archiveList");
       list.innerHTML = "";
 
-      for (let d = state.currentDay; d >= 1; d--) {
+      const maxUniqueDay = Math.min(state.currentDay, DAILY_TIPS.length);
+      const seenHeadlines = new Set();
+
+      for (let d = maxUniqueDay; d >= 1; d--) {
         const tip = getTipForDay(d);
+        if (seenHeadlines.has(tip.headline)) continue;
+        seenHeadlines.add(tip.headline);
+
         const matches =
           tip.headline.toLowerCase().includes(query) ||
           tip.category.toLowerCase().includes(query) ||
