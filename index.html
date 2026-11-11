@@ -324,7 +324,7 @@
       width: 100%;
       max-width: 720px;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
     }
 
     .nav-btn {
@@ -419,6 +419,27 @@
         </a>
       </div>
     </section>
+        <section id="tab-notes" class="tab-section">
+      <div style="margin-bottom: 14px;">
+        <span class="section-label">Personal Grimoire</span>
+        <h1 class="tip-headline" style="font-size: 1.4rem;">Writer's Notepad</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Jot down story ideas, character names, and outlines. Saved automatically on your device.</p>
+      </div>
+
+      <div class="card card-emerald">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span class="section-label" style="margin-bottom: 0;" id="notepadStatus">✓ Saved locally</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);" id="notepadWordCount">0 words</span>
+        </div>
+        <textarea class="sprint-pad" id="freeNotepad" style="min-height: 320px;" placeholder="Start writing your story ideas, worldbuilding rules, or outlines here..."></textarea>
+
+        <div class="btn-group">
+          <button class="btn-primary" onclick="copyNotepad()">Copy All Text</button>
+          <button class="btn-secondary" onclick="downloadNotepad()">Download .TXT</button>
+          <button class="btn-secondary" onclick="clearNotepad()">Clear Pad</button>
+        </div>
+      </div>
+    </section>
   </div>
 
   <nav class="bottom-nav">
@@ -434,6 +455,10 @@
       <button class="nav-btn" id="nav-tomes" onclick="switchTab('tomes')">
         <span class="nav-icon">🕯️</span>
         <span>Promoted Tomes</span>
+      </button>
+      <button class="nav-btn" id="nav-notes" onclick="switchTab('notes')">
+        <span class="nav-icon">✍️</span>
+        <span>Notepad</span>
       </button>
     </div>
   </nav>
