@@ -356,7 +356,7 @@
         <div class="brand-title">Alchemy Writing Studio</div>
       </div>
       <div class="stats-bar">
-        <span class="badge badge-emerald" id="dayBadge">Day 1 of 1,095</span>
+        <span class="badge badge-emerald" id="dayBadge" style="cursor:pointer;" title="Click to jump to a specific day" onclick="jumpToDay()">Day 1 of 1,095 ▾</span>
         <span class="badge" id="streakBadge">🔥 0 Streak</span>
       </div>
     </div>
@@ -566,10 +566,26 @@
       const fallbackIndex = (dayNum - 1) % DAILY_TIPS.length;
       return { ...DAILY_TIPS[fallbackIndex], day: dayNum };
     }
-
+function jumpToDay() {
+  const input = prompt("Returning writer? Enter a Day number (1 to 1,095) to jump straight there:", state.currentDay);
+  if (!input) return;
+  const targetDay = parseInt(input, 10);
+  if (isNaN(targetDay) || targetDay < 1 || targetDay > 1095) {
+    alert("Please enter a valid number between 1 and 1,095.");
+    return;
+  }
+  if (targetDay > state.currentDay) {
+    state.currentDay = targetDay;
+    saveState();
+  }
+  viewingDay = targetDay;
+  resetTimer();
+  renderToday();
+  renderArchive();
+}
     function renderToday() {
       const tip = getTipForDay(viewingDay);
-      document.getElementById("dayBadge").textContent = "Day " + viewingDay + " of 1,095";
+      document.getElementById("dayBadge").textContent = "Day " + viewingDay + " of 1,095▾";
       document.getElementById("streakBadge").textContent = "🔥 " + state.streak + " Streak";
       document.getElementById("todayCategory").textContent = tip.category;
       document.getElementById("todayHeadline").textContent = "Day " + viewingDay + ": " + tip.headline;
