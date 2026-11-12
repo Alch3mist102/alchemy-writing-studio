@@ -19,6 +19,13 @@
       --text-white: #FFFFFF;
       --text-muted: #A1B0A8;
       --text-dim: #6B7A72;
+      /* Cream Workshop Palette */
+      --cream-bg: #F4F1EA;
+      --cream-card: #FDFBF7;
+      --cream-elevated: #EAE5D9;
+      --cream-border: #D5CEBE;
+      --cream-ink: #161A18;
+      --cream-muted: #525B56;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,7 +36,12 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       line-height: 1.65;
       padding-bottom: 92px;
-      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    body.cream-mode {
+      background-color: var(--cream-bg);
+      color: var(--cream-ink);
     }
 
     header {
@@ -39,6 +51,11 @@
       background: rgba(11, 13, 12, 0.94);
       border-bottom: 1px solid var(--border-subtle);
       padding: 14px 20px;
+    }
+
+    body.cream-mode header {
+      background: rgba(244, 241, 234, 0.95);
+      border-bottom-color: var(--cream-border);
     }
 
     .header-inner {
@@ -54,7 +71,6 @@
       font-family: 'Lora', Georgia, serif;
       font-size: 1.15rem;
       font-weight: 700;
-      color: var(--text-white);
     }
 
     .brand-sub {
@@ -62,26 +78,25 @@
       color: var(--emerald);
       text-transform: uppercase;
       letter-spacing: 0.09em;
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    .stats-bar { display: flex; align-items: center; gap: 8px; }
+    body.cream-mode .brand-sub { color: var(--emerald-dark); }
 
     .badge {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      padding: 5px 10px;
+      background: var(--emerald-glow);
+      border: 1px solid var(--emerald-dark);
+      color: var(--emerald);
+      padding: 5px 11px;
       border-radius: 999px;
       font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text-white);
+      font-weight: 700;
       white-space: nowrap;
     }
 
-    .badge-emerald {
-      background: var(--emerald-glow);
-      border-color: var(--emerald-dark);
-      color: var(--emerald);
+    body.cream-mode .badge {
+      background: rgba(4, 120, 87, 0.1);
+      color: var(--emerald-dark);
     }
 
     .app-container {
@@ -103,12 +118,20 @@
 
     .card-emerald { border-color: rgba(16, 185, 129, 0.35); }
 
+    body.cream-mode .card {
+      background: var(--cream-card);
+      border-color: var(--cream-border);
+      box-shadow: 0 2px 8px rgba(22, 26, 24, 0.04);
+    }
+
+    body.cream-mode .card-emerald { border-color: var(--emerald-dark); }
+
     .category-pill {
       display: inline-block;
       background: var(--emerald-glow);
       color: var(--emerald);
       border: 1px solid rgba(16, 185, 129, 0.35);
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -117,17 +140,22 @@
       margin-bottom: 12px;
     }
 
+    body.cream-mode .category-pill {
+      background: rgba(4, 120, 87, 0.1);
+      color: var(--emerald-dark);
+      border-color: rgba(4, 120, 87, 0.3);
+    }
+
     h1.tip-headline {
       font-family: 'Lora', Georgia, serif;
-      font-size: 1.6rem;
+      font-size: 1.55rem;
       line-height: 1.3;
       font-weight: 700;
-      color: var(--text-white);
       margin-bottom: 14px;
     }
 
     .section-label {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--emerald);
@@ -136,9 +164,11 @@
       display: block;
     }
 
+    body.cream-mode .section-label { color: var(--emerald-dark); }
+
     .deep-dive-text p {
       color: #E5ECE8;
-      font-size: 0.98rem;
+      font-size: 0.97rem;
       margin-bottom: 14px;
     }
 
@@ -151,13 +181,17 @@
       font-family: 'Lora', Georgia, serif;
     }
 
+    body.cream-mode .craft-quote {
+      border-left-color: var(--emerald-dark);
+      color: var(--cream-muted);
+    }
+
     .prompt-box {
       background: var(--bg-elevated);
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
       padding: 16px;
       margin-bottom: 16px;
-      color: var(--text-white);
       font-size: 0.96rem;
     }
 
@@ -182,10 +216,10 @@
     button, .btn-link {
       cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 600;
       border-radius: 8px;
-      padding: 10px 16px;
+      padding: 10px 14px;
       border: 1px solid transparent;
       text-decoration: none;
       display: inline-flex;
@@ -200,81 +234,112 @@
       font-weight: 700;
     }
 
+    body.cream-mode .btn-primary {
+      background: var(--emerald-dark);
+      color: #FFFFFF;
+    }
+
     .btn-secondary {
       background: var(--bg-elevated);
       color: var(--text-white);
       border-color: var(--border-subtle);
     }
 
-    .btn-full { width: 100%; padding: 13px; font-size: 0.95rem; }
+    body.cream-mode .btn-secondary {
+      background: var(--cream-elevated);
+      color: var(--cream-ink);
+      border-color: var(--cream-border);
+    }
 
-    .sprint-pad {
+    .btn-full { width: 100%; padding: 12px; font-size: 0.92rem; }
+
+    .sprint-pad, .search-input {
       width: 100%;
-      min-height: 130px;
       background: var(--bg-obsidian);
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
-      padding: 14px;
+      padding: 12px 14px;
       color: var(--text-white);
-      font-family: 'Lora', Georgia, serif;
-      font-size: 0.98rem;
-      line-height: 1.6;
-      resize: vertical;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.94rem;
       margin-bottom: 12px;
     }
 
-    .search-input {
-      width: 100%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 12px 16px;
-      color: var(--text-white);
-      font-size: 0.95rem;
-      margin-bottom: 16px;
+    .sprint-pad {
+      font-family: 'Lora', Georgia, serif;
+      line-height: 1.6;
+      resize: vertical;
     }
 
-    .archive-item {
+    body.cream-mode .sprint-pad,
+    body.cream-mode .search-input {
+      background: #FFFFFF;
+      border-color: var(--cream-border);
+      color: var(--cream-ink);
+    }
+
+    .almanac-item {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 16px 18px;
-      margin-bottom: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
       cursor: pointer;
     }
 
-    .archive-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-      font-size: 0.78rem;
+    .almanac-item:hover { border-color: var(--emerald); }
+
+    /* Sticky Note & Desk Grid */
+    .sticky-note {
+      background: #FEF9C3;
+      color: #1E293B;
+      border: 1px solid #EAB308;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     }
 
-    .archive-day { color: var(--emerald); font-weight: 700; }
-    .archive-cat { color: var(--text-muted); }
-
-    .archive-title {
+    .sticky-note textarea {
+      width: 100%;
+      min-height: 85px;
+      background: transparent;
+      border: none;
+      color: #1E293B;
       font-family: 'Lora', Georgia, serif;
-      font-size: 1.08rem;
-      font-weight: 700;
-      color: var(--text-white);
+      font-size: 0.96rem;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
     }
 
+    .todo-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--cream-border);
+      font-size: 0.92rem;
+    }
+
+    .todo-row:last-child { border-bottom: none; }
+
+    /* Guild Showcase */
     .tome-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
       display: flex;
       gap: 16px;
       align-items: flex-start;
     }
 
     .tome-cover {
-      width: 74px;
-      height: 108px;
+      width: 82px;
+      height: 120px;
       border-radius: 8px;
       background: linear-gradient(145deg, #132A20, #0B0D0C);
       border: 1px solid var(--emerald-dark);
@@ -285,28 +350,10 @@
       text-align: center;
       padding: 8px;
       font-family: 'Lora', Georgia, serif;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 700;
       color: var(--emerald);
     }
-
-    .tome-info { flex: 1; }
-    .tome-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--emerald); font-weight: 700; margin-bottom: 3px; }
-    .tome-title { font-family: 'Lora', Georgia, serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 2px; }
-    .tome-author { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px; }
-    .tome-blurb { font-size: 0.88rem; color: #D1DDD6; margin-bottom: 12px; }
-
-    .ad-banner {
-      background: linear-gradient(135deg, #0E231A 0%, #121614 100%);
-      border: 1px solid var(--emerald);
-      border-radius: 14px;
-      padding: 20px;
-      margin-top: 22px;
-      text-align: center;
-    }
-
-    .ad-banner h3 { font-family: 'Lora', Georgia, serif; font-size: 1.18rem; margin-bottom: 6px; }
-    .ad-banner p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px; }
 
     nav.bottom-nav {
       position: fixed;
@@ -320,18 +367,23 @@
       z-index: 30;
     }
 
+    body.cream-mode nav.bottom-nav {
+      background: rgba(244, 241, 234, 0.97);
+      border-top-color: var(--cream-border);
+    }
+
     .nav-inner {
       width: 100%;
       max-width: 720px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
 
     .nav-btn {
       background: transparent;
       border: none;
       border-radius: 0;
-      padding: 14px 8px;
+      padding: 13px 8px;
       color: var(--text-dim);
       font-size: 0.82rem;
       font-weight: 600;
@@ -339,134 +391,152 @@
       gap: 4px;
     }
 
+    body.cream-mode .nav-btn { color: var(--cream-muted); }
+
     .nav-btn.active {
       color: var(--emerald);
       border-top: 2px solid var(--emerald);
     }
 
-    .nav-icon { font-size: 1.15rem; }
+    body.cream-mode .nav-btn.active {
+      color: var(--emerald-dark);
+      border-top-color: var(--emerald-dark);
+    }
   </style>
 </head>
-<body>
 
-  <header>
-    <div class="header-inner">
-      <div>
-        <div class="brand-sub">Alchemy Productions</div>
-        <div class="brand-title">Alchemy Writing Studio</div>
-      </div>
-      <div class="stats-bar">
-        <span class="badge badge-emerald" id="dayBadge" style="cursor:pointer;" title="Click to jump to a specific day" onclick="jumpToDay()">Day 1 of 1,095 ▾</span>
-        <span class="badge" id="streakBadge">🔥 0 Streak</span>
-      </div>
-    </div>
-  </header>
-
-  <div class="app-container">
-    <section id="tab-today" class="tab-section active">
-      <div class="card card-emerald">
-        <span class="category-pill" id="todayCategory">Literary Craft</span>
-        <h1 class="tip-headline" id="todayHeadline">Loading Tip...</h1>
-        <span class="section-label">English-Major Deep-Dive</span>
-        <div class="deep-dive-text" id="todayDeepDive"></div>
-      </div>
-
-      <div class="card">
-        <span class="section-label">15-Minute Writing Sprint</span>
-        <div class="prompt-box" id="todayPrompt"></div>
-
-        <div class="timer-row">
-          <div class="timer-display" id="timerDisplay">15:00</div>
-          <div class="btn-group">
-            <button class="btn-primary" onclick="startTimer()">Start</button>
-            <button class="btn-secondary" onclick="pauseTimer()">Pause</button>
-            <button class="btn-secondary" onclick="resetTimer()">Reset</button>
+        <!-- SUB-VIEW B: THE BINDER -->
+      <div id="ws-view-binder" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
+          <span class="section-label" style="margin-bottom:0;">Notebooks &amp; Sprints</span>
+          <div style="display:flex; gap:6px;">
+            <button class="btn-secondary" onclick="createNotebook()" style="padding:6px 10px; font-size:0.78rem;">+ Notebook</button>
+            <button class="btn-primary" onclick="createBinderPage()" style="padding:6px 12px; font-size:0.78rem;">+ New Page</button>
           </div>
         </div>
 
-        <textarea class="sprint-pad" id="sprintNotes" placeholder="Draft your 15-minute sprint right here (saved automatically on your device)..."></textarea>
+        <div id="notebookTabsBar" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;"></div>
+        <div id="binderPagesList"></div>
 
-        <button class="btn-primary btn-full" id="completeDayBtn" onclick="completeCurrentDay()">
-          Mark Day Complete &amp; Unlock Next Lesson
-        </button>
+        <div id="binderEditorCard" class="card card-emerald" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <button class="btn-secondary" onclick="closeBinderEditor()" style="padding:6px 12px; font-size:0.82rem;">← Back to Notebook</button>
+            <span style="font-size:0.8rem; color:var(--emerald-dark); font-weight:600;" id="binderSaveStatus">✓ Saved</span>
+          </div>
+          <input type="text" class="search-input" id="binderPageTitle" placeholder="Page Title..." style="font-family:'Lora', Georgia, serif; font-weight:700;" />
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px;">
+            <select id="binderNotebookSelect" class="search-input" style="margin-bottom:0; padding:8px 12px; font-size:0.84rem; width:auto;"></select>
+            <span style="font-size:0.8rem; color:var(--cream-muted);" id="binderWordCount">0 words</span>
+          </div>
+          <textarea class="sprint-pad" id="binderPageContent" style="min-height:260px;" placeholder="Write your notes here..."></textarea>
+          <div class="btn-group">
+            <button class="btn-primary" onclick="copyBinderPage()">Copy Text</button>
+            <button class="btn-secondary" onclick="downloadBinderPage()">Download .TXT</button>
+            <button class="btn-secondary" onclick="deleteBinderPage()">Delete Page</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW C: COMPLETED BOOKS NOTEBOOK -->
+      <div id="ws-view-books" style="display:none;">
+        <div class="card card-emerald">
+          <span class="section-label">Log a Completed Book</span>
+          <input type="text" class="search-input" id="bookTitleInput" placeholder="Book Title..." />
+          <input type="text" class="search-input" id="bookAuthorInput" placeholder="Author Name..." />
+          <textarea class="sprint-pad" id="bookTakeawayInput" style="min-height:85px;" placeholder="Craft takeaway or favorite quote from this book..."></textarea>
+          <button class="btn-primary btn-full" onclick="addCompletedBook()">+ Add to Completed Books</button>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span class="section-label" style="margin-bottom:0;">Your Reading Ledger</span>
+          <button class="btn-secondary" style="padding:5px 10px; font-size:0.78rem;" onclick="downloadBookLog()">Download .TXT</button>
+        </div>
+        <div id="completedBooksList"></div>
       </div>
     </section>
 
-    <section id="tab-archive" class="tab-section">
-      <div style="margin-bottom: 14px;">
-        <span class="section-label">Unlocked Grimoire</span>
-        <h1 class="tip-headline" style="font-size: 1.4rem;">Your Completed &amp; Active Lessons</h1>
-      </div>
-      <input type="text" class="search-input" id="archiveSearch" placeholder="Search unlocked tips by title or category..." oninput="renderArchive()" />
-      <div id="archiveList"></div>
-    </section>
-
-    <section id="tab-tomes" class="tab-section">
+      <!-- TAB 3: THE GUILD (Seamless Open Book vs. Paid Ad Showcase) -->
+    <section id="tab-guild" class="tab-section">
       <div style="margin-bottom: 16px;">
-        <span class="section-label">Curated Reading Shelf</span>
-        <h1 class="tip-headline" style="font-size: 1.4rem;">Promoted Tomes</h1>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Hand-picked indie fiction and dark speculative reads. All links open externally in your browser.</p>
+        <span class="section-label">Featured Reading</span>
+        <h1 class="tip-headline" style="font-size: 1.45rem;">The Guild</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Curated speculative fiction, dark tales, and independent releases.</p>
       </div>
 
-      <div id="tomesList"></div>
-
-      <div class="ad-banner">
-        <span class="category-pill" style="margin-bottom: 8px;">Author Spotlight</span>
-        <h3>Feature Your Book Here — $10 for 2 Weeks</h3>
-        <p>Reach dedicated daily writers and readers with a 2-week pinned showcase card on Alchemy Writing Studio. Only 5 slots available at a time.</p>
-        <a class="btn-primary" href="mailto:AlchemyProductions102@://gmail.com">
-          Reserve a Slot via Email
-        </a>
-      </div>
+      <div id="guildShowcaseCard"></div>
     </section>
-        <section id="tab-notes" class="tab-section">
-      <div style="margin-bottom: 14px;">
-        <span class="section-label">Personal Grimoire</span>
-        <h1 class="tip-headline" style="font-size: 1.4rem;">Writer's Notepad</h1>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Jot down story ideas, character names, and outlines. Saved automatically on your device.</p>
-      </div>
 
-      <div class="card card-emerald">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <span class="section-label" style="margin-bottom: 0;" id="notepadStatus">✓ Saved locally</span>
-          <span style="font-size: 0.8rem; color: var(--text-muted);" id="notepadWordCount">0 words</span>
-        </div>
-        <textarea class="sprint-pad" id="freeNotepad" style="min-height: 320px;" placeholder="Start writing your story ideas, worldbuilding rules, or outlines here..."></textarea>
-
-        <div class="btn-group">
-          <button class="btn-primary" onclick="copyNotepad()">Copy All Text</button>
-          <button class="btn-secondary" onclick="downloadNotepad()">Download .TXT</button>
-          <button class="btn-secondary" onclick="clearNotepad()">Clear Pad</button>
-        </div>
-      </div>
-    </section>
   </div>
 
   <nav class="bottom-nav">
     <div class="nav-inner">
-      <button class="nav-btn active" id="nav-today" onclick="switchTab('today')">
-        <span class="nav-icon">✦</span>
-        <span>Today</span>
+      <button class="nav-btn active" id="nav-daily" onclick="switchMainTab('daily')">
+        <span style="font-size:1.15rem;">✦</span>
+        <span>Daily</span>
       </button>
-      <button class="nav-btn" id="nav-archive" onclick="switchTab('archive')">
-        <span class="nav-icon">📖</span>
-        <span>Archive</span>
+      <button class="nav-btn" id="nav-workshop" onclick="switchMainTab('workshop')">
+        <span style="font-size:1.15rem;">🛠️</span>
+        <span>Workshop</span>
       </button>
-      <button class="nav-btn" id="nav-tomes" onclick="switchTab('tomes')">
-        <span class="nav-icon">🕯️</span>
-        <span>Promoted Tomes</span>
-      </button>
-      <button class="nav-btn" id="nav-notes" onclick="switchTab('notes')">
-        <span class="nav-icon">✍️</span>
-        <span>Notepad</span>
+      <button class="nav-btn" id="nav-guild" onclick="switchMainTab('guild')">
+        <span style="font-size:1.15rem;">🕯️</span>
+        <span>Guild</span>
       </button>
     </div>
   </nav>
 
     <script>
+    // =========================================================================
+    // 1. THE GUILD CONFIG (Set GUILD_PAID_MODE to true when a paid ad is live!)
+    // =========================================================================
+    const GUILD_PAID_MODE = false;
+
+    const MY_GUILD_BOOKS = [
+      {
+        tag: "Dark Psychological Horror • $0.99",
+        title: "The Silent Slumber",
+        author: "Gavin Deel • Alchemy Productions",
+        blurb: "When guilt follows you into sleep, something ancient waits behind closed eyelids to collect its due.",
+        url: "https://itch.io",
+        coverImage: "",
+        coverLabel: "THE SILENT SLUMBER"
+      },
+      {
+        tag: "Prehistoric Fantasy • Book I",
+        title: "Excavation: Dakota",
+        author: "Gavin Deel • Alchemy Productions",
+        blurb: "Unearthed from ancient stone, an Edmontosaurus awakens into a forgotten world of predators, primal magic, and survival.",
+        url: "https://itch.io",
+        coverImage: "",
+        coverLabel: "EXCAVATION: DAKOTA"
+      },
+      {
+        tag: "Prehistoric Fantasy • Book II",
+        title: "Stone Dragon",
+        author: "Gavin Deel • Alchemy Productions",
+        blurb: "Armored in living rock and forged by deep time, a Borealopelta faces an encroaching shadow across the ancient coast.",
+        url: "https://itch.io",
+        coverImage: "",
+        coverLabel: "STONE DRAGON"
+      }
+    ];
+
+    const PAID_GUILD_FEATURE = {
+      tag: "Featured Indie Release",
+      title: "Sponsor Book Title Here",
+      author: "Sponsor Author Name",
+      blurb: "A gripping two-sentence hook for the featured indie novel goes right here.",
+      url: "https://itch.io",
+      coverImage: "",
+      coverLabel: "FEATURED TOME"
+    };
+
+    // =========================================================================
+    // 2. DAILY TIPS DATABASE (Shuffles randomly without repeating!)
+    // =========================================================================
     const DAILY_TIPS = [
       {
-        day: 1,
+        id: 1,
         category: "Gothic & Horror Craft",
         headline: "The Uncanny (Das Unheimliche): Making the Familiar Terrifying",
         deepDive: [
@@ -477,7 +547,7 @@
         prompt: "Write a 15-minute scene in which a character returns to a childhood room or familiar kitchen and notices three subtle details that prove someone—or something—has been imitating their routine."
       },
       {
-        day: 2,
+        id: 2,
         category: "Worldbuilding & Speculative Rules",
         headline: "Sanderson's First Law: Satisfaction Scales with Understanding",
         deepDive: [
@@ -488,7 +558,7 @@
         prompt: "Invent a supernatural curse or magic rule with one strict physical cost. Write a scene where your protagonist must pay that cost to solve a small, immediate problem."
       },
       {
-        day: 3,
+        id: 3,
         category: "Narrative Structure",
         headline: "The MICE Quotient: Identifying Your Story's True Promise",
         deepDive: [
@@ -499,7 +569,7 @@
         prompt: "Write an opening paragraph that clearly establishes a Milieu or Inquiry promise, then draft the exact closing paragraph that fulfills that promise."
       },
       {
-        day: 4,
+        id: 4,
         category: "Rhetoric & Diction",
         headline: "Verisimilitude & Concrete Nouns Over Abstract Adjectives",
         deepDive: [
@@ -510,7 +580,7 @@
         prompt: "Describe an intimidating creature, fortress, or relic without using a single emotional adjective (no 'scary,' 'old,' 'huge,' or 'dark'). Rely strictly on concrete nouns and physical textures."
       },
       {
-        day: 5,
+        id: 5,
         category: "Pacing & Tension",
         headline: "Scene vs. Sequel: Controlling the Pulse of Your Chapters",
         deepDive: [
@@ -522,143 +592,183 @@
       }
     ];
 
-    const PROMOTED_TOMES = [
-      {
-        slot: 1,
-        tag: "Featured Horror Short • $0.99",
-        title: "The Silent Slumber",
-        author: "Gavin Deel • Alchemy Productions",
-        blurb: "When guilt follows you into sleep, something ancient waits behind closed eyelids to collect its due.",
-        url: "https://itch.io",
-        coverLabel: "THE SILENT SLUMBER"
-      },
-      {
-        slot: 2,
-        tag: "Prehistoric Fantasy • Book I",
-        title: "Excavation: Dakota",
-        author: "Gavin Deel • Alchemy Productions",
-        blurb: "Unearthed from ancient stone, an Edmontosaurus awakens into a forgotten world of predators, primal magic, and survival.",
-        url: "https://itch.io",
-        coverLabel: "EXCAVATION: DAKOTA"
-      },
-      {
-        slot: 3,
-        tag: "Prehistoric Fantasy • Book II",
-        title: "Stone Dragon",
-        author: "Gavin Deel • Alchemy Productions",
-        blurb: "Armored in living rock and forged by deep time, a Borealopelta faces an encroaching shadow across the ancient coast.",
-        url: "https://itch.io",
-        coverLabel: "STONE DRAGON"
-      },
-      {
-        slot: 4,
-        tag: "Horror Anthology • 10 Tales",
-        title: "Nightmares in the Quiet",
-        author: "Gavin Deel • Alchemy Productions",
-        blurb: "Ten chilling tales of psychological dread, uncanny spaces, and the price of buried secrets.",
-        url: "https://itch.io",
-        coverLabel: "10 TALES OF DREAD"
-      },
-      {
-        slot: 5,
-        tag: "Open Author Slot • $10 / 2 Weeks",
-        title: "Your Indie Book Could Be Here",
-        author: "Alchemy Writing Studio Showcase",
-        blurb: "Reserve Slot #5 for two weeks to put your cover, blurb, and direct store link in front of daily writers.",
-        url: "mailto:AlchemyProductions102@://gmail.com",
-        coverLabel: "OPEN SLOT #5"
-      }
+          // =========================================================================
+    // 3. WORD OF THE DAY & TOP 100 MOST MISSPELLED WORDS
+    // =========================================================================
+    const WORD_OF_THE_DAY_LIST = [
+      { word: "Velleity", pos: "noun • /vəˈlēədē/", def: "A wish or inclination not strong enough to lead to action.", example: "His velleity to finish the novel vanished the moment the blank page stared back." },
+      { word: "Susurrus", pos: "noun • /so͞oˈsərəs/", def: "A whispering, murmuring, or rustling sound.", example: "A dry susurrus of dead leaves followed her down the cellar stairs." },
+      { word: "Palimpsest", pos: "noun • /ˈpaləm(p)ˌsest/", def: "A manuscript or surface reused or altered but still bearing visible traces of its earlier form.", example: "The old manor was a palimpsest of half-burned wallpapers and hidden doorways." },
+      { word: "Lugubrious", pos: "adjective • /ləˈɡo͞obrēəs/", def: "Looking or sounding sad, dismal, or mournful, often to an exaggerated degree.", example: "The bell tower let out a lugubrious chime across the fog-choked valley." },
+      { word: "Anathema", pos: "noun • /əˈnaTHəmə/", def: "Something or someone that one vehemently dislikes or considers cursed.", example: "To the guild archivist, burning an uncataloged ledger was pure anathema." },
+      { word: "Chthonic", pos: "adjective • /ˈTHänik/", def: "Concerning, belonging to, or inhabiting the underworld.", example: "The quarry split open to reveal chthonic roots older than the mountain itself." },
+      { word: "Perspicacious", pos: "adjective • /ˌpərspəˈkāSHəs/", def: "Having a ready insight into and understanding of things.", example: "Only a perspicacious reader notices the clue planted in the first line of dialogue." }
     ];
 
-          let state = JSON.parse(localStorage.getItem("alchemy_studio_state")) || {
-      currentDay: 1,
+    const TOP_100_MISSPELLED = [
+      "accommodate", "achieve", "acknowledge", "acquaintance", "acquire",
+      "across", "address", "amateur", "apparent", "argument",
+      "atheist", "awkward", "beginning", "believe", "bellwether",
+      "bizarre", "boundary", "bureaucracy", "business", "calendar",
+      "camouflage", "cemetery", "changeable", "chauffeur", "colleague",
+      "column", "coming", "committed", "conscience", "conscious",
+      "consensus", "controversy", "daiquiri", "deceive", "definitely",
+      "desperate", "develop", "dilemma", "disappear", "disappoint",
+      "discipline", "drunkenness", "dumbbell", "eerie", "embarrass",
+      "environment", "equipment", "exaggerate", "exceed", "existence",
+      "experience", "fascinate", "fiery", "fluorescent", "foreign",
+      "foresee", "forty", "forward", "friend", "fulfill",
+      "gauge", "grateful", "guarantee", "guard", "harass",
+      "height", "hierarchy", "humorous", "hygiene", "ignorance",
+      "imitate", "immediately", "independent", "indispensable", "inoculate",
+      "intelligence", "jewelry", "judgment", "kernel", "leisure",
+      "liaison", "library", "license", "lightning", "maintenance",
+      "maneuver", "medieval", "memento", "millennium", "miniature",
+      "minuscule", "mischievous", "misspell", "necessary", "neighbor",
+      "noticeable", "occasionally", "occurrence", "parallel", "perseverance"
+    ];
+
+          // =========================================================================
+    // 4. RANDOM NON-REPEATING TIP ENGINE, TIMER, ALMANAC & SPRINT UPLOADER
+    // =========================================================================
+    let appState = JSON.parse(localStorage.getItem("alchemy_v2_state")) || {
       streak: 0,
-      completedDays: [],
-      notes: {}
+      seenTipIds: [],
+      currentTipId: null,
+      sprintDrafts: {}
     };
 
-    let viewingDay = state.currentDay;
     let timerSeconds = 15 * 60;
     let timerInterval = null;
 
-    function saveState() {
-      localStorage.setItem("alchemy_studio_state", JSON.stringify(state));
+    function saveAppState() {
+      localStorage.setItem("alchemy_v2_state", JSON.stringify(appState));
     }
 
-    function getTipForDay(dayNum) {
-      const found = DAILY_TIPS.find(t => t.day === dayNum);
-      if (found) return found;
-      const fallbackIndex = (dayNum - 1) % DAILY_TIPS.length;
-      return { ...DAILY_TIPS[fallbackIndex], day: dayNum };
+    function pickUnseenRandomTip() {
+      let unseen = DAILY_TIPS.filter(t => !appState.seenTipIds.includes(t.id));
+      if (unseen.length === 0) {
+        // Reset pool cleanly once every tip in the database has been studied
+        appState.seenTipIds = appState.currentTipId ? [appState.currentTipId] : [];
+        unseen = DAILY_TIPS.filter(t => !appState.seenTipIds.includes(t.id));
+        if (unseen.length === 0) unseen = DAILY_TIPS;
+      }
+      const chosen = unseen[Math.floor(Math.random() * unseen.length)];
+      appState.currentTipId = chosen.id;
+      if (!appState.seenTipIds.includes(chosen.id)) {
+        appState.seenTipIds.push(chosen.id);
+      }
+      saveAppState();
+      return chosen;
     }
-function jumpToDay() {
-  const input = prompt("Returning writer? Enter a Day number (1 to 1,095) to jump straight there:", state.currentDay);
-  if (!input) return;
-  const targetDay = parseInt(input, 10);
-  if (isNaN(targetDay) || targetDay < 1 || targetDay > 1095) {
-    alert("Please enter a valid number between 1 and 1,095.");
-    return;
-  }
-  if (targetDay > state.currentDay) {
-    state.currentDay = targetDay;
-    saveState();
-  }
-  viewingDay = targetDay;
-  resetTimer();
-  renderToday();
-  renderArchive();
-}
-    function renderToday() {
-      const tip = getTipForDay(viewingDay);
-      document.getElementById("dayBadge").textContent = "Day " + viewingDay + " of 1,095▾";
-      document.getElementById("streakBadge").textContent = "🔥 " + state.streak + " Streak";
+
+    function getActiveTip() {
+      let tip = DAILY_TIPS.find(t => t.id === appState.currentTipId);
+      if (!tip) tip = pickUnseenRandomTip();
+      return tip;
+    }
+
+    function drawRandomTip() {
+      pickUnseenRandomTip();
+      resetTimer();
+      renderDailyScreen();
+      renderAlmanac();
+    }
+
+    function renderDailyScreen() {
+      const tip = getActiveTip();
+      document.getElementById("streakBadge").textContent = "🔥 " + appState.streak + " Day Streak";
       document.getElementById("todayCategory").textContent = tip.category;
-      document.getElementById("todayHeadline").textContent = "Day " + viewingDay + ": " + tip.headline;
+      document.getElementById("todayHeadline").textContent = tip.headline;
 
-      const deepDiveContainer = document.getElementById("todayDeepDive");
+      const deepDiveEl = document.getElementById("todayDeepDive");
       let html = tip.deepDive.map(p => "<p>" + p + "</p>").join("");
       if (tip.quote) {
         html += '<blockquote class="craft-quote">"' + tip.quote + '"</blockquote>';
       }
-      deepDiveContainer.innerHTML = html;
+      deepDiveEl.innerHTML = html;
 
       document.getElementById("todayPrompt").textContent = tip.prompt;
 
-      const notesArea = document.getElementById("sprintNotes");
-      notesArea.value = state.notes[viewingDay] || "";
-      notesArea.oninput = () => {
-        state.notes[viewingDay] = notesArea.value;
-        saveState();
+      const sprintBox = document.getElementById("sprintNotes");
+      sprintBox.value = appState.sprintDrafts[tip.id] || "";
+      sprintBox.oninput = () => {
+        appState.sprintDrafts[tip.id] = sprintBox.value;
+        saveAppState();
       };
-
-      const completeBtn = document.getElementById("completeDayBtn");
-      if (state.completedDays.includes(viewingDay)) {
-        completeBtn.textContent = "✓ Day Completed (Return to Latest Active Day)";
-        completeBtn.onclick = () => {
-          viewingDay = state.currentDay;
-          resetTimer();
-          renderToday();
-        };
-      } else {
-        completeBtn.textContent = "Mark Day Complete & Unlock Next Lesson";
-        completeBtn.onclick = completeCurrentDay;
-      }
     }
 
-    function completeCurrentDay() {
-      if (!state.completedDays.includes(viewingDay)) {
-        state.completedDays.push(viewingDay);
-        state.streak += 1;
-        if (viewingDay === state.currentDay && state.currentDay < 1095) {
-          state.currentDay += 1;
-        }
-        saveState();
-      }
-      viewingDay = state.currentDay;
+    function completeDailyChallenge() {
+      appState.streak += 1;
+      pickUnseenRandomTip();
       resetTimer();
-      renderToday();
-      renderArchive();
+      renderDailyScreen();
+      renderAlmanac();
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function uploadSprintToBinder() {
+      const tip = getActiveTip();
+      const text = document.getElementById("sprintNotes").value.trim();
+      if (!text) {
+        alert("Write a few lines in the sprint box first before uploading to your Binder!");
+        return;
+      }
+      if (!binderData.notebooks.includes("Daily Sprints")) {
+        binderData.notebooks.push("Daily Sprints");
+      }
+      binderData.pages.unshift({
+        id: Date.now(),
+        notebook: "Daily Sprints",
+        title: "Sprint: " + tip.headline,
+        content: "Prompt: " + tip.prompt + "\n\n---\n\n" + text,
+        updated: new Date().toLocaleDateString()
+      });
+      saveBinder();
+      const btn = document.getElementById("uploadSprintBtn");
+      btn.textContent = "✓ Saved to Daily Sprints!";
+      setTimeout(() => { btn.textContent = "🗂️ Upload to Binder"; }, 2200);
+    }
+
+    function renderAlmanac() {
+      const query = document.getElementById("almanacSearch").value.toLowerCase();
+      const list = document.getElementById("almanacList");
+      list.innerHTML = "";
+
+      const studied = appState.seenTipIds
+        .slice()
+        .reverse()
+        .map(id => DAILY_TIPS.find(t => t.id === id))
+        .filter(Boolean);
+
+      if (studied.length === 0) {
+        list.innerHTML = '<div class="card" style="color:var(--text-muted); font-size:0.9rem;">Your studied tips will appear here automatically.</div>';
+        return;
+      }
+
+      studied.forEach(tip => {
+        const matches = tip.headline.toLowerCase().includes(query) || tip.category.toLowerCase().includes(query);
+        if (!matches) return;
+
+        const isCurrent = tip.id === appState.currentTipId;
+        const item = document.createElement("div");
+        item.className = "almanac-item";
+        item.innerHTML =
+          '<div style="display:flex; justify-content:space-between; font-size:0.76rem; margin-bottom:4px;">' +
+            '<span style="color:var(--emerald); font-weight:700;">' + tip.category + '</span>' +
+            '<span style="color:var(--text-muted);">' + (isCurrent ? "• Active Above" : "Tap to Review") + '</span>' +
+          '</div>' +
+          '<div style="font-family:\'Lora\', Georgia, serif; font-weight:700; font-size:1.02rem;">' + tip.headline + '</div>';
+        item.onclick = () => {
+          appState.currentTipId = tip.id;
+          saveAppState();
+          resetTimer();
+          renderDailyScreen();
+          renderAlmanac();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+        list.appendChild(item);
+      });
     }
 
     function updateTimerUI() {
@@ -675,7 +785,7 @@ function jumpToDay() {
           updateTimerUI();
         } else {
           pauseTimer();
-          alert("15-minute sprint complete! Great work.");
+          alert("15-minute sprint complete!");
         }
       }, 1000);
     }
@@ -690,121 +800,351 @@ function jumpToDay() {
       timerSeconds = 15 * 60;
       updateTimerUI();
     }
+    // =========================================================================
+    // 5. WORKSHOP DESK (Sticky Note, To-Dos, WOTD & Top 100 Misspelled)
+    // =========================================================================
+    const stickyEl = document.getElementById("goalStickyInput");
+    stickyEl.value = localStorage.getItem("alchemy_goal_sticky") || "";
+    stickyEl.oninput = () => {
+      localStorage.setItem("alchemy_goal_sticky", stickyEl.value);
+      document.getElementById("stickyStatus").textContent = "✓ Saved";
+    };
 
-        function renderArchive() {
-      const query = document.getElementById("archiveSearch").value.toLowerCase();
-      const list = document.getElementById("archiveList");
-      list.innerHTML = "";
+    let todos = JSON.parse(localStorage.getItem("alchemy_todos")) || [];
 
-      const maxUniqueDay = Math.min(state.currentDay, DAILY_TIPS.length);
-      const seenHeadlines = new Set();
-
-      for (let d = maxUniqueDay; d >= 1; d--) {
-        const tip = getTipForDay(d);
-        if (seenHeadlines.has(tip.headline)) continue;
-        seenHeadlines.add(tip.headline);
-
-        const matches =
-          tip.headline.toLowerCase().includes(query) ||
-          tip.category.toLowerCase().includes(query) ||
-          ("day " + d).includes(query);
-
-        if (!matches) continue;
-
-        const isDone = state.completedDays.includes(d);
-        const item = document.createElement("div");
-        item.className = "archive-item";
-        item.innerHTML =
-          '<div class="archive-meta">' +
-            '<span class="archive-day">Day ' + d + (isDone ? " • ✓ Completed" : " • Active") + '</span>' +
-            '<span class="archive-cat">' + tip.category + '</span>' +
-          '</div>' +
-          '<div class="archive-title">' + tip.headline + '</div>';
-        item.onclick = () => {
-          viewingDay = d;
-          resetTimer();
-          renderToday();
-          switchTab("today");
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        };
-        list.appendChild(item);
-      }
+    function saveTodos() {
+      localStorage.setItem("alchemy_todos", JSON.stringify(todos));
     }
 
-    function renderTomes() {
-      const list = document.getElementById("tomesList");
-      list.innerHTML = PROMOTED_TOMES.map(tome =>
-        '<div class="tome-card">' +
-          '<div class="tome-cover">' + tome.coverLabel + '</div>' +
-          '<div class="tome-info">' +
-            '<div class="tome-tag">' + tome.tag + '</div>' +
-            '<div class="tome-title">' + tome.title + '</div>' +
-            '<div class="tome-author">' + tome.author + '</div>' +
-            '<div class="tome-blurb">' + tome.blurb + '</div>' +
-            '<a class="btn-secondary" href="' + tome.url + '" target="_blank" rel="noopener noreferrer">Read / Buy Externally ↗</a>' +
-          '</div>' +
+    function renderTodos() {
+      const container = document.getElementById("todoListContainer");
+      if (todos.length === 0) {
+        container.innerHTML = '<div style="font-size:0.86rem; color:var(--cream-muted);">No tasks yet. Add a chapter goal or revision item above.</div>';
+        return;
+      }
+      container.innerHTML = todos.map((item, idx) =>
+        '<div class="todo-row">' +
+          '<label style="display:flex; align-items:center; gap:10px; cursor:pointer; flex:1;">' +
+            '<input type="checkbox" ' + (item.done ? "checked" : "") + ' onchange="toggleTodo(' + idx + ')" style="width:16px; height:16px; accent-color:var(--emerald-dark);" />' +
+            '<span style="' + (item.done ? "text-decoration:line-through; opacity:0.6;" : "") + '">' + item.text + '</span>' +
+          '</label>' +
+          '<button class="btn-secondary" style="padding:3px 8px; font-size:0.75rem;" onclick="deleteTodo(' + idx + ')">✕</button>' +
         '</div>'
       ).join("");
     }
 
-    function switchTab(tabName) {
+    function addTodoItem() {
+      const input = document.getElementById("todoInput");
+      const val = input.value.trim();
+      if (!val) return;
+      todos.unshift({ text: val, done: false });
+      input.value = "";
+      saveTodos();
+      renderTodos();
+    }
+
+    function toggleTodo(idx) {
+      todos[idx].done = !todos[idx].done;
+      saveTodos();
+      renderTodos();
+    }
+
+    function deleteTodo(idx) {
+      todos.splice(idx, 1);
+      saveTodos();
+      renderTodos();
+    }
+
+    function renderWordOfTheDay() {
+      const dayIndex = Math.floor(Date.now() / 86400000) % WORD_OF_THE_DAY_LIST.length;
+      const item = WORD_OF_THE_DAY_LIST[dayIndex];
+      document.getElementById("wotdWord").textContent = item.word;
+      document.getElementById("wotdPos").textContent = item.pos;
+      document.getElementById("wotdDef").textContent = item.def;
+      document.getElementById("wotdExample").textContent = '"' + item.example + '"';
+    }
+
+    function renderMisspelled() {
+      const q = document.getElementById("spellSearch").value.toLowerCase();
+      const box = document.getElementById("misspelledList");
+      const filtered = TOP_100_MISSPELLED.filter(w => w.includes(q));
+      box.innerHTML = filtered.map(w =>
+        '<span style="background:var(--cream-elevated); border:1px solid var(--cream-border); padding:4px 10px; border-radius:6px; font-size:0.84rem; font-weight:600;">' + w + '</span>'
+      ).join("");
+    }
+
+    // =========================================================================
+    // 6. THE BINDER (Notebooks & Note Pages)
+    // =========================================================================
+    let binderData = JSON.parse(localStorage.getItem("alchemy_binder_v2")) || {
+      notebooks: ["Story Ideas", "Daily Sprints", "Worldbuilding"],
+      pages: []
+    };
+    let activeNotebook = "All";
+    let editingPageId = null;
+
+    function saveBinder() {
+      localStorage.setItem("alchemy_binder_v2", JSON.stringify(binderData));
+    }
+
+    function renderBinder() {
+      const bar = document.getElementById("notebookTabsBar");
+      const allTabs = ["All", ...binderData.notebooks];
+      bar.innerHTML = allTabs.map(nb =>
+        '<button class="' + (activeNotebook === nb ? "btn-primary" : "btn-secondary") + '" style="padding:6px 12px; font-size:0.8rem;" onclick="selectNotebook(\'' + nb.replace(/'/g, "\\'") + '\')">' + nb + '</button>'
+      ).join("");
+
+      const list = document.getElementById("binderPagesList");
+      const filtered = activeNotebook === "All" ? binderData.pages : binderData.pages.filter(p => p.notebook === activeNotebook);
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="card" style="text-align:center; color:var(--cream-muted);"><p style="margin-bottom:10px;">No pages in <strong>' + activeNotebook + '</strong> yet.</p><button class="btn-primary" onclick="createBinderPage()">+ Create Page</button></div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(p => {
+        const words = p.content.trim() ? p.content.trim().split(/\s+/).length : 0;
+        return '<div class="card" style="padding:14px 16px; margin-bottom:10px; cursor:pointer;" onclick="openBinderEditor(' + p.id + ')">' +
+          '<div style="display:flex; justify-content:space-between; font-size:0.76rem; margin-bottom:4px;">' +
+            '<span style="color:var(--emerald-dark); font-weight:700;">📓 ' + p.notebook + '</span>' +
+            '<span style="color:var(--cream-muted);">' + words + ' words • ' + p.updated + '</span>' +
+          '</div>' +
+          '<div style="font-family:\'Lora\', Georgia, serif; font-weight:700; font-size:1.05rem;">' + (p.title || "Untitled Page") + '</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    function selectNotebook(nb) {
+      activeNotebook = nb;
+      closeBinderEditor();
+      renderBinder();
+    }
+
+    function createNotebook() {
+      const name = prompt("Enter a name for your new notebook (e.g., Characters, Chapter Outlines):");
+      if (!name || !name.trim()) return;
+      const clean = name.trim();
+      if (!binderData.notebooks.includes(clean)) {
+        binderData.notebooks.push(clean);
+        saveBinder();
+      }
+      activeNotebook = clean;
+      closeBinderEditor();
+      renderBinder();
+    }
+
+    function createBinderPage() {
+      const targetNb = activeNotebook === "All" ? binderData.notebooks[0] : activeNotebook;
+      const newPage = {
+        id: Date.now(),
+        notebook: targetNb,
+        title: "",
+        content: "",
+        updated: new Date().toLocaleDateString()
+      };
+      binderData.pages.unshift(newPage);
+      saveBinder();
+      openBinderEditor(newPage.id);
+    }
+
+    function openBinderEditor(id) {
+      const page = binderData.pages.find(p => p.id === id);
+      if (!page) return;
+      editingPageId = id;
+
+      document.getElementById("notebookTabsBar").style.display = "none";
+      document.getElementById("binderPagesList").style.display = "none";
+      document.getElementById("binderEditorCard").style.display = "block";
+
+      const select = document.getElementById("binderNotebookSelect");
+      select.innerHTML = binderData.notebooks.map(nb =>
+        '<option value="' + nb + '"' + (nb === page.notebook ? " selected" : "") + '>Notebook: ' + nb + '</option>'
+      ).join("");
+
+      const titleEl = document.getElementById("binderPageTitle");
+      const contentEl = document.getElementById("binderPageContent");
+      titleEl.value = page.title;
+      contentEl.value = page.content;
+      updateBinderWordCount(page.content);
+
+      const sync = () => {
+        page.title = titleEl.value;
+        page.notebook = select.value;
+        page.content = contentEl.value;
+        page.updated = new Date().toLocaleDateString();
+        saveBinder();
+        updateBinderWordCount(page.content);
+        document.getElementById("binderSaveStatus").textContent = "✓ Saved";
+      };
+
+      titleEl.oninput = sync;
+      select.onchange = sync;
+      contentEl.oninput = sync;
+    }
+
+    function closeBinderEditor() {
+      editingPageId = null;
+      document.getElementById("binderEditorCard").style.display = "none";
+      document.getElementById("notebookTabsBar").style.display = "flex";
+      document.getElementById("binderPagesList").style.display = "block";
+      renderBinder();
+    }
+
+    function updateBinderWordCount(txt) {
+      const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+      document.getElementById("binderWordCount").textContent = words + (words === 1 ? " word" : " words");
+    }
+
+    function copyBinderPage() {
+      const txt = document.getElementById("binderPageContent").value;
+      if (!txt) return;
+      navigator.clipboard.writeText(txt);
+      document.getElementById("binderSaveStatus").textContent = "✓ Copied!";
+    }
+
+    function downloadBinderPage() {
+      const page = binderData.pages.find(p => p.id === editingPageId);
+      if (!page) return;
+      const slug = (page.title || "alchemy-page").toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".txt";
+      const blob = new Blob([page.title + "\nNotebook: " + page.notebook + "\n\n" + page.content], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = slug;
+      a.click();
+    }
+
+    function deleteBinderPage() {
+      if (!editingPageId) return;
+      if (confirm("Delete this page permanently?")) {
+        binderData.pages = binderData.pages.filter(p => p.id !== editingPageId);
+        saveBinder();
+        closeBinderEditor();
+      }
+    }
+
+          // =========================================================================
+    // 7. COMPLETED BOOKS NOTEBOOK
+    // =========================================================================
+    let completedBooks = JSON.parse(localStorage.getItem("alchemy_completed_books")) || [];
+
+    function saveBooks() {
+      localStorage.setItem("alchemy_completed_books", JSON.stringify(completedBooks));
+    }
+
+    function renderCompletedBooks() {
+      const list = document.getElementById("completedBooksList");
+      if (completedBooks.length === 0) {
+        list.innerHTML = '<div class="card" style="color:var(--cream-muted); font-size:0.9rem;">No completed books logged yet. Record your first finished read above.</div>';
+        return;
+      }
+      list.innerHTML = completedBooks.map((b, idx) =>
+        '<div class="card" style="padding:16px; margin-bottom:10px;">' +
+          '<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">' +
+            '<div>' +
+              '<div style="font-family:\'Lora\', Georgia, serif; font-weight:700; font-size:1.05rem;">' + b.title + '</div>' +
+              '<div style="font-size:0.82rem; color:var(--emerald-dark); font-weight:600; margin-bottom:6px;">by ' + (b.author || "Unknown Author") + ' • ' + b.date + '</div>' +
+            '</div>' +
+            '<button class="btn-secondary" style="padding:3px 8px; font-size:0.75rem;" onclick="deleteCompletedBook(' + idx + ')">✕</button>' +
+          '</div>' +
+          (b.takeaway ? '<p style="font-size:0.9rem; color:var(--cream-ink);">' + b.takeaway + '</p>' : '') +
+        '</div>'
+      ).join("");
+    }
+
+    function addCompletedBook() {
+      const title = document.getElementById("bookTitleInput").value.trim();
+      const author = document.getElementById("bookAuthorInput").value.trim();
+      const takeaway = document.getElementById("bookTakeawayInput").value.trim();
+      if (!title) {
+        alert("Please enter the book title first.");
+        return;
+      }
+      completedBooks.unshift({
+        title: title,
+        author: author,
+        takeaway: takeaway,
+        date: new Date().toLocaleDateString()
+      });
+      document.getElementById("bookTitleInput").value = "";
+      document.getElementById("bookAuthorInput").value = "";
+      document.getElementById("bookTakeawayInput").value = "";
+      saveBooks();
+      renderCompletedBooks();
+    }
+
+    function deleteCompletedBook(idx) {
+      completedBooks.splice(idx, 1);
+      saveBooks();
+      renderCompletedBooks();
+    }
+
+    function downloadBookLog() {
+      if (completedBooks.length === 0) return;
+      const lines = completedBooks.map(b => b.title + " — " + b.author + " (" + b.date + ")\nTakeaway: " + b.takeaway).join("\n\n---\n\n");
+      const blob = new Blob([lines], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "alchemy-completed-books.txt";
+      a.click();
+    }
+
+    // =========================================================================
+    // 8. THE GUILD RENDERER & TAB NAVIGATION
+    // =========================================================================
+    function renderGuild() {
+      const container = document.getElementById("guildShowcaseCard");
+      const featured = GUILD_PAID_MODE
+        ? PAID_GUILD_FEATURE
+        : MY_GUILD_BOOKS[Math.floor(Math.random() * MY_GUILD_BOOKS.length)];
+
+      const coverHtml = featured.coverImage
+        ? '<img src="' + featured.coverImage + '" alt="' + featured.title + '" style="width:82px; height:120px; object-fit:cover; border-radius:8px; border:1px solid var(--emerald-dark); flex-shrink:0;" />'
+        : '<div class="tome-cover">' + featured.coverLabel + '</div>';
+
+      container.innerHTML =
+        '<div class="tome-card card-emerald">' +
+          coverHtml +
+          '<div style="flex:1;">' +
+            '<div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--emerald); font-weight:700; margin-bottom:4px;">' + featured.tag + '</div>' +
+            '<div style="font-family:\'Lora\', Georgia, serif; font-size:1.18rem; font-weight:700; margin-bottom:2px;">' + featured.title + '</div>' +
+            '<div style="font-size:0.84rem; color:var(--text-muted); margin-bottom:10px;">' + featured.author + '</div>' +
+            '<p style="font-size:0.9rem; color:#D1DDD6; margin-bottom:14px;">' + featured.blurb + '</p>' +
+            '<a class="btn-primary" href="' + featured.url + '" target="_blank" rel="noopener noreferrer">Read / Explore Externally ↗</a>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function switchMainTab(tab) {
       document.querySelectorAll(".tab-section").forEach(el => el.classList.remove("active"));
       document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
 
-      document.getElementById("tab-" + tabName).classList.add("active");
-      document.getElementById("nav-" + tabName).classList.add("active");
+      document.getElementById("tab-" + tab).classList.add("active");
+      document.getElementById("nav-" + tab).classList.add("active");
+
+      if (tab === "workshop") {
+        document.body.classList.add("cream-mode");
+      } else {
+        document.body.classList.remove("cream-mode");
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    const notepadEl = document.getElementById("freeNotepad");
-    const notepadStatus = document.getElementById("notepadStatus");
-    const notepadWordCount = document.getElementById("notepadWordCount");
 
-    function updateWordCount(text) {
-      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-      notepadWordCount.textContent = words + (words === 1 ? " word" : " words");
-    }
-
-    if (notepadEl) {
-      notepadEl.value = localStorage.getItem("alchemy_free_notepad") || "";
-      updateWordCount(notepadEl.value);
-
-      notepadEl.addEventListener("input", () => {
-        localStorage.setItem("alchemy_free_notepad", notepadEl.value);
-        updateWordCount(notepadEl.value);
-        notepadStatus.textContent = "✓ Saved locally";
+    function switchWorkshopView(view) {
+      ["desk", "binder", "books"].forEach(v => {
+        document.getElementById("ws-view-" + v).style.display = (v === view) ? "block" : "none";
+        document.getElementById("ws-nav-" + v).className = (v === view) ? "btn-primary" : "btn-secondary";
       });
     }
 
-    function copyNotepad() {
-      const box = document.getElementById("freeNotepad");
-      if (!box || !box.value) return;
-      navigator.clipboard.writeText(box.value);
-      document.getElementById("notepadStatus").textContent = "✓ Copied to clipboard!";
-    }
-
-    function downloadNotepad() {
-      const box = document.getElementById("freeNotepad");
-      if (!box) return;
-      const blob = new Blob([box.value], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "alchemy-writing-notes.txt";
-      link.click();
-    }
-
-    function clearNotepad() {
-      const box = document.getElementById("freeNotepad");
-      if (!box || !box.value) return;
-      if (confirm("Clear your entire notepad? Make sure you copied or downloaded it first.")) {
-        box.value = "";
-        localStorage.removeItem("alchemy_free_notepad");
-        updateWordCount("");
-        document.getElementById("notepadStatus").textContent = "Notepad cleared";
-      }
-    }
-      
-    renderToday();
-    renderArchive();
-    renderTomes();
+    // Initialize Everything
+    renderDailyScreen();
+    renderAlmanac();
+    renderTodos();
+    renderWordOfTheDay();
+    renderMisspelled();
+    renderBinder();
+    renderCompletedBooks();
+    renderGuild();
   </script>
 </body>
 </html>
