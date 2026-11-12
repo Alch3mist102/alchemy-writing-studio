@@ -19,13 +19,13 @@
       --text-white: #FFFFFF;
       --text-muted: #A1B0A8;
       --text-dim: #6B7A72;
-      /* Cream Workshop Palette */
-      --cream-bg: #F4F1EA;
-      --cream-card: #FDFBF7;
-      --cream-elevated: #EAE5D9;
-      --cream-border: #D5CEBE;
-      --cream-ink: #161A18;
-      --cream-muted: #525B56;
+      /* Unified Dark Workshop Palette */
+      --cream-bg: #0B0D0C;
+      --cream-card: #121614;
+      --cream-elevated: #181E1B;
+      --cream-border: #232D28;
+      --cream-ink: #FFFFFF;
+      --cream-muted: #A1B0A8;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1226,18 +1226,12 @@
         '</div>';
     }
 
-    function switchMainTab(tab) {
+     function switchMainTab(tab) {
       document.querySelectorAll(".tab-section").forEach(el => el.classList.remove("active"));
       document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
 
       document.getElementById("tab-" + tab).classList.add("active");
       document.getElementById("nav-" + tab).classList.add("active");
-
-      if (tab === "workshop") {
-        document.body.classList.add("cream-mode");
-      } else {
-        document.body.classList.remove("cream-mode");
-      }
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
