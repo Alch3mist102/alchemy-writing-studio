@@ -290,22 +290,22 @@
     .almanac-item:hover { border-color: var(--emerald); }
 
     /* Sticky Note & Desk Grid */
-    .sticky-note {
-      background: #FEF9C3;
-      color: #1E293B;
-      border: 1px solid #EAB308;
+       .sticky-note {
+      background: linear-gradient(145deg, #0F231B 0%, #121614 100%);
+      color: #FFFFFF;
+      border: 1px solid var(--emerald);
       border-radius: 12px;
       padding: 16px;
       margin-bottom: 18px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.08);
     }
 
-      .sticky-note textarea {
+    .sticky-note textarea {
       width: 100%;
       min-height: 85px;
       background: transparent;
       border: none;
-      color: #1E293B;
+      color: #FFFFFF;
       font-family: 'Lora', Georgia, serif;
       font-size: 0.96rem;
       line-height: 1.5;
@@ -473,10 +473,10 @@
 
       <!-- SUB-VIEW A: DESK & CRAFT REFERENCE -->
       <div id="ws-view-desk">
-        <div class="sticky-note">
+               <div class="sticky-note">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#854D0E;">📌 Current Writing Goal</span>
-            <span style="font-size:0.74rem; color:#854D0E;" id="stickyStatus">Saved</span>
+            <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--emerald);">📌 Current Writing Goal</span>
+            <span style="font-size:0.74rem; color:var(--emerald);" id="stickyStatus">Saved</span>
           </div>
           <textarea id="goalStickyInput" placeholder="Pin your current word-count goal, deadline, or story focus here..."></textarea>
         </div>
