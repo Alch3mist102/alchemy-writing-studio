@@ -1,0 +1,17 @@
+{
+  "name": "Alchemy Writing Studio",
+  "short_name": "Alchemy Studio",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0B0D0C",
+  "theme_color": "#0B0D0C",
+  "description": "Daily literary craft breakdowns, 15-minute writing sprints, and an indie writer's studio.",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
