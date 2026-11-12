@@ -827,17 +827,20 @@
       return chosen;
     }
 
+    function getTodayDateString() {
+      return new Date().toLocaleDateString();
+    }
+
     function getActiveTip() {
+      const todayStr = getTodayDateString();
+      if (appState.lastAssignedDate !== todayStr || !appState.currentTipId) {
+        appState.lastAssignedDate = todayStr;
+        appState.completedToday = false;
+        return pickUnseenRandomTip();
+      }
       let tip = DAILY_TIPS.find(t => t.id === appState.currentTipId);
       if (!tip) tip = pickUnseenRandomTip();
       return tip;
-    }
-
-    function drawRandomTip() {
-      pickUnseenRandomTip();
-      resetTimer();
-      renderDailyScreen();
-      renderAlmanac();
     }
 
     function renderDailyScreen() {
@@ -861,16 +864,26 @@
         appState.sprintDrafts[tip.id] = sprintBox.value;
         saveAppState();
       };
+
+      const completeBtn = document.getElementById("completeChallengeBtn");
+      if (appState.completedToday) {
+        completeBtn.textContent = "✓ Daily Challenge Complete — Come Back Tomorrow";
+        completeBtn.style.opacity = "0.75";
+      } else {
+        completeBtn.textContent = "✓ Complete Today's Challenge";
+        completeBtn.style.opacity = "1";
+      }
     }
 
     function completeDailyChallenge() {
+      if (appState.completedToday) return;
+      appState.completedToday = true;
       appState.streak += 1;
-      pickUnseenRandomTip();
-      resetTimer();
+      saveAppState();
       renderDailyScreen();
       renderAlmanac();
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
+
 
     function uploadSprintToBinder() {
       const tip = getActiveTip();
