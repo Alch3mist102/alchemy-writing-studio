@@ -313,6 +313,120 @@
       outline: none;
     }
 
+    <body>
+
+  <header>
+    <div class="header-inner">
+      <div>
+        <div class="brand-sub">Alchemy Productions</div>
+        <div class="brand-title">Alchemy Writing Studio</div>
+      </div>
+      <span class="badge" id="streakBadge">🔥 0 Day Streak</span>
+    </div>
+  </header>
+
+  <div class="app-container">
+
+    <!-- TAB 1: DAILY TIP + 15-MIN CHALLENGE + ALMANAC OF PREVIOUS TIPS -->
+    <section id="tab-daily" class="tab-section active">
+      <div class="card card-emerald">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px;">
+          <span class="category-pill" style="margin-bottom:0;" id="todayCategory">Literary Craft</span>
+          <button class="btn-secondary" style="padding:5px 10px; font-size:0.78rem;" onclick="drawRandomTip()">↻ New Unseen Tip</button>
+        </div>
+        <h1 class="tip-headline" id="todayHeadline">Loading Tip...</h1>
+        <span class="section-label">English-Major Deep-Dive</span>
+        <div class="deep-dive-text" id="todayDeepDive"></div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Daily Challenge • 15-Minute Sprint</span>
+        <div class="prompt-box" id="todayPrompt"></div>
+
+        <div class="timer-row">
+          <div class="timer-display" id="timerDisplay">15:00</div>
+          <div class="btn-group">
+            <button class="btn-primary" onclick="startTimer()">Start</button>
+            <button class="btn-secondary" onclick="pauseTimer()">Pause</button>
+            <button class="btn-secondary" onclick="resetTimer()">Reset</button>
+          </div>
+        </div>
+
+        <textarea class="sprint-pad" id="sprintNotes" style="min-height:140px;" placeholder="Draft your 15-minute challenge right here..."></textarea>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+          <button class="btn-secondary" id="uploadSprintBtn" onclick="uploadSprintToBinder()">🗂️ Upload to Binder</button>
+          <button class="btn-primary" id="completeChallengeBtn" onclick="completeDailyChallenge()">✓ Complete &amp; Next Tip</button>
+        </div>
+      </div>
+
+      <div style="margin-top: 26px;">
+        <span class="section-label">The Almanac</span>
+        <h2 class="tip-headline" style="font-size: 1.3rem;">Previously Studied Tips</h2>
+        <input type="text" class="search-input" id="almanacSearch" placeholder="Search your studied tips by keyword or category..." oninput="renderAlmanac()" />
+        <div id="almanacList"></div>
+      </div>
+    </section>
+
+    <!-- TAB 2: CREAM-TONED WORKSHOP -->
+    <section id="tab-workshop" class="tab-section">
+      <div style="margin-bottom: 14px;">
+        <span class="section-label">Daylight Study Desk</span>
+        <h1 class="tip-headline" style="font-size: 1.45rem; margin-bottom: 12px;">The Workshop</h1>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px;">
+          <button class="btn-primary" id="ws-nav-desk" onclick="switchWorkshopView('desk')">📖 Desk &amp; Craft</button>
+          <button class="btn-secondary" id="ws-nav-binder" onclick="switchWorkshopView('binder')">🗂️ Binder</button>
+          <button class="btn-secondary" id="ws-nav-books" onclick="switchWorkshopView('books')">📚 Book Log</button>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW A: DESK & CRAFT REFERENCE -->
+      <div id="ws-view-desk">
+        <div class="sticky-note">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#854D0E;">📌 Current Writing Goal</span>
+            <span style="font-size:0.74rem; color:#854D0E;" id="stickyStatus">Saved</span>
+          </div>
+          <textarea id="goalStickyInput" placeholder="Pin your current word-count goal, deadline, or story focus here..."></textarea>
+        </div>
+
+        <div class="card">
+          <span class="section-label">Writing To-Do Checklist</span>
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <input type="text" class="search-input" id="todoInput" placeholder="Add a revision task or chapter goal..." style="margin-bottom:0;" onkeypress="if(event.key==='Enter') addTodoItem()" />
+            <button class="btn-primary" onclick="addTodoItem()">Add</button>
+          </div>
+          <div id="todoListContainer"></div>
+        </div>
+
+        <div class="card card-emerald">
+          <span class="category-pill" style="margin-bottom:8px;">Word of the Day</span>
+          <h2 class="tip-headline" style="font-size:1.35rem; margin-bottom:4px;" id="wotdWord">Loading...</h2>
+          <div style="font-size:0.84rem; color:var(--emerald-dark); font-style:italic; margin-bottom:8px;" id="wotdPos"></div>
+          <p style="font-size:0.95rem; margin-bottom:8px;" id="wotdDef"></p>
+          <div class="craft-quote" style="margin-bottom:0; font-size:0.9rem;" id="wotdExample"></div>
+        </div>
+
+        <div class="card">
+          <span class="section-label">Essential Comma &amp; Grammar Rules</span>
+          <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:10px;">
+            <div><strong style="color:var(--emerald-dark);">1. Oxford (Serial) Comma:</strong> Place a comma before <em>and/or</em> in lists of three or more items (<em>"ghosts, ghouls, and shadows"</em>).</div>
+            <div><strong style="color:var(--emerald-dark);">2. FANBOYS + Complete Sentences:</strong> Use a comma before <em>for, and, nor, but, or, yet, so</em> only when joining two independent clauses.</div>
+            <div><strong style="color:var(--emerald-dark);">3. Introductory Clauses:</strong> Put a comma after an opening dependent phrase (<em>"When the lantern flickered, she froze."</em>).</div>
+            <div><strong style="color:var(--emerald-dark);">4. Nonessential Details:</strong> Wrap removable descriptions in commas (<em>"The relic, forged in bog-iron, hummed."</em>).</div>
+            <div><strong style="color:var(--emerald-dark);">5. Dialogue Tags vs. Action Beats:</strong> Use a comma for speech tags (<em>"Run," he whispered.</em>) and a period for action beats (<em>"Run." He drew his blade.</em>).</div>
+            <div><strong style="color:var(--emerald-dark);">6. Semicolons (;):</strong> Link two closely related complete sentences without a conjunction.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="section-label">Top 100 Most Misspelled Words</span>
+          <input type="text" class="search-input" id="spellSearch" placeholder="Search 100 tricky words (e.g., separate, definitely, eerie)..." oninput="renderMisspelled()" />
+          <div id="misspelledList" style="display:flex; flex-wrap:wrap; gap:7px; max-height:240px; overflow-y:auto;"></div>
+        </div>
+      </div>
+
     .todo-row {
       display: flex;
       align-items: center;
