@@ -401,15 +401,71 @@
       color: var(--emerald-dark);
       border-top-color: var(--emerald-dark);
     }
+        /* Splash Screen */
+    #splashScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background-color: var(--bg-obsidian);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    #splashScreen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-emblem {
+      width: 112px;
+      height: 112px;
+      filter: drop-shadow(0 0 18px rgba(16, 185, 129, 0.25));
+      animation: pulseGlow 1.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      from { transform: scale(0.98); filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.18)); }
+      to { transform: scale(1.02); filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.42)); }
+    }
+
   </style>
 </head>
 <body>
 
+  <body>
+
+  <!-- LAUNCH SPLASH SCREEN -->
+  <div id="splashScreen">
+    <svg class="splash-emblem" viewBox="0 0 100 100" fill="none" xmlns="http://w3.org">
+      <circle cx="50" cy="50" r="46" stroke="#FFFFFF" stroke-width="4.5"/>
+      <polygon points="50,6 11,73 89,73" stroke="#FFFFFF" stroke-width="4.5" stroke-linejoin="round"/>
+      <rect x="28" y="34" width="44" height="39" stroke="#FFFFFF" stroke-width="4.2"/>
+      <circle cx="50" cy="53.5" r="19" stroke="#10B981" stroke-width="4.2"/>
+    </svg>
+    <div style="text-align: center;">
+      <div class="brand-sub" style="font-size: 0.78rem; margin-bottom: 4px;">Alchemy Productions</div>
+      <div class="brand-title" style="font-size: 1.45rem;">Alchemy Writing Studio</div>
+    </div>
+  </div>
+
   <header>
     <div class="header-inner">
-      <div>
-        <div class="brand-sub">Alchemy Productions</div>
-        <div class="brand-title">Alchemy Writing Studio</div>
+      <div style="display: flex; align-items: center; gap: 11px;">
+        <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://w3.org" style="flex-shrink: 0;">
+          <circle cx="50" cy="50" r="46" stroke="#FFFFFF" stroke-width="5"/>
+          <polygon points="50,6 11,73 89,73" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round"/>
+          <rect x="28" y="34" width="44" height="39" stroke="#FFFFFF" stroke-width="4.5"/>
+          <circle cx="50" cy="53.5" r="19" stroke="#10B981" stroke-width="4.5"/>
+        </svg>
+        <div>
+          <div class="brand-sub">Alchemy Productions</div>
+          <div class="brand-title">Alchemy Writing Studio</div>
+        </div>
       </div>
       <span class="badge" id="streakBadge">🔥 0 Day Streak</span>
     </div>
@@ -1251,6 +1307,13 @@
     renderBinder();
     renderCompletedBooks();
     renderGuild();
+          // Fade out splash screen smoothly after load
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        const splash = document.getElementById("splashScreen");
+        if (splash) splash.classList.add("fade-out");
+      }, 1400);
+    });
   </script>
 </body>
 </html>
