@@ -300,7 +300,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     }
 
-    .sticky-note textarea {
+      .sticky-note textarea {
       width: 100%;
       min-height: 85px;
       background: transparent;
@@ -313,7 +313,97 @@
       outline: none;
     }
 
-    <body>
+    .todo-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--cream-border);
+      font-size: 0.92rem;
+    }
+
+    .todo-row:last-child { border-bottom: none; }
+
+    .tome-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .tome-cover {
+      width: 82px;
+      height: 120px;
+      border-radius: 8px;
+      background: linear-gradient(145deg, #132A20, #0B0D0C);
+      border: 1px solid var(--emerald-dark);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8px;
+      font-family: 'Lora', Georgia, serif;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--emerald);
+    }
+
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 13, 12, 0.96);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: center;
+      z-index: 30;
+    }
+
+    body.cream-mode nav.bottom-nav {
+      background: rgba(244, 241, 234, 0.97);
+      border-top-color: var(--cream-border);
+    }
+
+    .nav-inner {
+      width: 100%;
+      max-width: 720px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 13px 8px;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-weight: 600;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    body.cream-mode .nav-btn { color: var(--cream-muted); }
+
+    .nav-btn.active {
+      color: var(--emerald);
+      border-top: 2px solid var(--emerald);
+    }
+
+    body.cream-mode .nav-btn.active {
+      color: var(--emerald-dark);
+      border-top-color: var(--emerald-dark);
+    }
+  </style>
+</head>
+<body>
 
   <header>
     <div class="header-inner">
