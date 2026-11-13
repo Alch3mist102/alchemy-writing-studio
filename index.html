@@ -439,6 +439,36 @@
       from { transform: scale(0.98); filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.18)); }
       to { transform: scale(1.02); filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.42)); }
     }
+    /* Mini Grammar Textbook Cover & Pages */
+    .textbook-cover {
+      background: linear-gradient(145deg, #0E231A 0%, #121614 100%);
+      border: 2px solid var(--emerald);
+      border-radius: 14px;
+      padding: 26px 22px;
+      text-align: center;
+      margin-bottom: 18px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .textbook-cover-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text-white);
+      margin: 6px 0;
+    }
+
+    .chapter-heading {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: var(--emerald);
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 6px;
+      margin: 18px 0 10px 0;
+    }
 
   </style>
 </head>
@@ -541,41 +571,56 @@
           <textarea id="goalStickyInput" placeholder="Pin your current word-count goal, deadline, or story focus here..."></textarea>
         </div>
 
-        <div class="card">
-          <span class="section-label">Writing To-Do Checklist</span>
-          <div style="display:flex; gap:8px; margin-bottom:12px;">
-            <input type="text" class="search-input" id="todoInput" placeholder="Add a revision task or chapter goal..." style="margin-bottom:0;" onkeypress="if(event.key==='Enter') addTodoItem()" />
-            <button class="btn-primary" onclick="addTodoItem()">Add</button>
+                <!-- CLOSED TEXTBOOK COVER -->
+        <div id="grammarBookClosed" class="textbook-cover" onclick="toggleGrammarBook(true)">
+          <span class="category-pill" style="margin-bottom: 6px;">Alchemy Desk Reference</span>
+          <div class="textbook-cover-title">Grammar</div>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 14px;">
+            Spelled with two <strong>m</strong>'s and an <strong>a</strong>—never <em>"gammer."</em><br>
+            Opens to the Top 100 Misspelled Words &amp; Complete High-School Mechanics.
+          </p>
+          <span class="btn-primary">📖 Open Textbook</span>
+        </div>
+
+        <!-- OPEN TEXTBOOK INTERIOR -->
+        <div id="grammarBookOpen" class="card card-emerald" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px;">
+            <span class="section-label" style="margin-bottom: 0;">Alchemy Desk Reference • Grammar</span>
+            <button class="btn-secondary" style="padding: 5px 10px; font-size: 0.78rem;" onclick="toggleGrammarBook(false)">✕ Close Book</button>
           </div>
-          <div id="todoListContainer"></div>
-        </div>
 
-        <div class="card card-emerald">
-          <span class="category-pill" style="margin-bottom:8px;">Word of the Day</span>
-          <h2 class="tip-headline" style="font-size:1.35rem; margin-bottom:4px;" id="wotdWord">Loading...</h2>
-          <div style="font-size:0.84rem; color:var(--emerald-dark); font-style:italic; margin-bottom:8px;" id="wotdPos"></div>
-          <p style="font-size:0.95rem; margin-bottom:8px;" id="wotdDef"></p>
-          <div class="craft-quote" style="margin-bottom:0; font-size:0.9rem;" id="wotdExample"></div>
-        </div>
+          <h2 class="tip-headline" style="font-size: 1.45rem; margin-bottom: 6px;">Grammar: A Concise Handbook</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 14px;">
+            Master spelling, punctuation, and sentence architecture from the ground up.
+          </p>
 
-        <div class="card">
-          <span class="section-label">Essential Comma &amp; Grammar Rules</span>
-          <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:10px;">
-            <div><strong style="color:var(--emerald-dark);">1. Oxford (Serial) Comma:</strong> Place a comma before <em>and/or</em> in lists of three or more items (<em>"ghosts, ghouls, and shadows"</em>).</div>
-            <div><strong style="color:var(--emerald-dark);">2. FANBOYS + Complete Sentences:</strong> Use a comma before <em>for, and, nor, but, or, yet, so</em> only when joining two independent clauses.</div>
-            <div><strong style="color:var(--emerald-dark);">3. Introductory Clauses:</strong> Put a comma after an opening dependent phrase (<em>"When the lantern flickered, she froze."</em>).</div>
-            <div><strong style="color:var(--emerald-dark);">4. Nonessential Details:</strong> Wrap removable descriptions in commas (<em>"The relic, forged in bog-iron, hummed."</em>).</div>
-            <div><strong style="color:var(--emerald-dark);">5. Dialogue Tags vs. Action Beats:</strong> Use a comma for speech tags (<em>"Run," he whispered.</em>) and a period for action beats (<em>"Run." He drew his blade.</em>).</div>
-            <div><strong style="color:var(--emerald-dark);">6. Semicolons (;):</strong> Link two closely related complete sentences without a conjunction.</div>
+          <!-- CHAPTER I: TOP 100 MOST MISSPELLED WORDS -->
+          <div class="chapter-heading">Chapter I: Top 100 Most Misspelled Words</div>
+          <input type="text" class="search-input" id="spellSearch" placeholder="Search 100 tricky words (e.g., grammar, separate, definitely)..." oninput="renderMisspelled()" />
+          <div id="misspelledList" style="display:flex; flex-wrap:wrap; gap:7px; max-height:220px; overflow-y:auto; margin-bottom: 16px;"></div>
+
+          <!-- CHAPTER II: PUNCTUATION & BOUNDARIES -->
+          <div class="chapter-heading">Chapter II: Punctuation &amp; Sentence Boundaries</div>
+          <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:10px; color:#E5ECE8;">
+            <div><strong style="color:var(--emerald);">1. Oxford (Serial) Comma:</strong> Place a comma before <em>and/or</em> in lists of three or more items (<em>"ghosts, ghouls, and shadows"</em>).</div>
+            <div><strong style="color:var(--emerald);">2. FANBOYS + Complete Sentences:</strong> Use a comma before <em>for, and, nor, but, or, yet, so</em> only when joining two independent clauses.</div>
+            <div><strong style="color:var(--emerald);">3. Comma Splices &amp; Run-Ons:</strong> Never join two complete sentences with only a comma (<em>"The door slammed, she ran"</em>). Fix with a period, a semicolon, or a comma + FANBOYS.</div>
+            <div><strong style="color:var(--emerald);">4. Introductory Clauses:</strong> Put a comma after an opening dependent phrase (<em>"When the lantern flickered, she froze."</em>).</div>
+            <div><strong style="color:var(--emerald);">5. Nonessential Appositives:</strong> Wrap removable extra details in commas (<em>"The relic, forged in bog-iron, hummed."</em>).</div>
+            <div><strong style="color:var(--emerald);">6. Dialogue Tags vs. Action Beats:</strong> Use a comma for speech tags (<em>"Run," he whispered.</em>) and a period for action beats (<em>"Run." He drew his blade.</em>).</div>
+            <div><strong style="color:var(--emerald);">7. Semicolons (;) &amp; Colons (:):</strong> Semicolons link two closely related complete sentences; colons follow a complete sentence to introduce a list, quote, or explanation.</div>
+          </div>
+
+          <!-- CHAPTER III: AGREEMENT, MODIFIERS & STRUCTURE -->
+          <div class="chapter-heading">Chapter III: Agreement, Modifiers &amp; Structure</div>
+          <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:10px; color:#E5ECE8;">
+            <div><strong style="color:var(--emerald);">8. Subject-Verb Agreement:</strong> Match the verb to the true subject, ignoring prepositional phrases in between (<em>"The chest of ancient coins <strong>is</strong> heavy,"</em> not <em>"are"</em>).</div>
+            <div><strong style="color:var(--emerald);">9. Pronoun Case &amp; Agreement:</strong> Use subject pronouns (<em>I, he, she, we, they, who</em>) for actors and object pronouns (<em>me, him, her, us, them, whom</em>) after verbs or prepositions (<em>"between you and <strong>me</strong>"</em>).</div>
+            <div><strong style="color:var(--emerald);">10. Dangling &amp; Misplaced Modifiers:</strong> Place descriptive phrases directly beside the noun they modify (<em>"Covered in dust, <strong>the tome</strong> sat on the desk,"</em> not <em>"Covered in dust, <strong>he</strong> found the tome"</em>).</div>
+            <div><strong style="color:var(--emerald);">11. Parallel Structure (Parallelism):</strong> Keep items in lists or comparisons in the same grammatical form (<em>"She loved <strong>reading</strong> lore, <strong>brewing</strong> tonics, and <strong>exploring</strong> ruins"</em>).</div>
+            <div><strong style="color:var(--emerald);">12. Apostrophes &amp; Homophones:</strong> Use apostrophes for contractions (<em>it's</em> = it is) and possession (<em>the guild's seal</em> / <em>the writers' desks</em>)—never for simple plurals.</div>
           </div>
         </div>
-
-        <div class="card">
-          <span class="section-label">Top 100 Most Misspelled Words</span>
-          <input type="text" class="search-input" id="spellSearch" placeholder="Search 100 tricky words (e.g., separate, definitely, eerie)..." oninput="renderMisspelled()" />
-          <div id="misspelledList" style="display:flex; flex-wrap:wrap; gap:7px; max-height:240px; overflow-y:auto;"></div>
-        </div>
-      </div>
 
         <!-- SUB-VIEW B: THE BINDER -->
       <div id="ws-view-binder" style="display:none;">
@@ -784,7 +829,7 @@
       "bizarre", "boundary", "bureaucracy", "business", "calendar",
       "camouflage", "cemetery", "changeable", "chauffeur", "colleague",
       "column", "coming", "committed", "conscience", "conscious",
-      "consensus", "controversy", "daiquiri", "deceive", "definitely",
+      "consensus", "controversy", "grammar", "deceive", "definitely",
       "desperate", "develop", "dilemma", "disappear", "disappoint",
       "discipline", "drunkenness", "dumbbell", "eerie", "embarrass",
       "environment", "equipment", "exaggerate", "exceed", "existence",
@@ -1320,6 +1365,11 @@
     renderAlmanac();
     renderTodos();
     renderWordOfTheDay();
+     function toggleGrammarBook(open) {
+      document.getElementById("grammarBookClosed").style.display = open ? "none" : "block";
+      document.getElementById("grammarBookOpen").style.display = open ? "block" : "none";
+      if (open) renderMisspelled();
+    }
     renderMisspelled();
     renderBinder();
     renderCompletedBooks();
