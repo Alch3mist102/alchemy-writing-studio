@@ -1410,13 +1410,14 @@
     renderBinder();
     renderCompletedBooks();
     renderGuild();
-          // Fade out splash screen smoothly after load
-    window.addEventListener("load", () => {
+             // Fade out splash screen reliably after 1.4 seconds (or on tap)
+    const splashEl = document.getElementById("splashScreen");
+    if (splashEl) {
+      splashEl.onclick = () => splashEl.classList.add("fade-out");
       setTimeout(() => {
-        const splash = document.getElementById("splashScreen");
-        if (splash) splash.classList.add("fade-out");
+        splashEl.classList.add("fade-out");
       }, 1400);
-    });
+    }
   </script>
 </body>
 </html>
