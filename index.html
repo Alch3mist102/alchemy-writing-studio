@@ -1,38 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0B0D0C" />
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js");
-    }
-  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0B0D0C" />
   <title>Alchemy Writing Studio | Alchemy Productions</title>
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
-<style>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://googleapis.com" />
+  <link rel="preconnect" href="https://gstatic.com" crossorigin />
+  <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    }
+  </script>
+  <style>
     :root {
       --bg-obsidian: #0B0D0C;
       --bg-card: #121614;
-      --bg-elevated: #181E1B;
-      --border-subtle: #232D28;
+      --bg-elevated: #171D1A;
+      --bg-input: #0E1210;
+      --border-subtle: #222B26;
+      --border-strong: #2E3B34;
       --emerald: #10B981;
       --emerald-dark: #047857;
-      --emerald-glow: rgba(16, 185, 129, 0.14);
-      --text-white: #FFFFFF;
-      --text-muted: #A1B0A8;
-      --text-dim: #6B7A72;
-      /* Unified Dark Workshop Palette */
-      --cream-bg: #0B0D0C;
-      --cream-card: #121614;
-      --cream-elevated: #181E1B;
-      --cream-border: #232D28;
-      --cream-ink: #FFFFFF;
-      --cream-muted: #A1B0A8;
+      --emerald-glow: rgba(16, 185, 129, 0.12);
+      --text-white: #F8FAF9;
+      --text-body: #DCE5E0;
+      --text-muted: #96A69E;
+      --text-dim: #63736B;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,29 +41,21 @@
       color: var(--text-white);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       line-height: 1.65;
-      padding-bottom: 92px;
-      transition: background-color 0.25s ease, color 0.25s ease;
+      padding-bottom: 96px;
+      -webkit-font-smoothing: antialiased;
     }
 
-    body.cream-mode {
-      background-color: var(--cream-bg);
-      color: var(--cream-ink);
-    }
-
+    /* Header */
     header {
       position: sticky;
       top: 0;
-      z-index: 20;
-      background: rgba(11, 13, 12, 0.94);
+      z-index: 25;
+      background: rgba(11, 13, 12, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-subtle);
       padding: 14px 20px;
     }
-
-    body.cream-mode header {
-      background: rgba(244, 241, 234, 0.95);
-      border-bottom-color: var(--cream-border);
-    }
-
     .header-inner {
       max-width: 720px;
       margin: 0 auto;
@@ -73,280 +64,345 @@
       align-items: center;
       gap: 12px;
     }
-
     .brand-title {
       font-family: 'Lora', Georgia, serif;
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       font-weight: 700;
+      letter-spacing: -0.01em;
     }
-
     .brand-sub {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--emerald);
       text-transform: uppercase;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.12em;
       font-weight: 700;
     }
-
-    body.cream-mode .brand-sub { color: var(--emerald-dark); }
-
     .badge {
       background: var(--emerald-glow);
-      border: 1px solid var(--emerald-dark);
+      border: 1px solid rgba(16, 185, 129, 0.35);
       color: var(--emerald);
-      padding: 5px 11px;
+      padding: 5px 12px;
       border-radius: 999px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
 
-    body.cream-mode .badge {
-      background: rgba(4, 120, 87, 0.1);
-      color: var(--emerald-dark);
-    }
-
+    /* Main Layout */
     .app-container {
       max-width: 720px;
       margin: 0 auto;
-      padding: 22px 18px;
+      padding: 24px 18px;
+    }
+    .tab-section { display: none; animation: fadeIn 0.2s ease; }
+    .tab-section.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .tab-section { display: none; }
-    .tab-section.active { display: block; }
+    /* Page Headers & Segmented Controls */
+    .page-header {
+      margin-bottom: 18px;
+    }
+    .page-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-top: 2px;
+    }
+    .page-subtitle {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
 
+    .segmented-bar {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    .seg-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 9px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .seg-btn:hover { color: var(--text-white); }
+    .seg-btn.active {
+      background: var(--bg-elevated);
+      color: var(--emerald);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+    }
+
+    /* Cards & Typography */
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 14px;
+      border-radius: var(--radius-lg);
       padding: 22px;
       margin-bottom: 18px;
     }
-
-    .card-emerald { border-color: rgba(16, 185, 129, 0.35); }
-
-    body.cream-mode .card {
-      background: var(--cream-card);
-      border-color: var(--cream-border);
-      box-shadow: 0 2px 8px rgba(22, 26, 24, 0.04);
+    .card-accent {
+      border-color: rgba(16, 185, 129, 0.32);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.04) 0%, var(--bg-card) 100%);
     }
-
-    body.cream-mode .card-emerald { border-color: var(--emerald-dark); }
-
+    .section-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--emerald);
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: block;
+    }
     .category-pill {
       display: inline-block;
       background: var(--emerald-glow);
       color: var(--emerald);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      font-size: 0.74rem;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      font-size: 0.7rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      padding: 4px 12px;
+      padding: 4px 11px;
       border-radius: 999px;
       margin-bottom: 12px;
     }
-
-    body.cream-mode .category-pill {
-      background: rgba(4, 120, 87, 0.1);
-      color: var(--emerald-dark);
-      border-color: rgba(4, 120, 87, 0.3);
-    }
-
     h1.tip-headline {
       font-family: 'Lora', Georgia, serif;
-      font-size: 1.55rem;
-      line-height: 1.3;
+      font-size: 1.48rem;
+      line-height: 1.32;
       font-weight: 700;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
-
-    .section-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--emerald);
-      font-weight: 700;
-      margin-bottom: 10px;
-      display: block;
-    }
-
-    body.cream-mode .section-label { color: var(--emerald-dark); }
-
     .deep-dive-text p {
-      color: #E5ECE8;
-      font-size: 0.97rem;
+      color: var(--text-body);
+      font-size: 0.95rem;
       margin-bottom: 14px;
     }
-
+    .deep-dive-text p:last-child { margin-bottom: 0; }
     .craft-quote {
       border-left: 3px solid var(--emerald);
-      padding-left: 14px;
-      margin: 14px 0;
+      padding: 4px 0 4px 14px;
+      margin: 16px 0 4px 0;
       color: var(--text-muted);
       font-style: italic;
       font-family: 'Lora', Georgia, serif;
-    }
-
-    body.cream-mode .craft-quote {
-      border-left-color: var(--emerald-dark);
-      color: var(--cream-muted);
-    }
-
-    .prompt-box {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 16px;
       font-size: 0.96rem;
     }
 
+    /* Sprint Box & Timer */
+    .prompt-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 15px 16px;
+      margin-bottom: 16px;
+      font-size: 0.93rem;
+      color: var(--text-body);
+    }
     .timer-row {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
       margin-bottom: 14px;
     }
-
     .timer-display {
       font-family: 'Lora', Georgia, serif;
-      font-size: 2rem;
+      font-size: 1.75rem;
       font-weight: 700;
       color: var(--emerald);
+      letter-spacing: 0.03em;
     }
 
+    /* Buttons & Inputs */
     .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
-
     button, .btn-link {
       cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      border-radius: 8px;
-      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      padding: 9px 14px;
       border: 1px solid transparent;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+      transition: opacity 0.15s ease, transform 0.1s ease, border-color 0.15s ease;
     }
-
+    button:active, .btn-link:active { transform: scale(0.98); }
     .btn-primary {
       background: var(--emerald);
-      color: #05140E;
+      color: #04130D;
       font-weight: 700;
     }
-
-    body.cream-mode .btn-primary {
-      background: var(--emerald-dark);
-      color: #FFFFFF;
-    }
-
+    .btn-primary:hover { opacity: 0.92; }
     .btn-secondary {
       background: var(--bg-elevated);
       color: var(--text-white);
+      border-color: var(--border-strong);
+    }
+    .btn-secondary:hover { border-color: var(--emerald); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
       border-color: var(--border-subtle);
+      padding: 6px 10px;
+      font-size: 0.78rem;
     }
+    .btn-ghost:hover { color: var(--text-white); border-color: var(--border-strong); }
+    .btn-full { width: 100%; padding: 12px; font-size: 0.9rem; }
 
-    body.cream-mode .btn-secondary {
-      background: var(--cream-elevated);
-      color: var(--cream-ink);
-      border-color: var(--cream-border);
-    }
-
-    .btn-full { width: 100%; padding: 12px; font-size: 0.92rem; }
-
-    .sprint-pad, .search-input {
+    .field-input, .sprint-pad {
       width: 100%;
-      background: var(--bg-obsidian);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      padding: 11px 13px;
       color: var(--text-white);
       font-family: 'Inter', sans-serif;
-      font-size: 0.94rem;
+      font-size: 0.92rem;
       margin-bottom: 12px;
+      transition: border-color 0.15s ease;
     }
-
+    .field-input:focus, .sprint-pad:focus {
+      outline: none;
+      border-color: var(--emerald);
+    }
     .sprint-pad {
       font-family: 'Lora', Georgia, serif;
-      line-height: 1.6;
+      line-height: 1.65;
       resize: vertical;
     }
 
-    body.cream-mode .sprint-pad,
-    body.cream-mode .search-input {
-      background: #FFFFFF;
-      border-color: var(--cream-border);
-      color: var(--cream-ink);
-    }
-
-    .almanac-item {
+    /* Almanac & List Items */
+    .list-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      padding: 15px 17px;
       margin-bottom: 10px;
-      cursor: pointer;
+      transition: border-color 0.15s ease;
     }
+    .list-card.clickable { cursor: pointer; }
+    .list-card.clickable:hover { border-color: var(--emerald); }
 
-    .almanac-item:hover { border-color: var(--emerald); }
-
-    /* Sticky Note & Desk Grid */
-       .sticky-note {
-      background: linear-gradient(145deg, #0F231B 0%, #121614 100%);
-      color: #FFFFFF;
-      border: 1px solid var(--emerald);
-      border-radius: 12px;
-      padding: 16px;
+    /* Sticky Note & Checklist */
+    .sticky-note {
+      background: linear-gradient(145deg, #0E2219 0%, #121614 100%);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: var(--radius-lg);
+      padding: 18px;
       margin-bottom: 18px;
-      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.08);
     }
-
     .sticky-note textarea {
       width: 100%;
-      min-height: 85px;
+      min-height: 76px;
       background: transparent;
       border: none;
-      color: #FFFFFF;
+      color: var(--text-white);
       font-family: 'Lora', Georgia, serif;
-      font-size: 0.96rem;
-      line-height: 1.5;
+      font-size: 0.98rem;
+      line-height: 1.55;
       resize: vertical;
       outline: none;
     }
-
     .todo-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--cream-border);
-      font-size: 0.92rem;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.9rem;
     }
+    .todo-row:last-child { border-bottom: none; padding-bottom: 0; }
 
-    .todo-row:last-child { border-bottom: none; }
+    /* Story Bible Badges */
+    .meta-pill {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+         /* Story Bible Badges */
+    .meta-pill {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--emerald);
+    }
+    .textbook-cover {
+      background: linear-gradient(145deg, #0E2219 0%, #121614 100%);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      border-radius: var(--radius-lg);
+      padding: 28px 22px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .textbook-cover-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin: 6px 0;
+    }
+    .chapter-heading {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--emerald);
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 6px;
+      margin: 20px 0 12px 0;
+    }
 
     .tome-card {
       background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 16px;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 22px;
       display: flex;
-      gap: 16px;
+      gap: 18px;
       align-items: flex-start;
     }
-
     .tome-cover {
-      width: 82px;
-      height: 120px;
-      border-radius: 8px;
+      width: 88px;
+      height: 130px;
+      border-radius: var(--radius-sm);
       background: linear-gradient(145deg, #132A20, #0B0D0C);
       border: 1px solid var(--emerald-dark);
       flex-shrink: 0;
@@ -354,11 +410,12 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 8px;
+      padding: 10px;
       font-family: 'Lora', Georgia, serif;
       font-size: 0.74rem;
       font-weight: 700;
       color: var(--emerald);
+      letter-spacing: 0.04em;
     }
 
     nav.bottom-nav {
@@ -366,49 +423,38 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(11, 13, 12, 0.96);
+      background: rgba(11, 13, 12, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-top: 1px solid var(--border-subtle);
       display: flex;
       justify-content: center;
       z-index: 30;
     }
-
-    body.cream-mode nav.bottom-nav {
-      background: rgba(244, 241, 234, 0.97);
-      border-top-color: var(--cream-border);
-    }
-
     .nav-inner {
       width: 100%;
       max-width: 720px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
     }
-
     .nav-btn {
       background: transparent;
       border: none;
+      border-top: 2px solid transparent;
       border-radius: 0;
-      padding: 13px 8px;
+      padding: 11px 8px;
       color: var(--text-dim);
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 600;
       flex-direction: column;
       gap: 4px;
     }
-
-    body.cream-mode .nav-btn { color: var(--cream-muted); }
-
+    .nav-btn svg { width: 19px; height: 19px; stroke: currentColor; }
     .nav-btn.active {
       color: var(--emerald);
-      border-top: 2px solid var(--emerald);
+      border-top-color: var(--emerald);
     }
 
-    body.cream-mode .nav-btn.active {
-      color: var(--emerald-dark);
-      border-top-color: var(--emerald-dark);
-    }
-        /* Splash Screen */
     #splashScreen {
       position: fixed;
       inset: 0;
@@ -419,71 +465,35 @@
       align-items: center;
       justify-content: center;
       gap: 18px;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+      animation: splashBackupFade 0.5s ease 2.2s forwards;
     }
-
     #splashScreen.fade-out {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
-
+    @keyframes splashBackupFade {
+      to { opacity: 0; visibility: hidden; pointer-events: none; }
+    }
     .splash-emblem {
-      width: 112px;
-      height: 112px;
+      width: 108px;
+      height: 108px;
       filter: drop-shadow(0 0 18px rgba(16, 185, 129, 0.25));
-      animation: pulseGlow 1.6s ease-in-out infinite alternate;
     }
-
-    @keyframes pulseGlow {
-      from { transform: scale(0.98); filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.18)); }
-      to { transform: scale(1.02); filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.42)); }
-    }
-    /* Mini Grammar Textbook Cover & Pages */
-    .textbook-cover {
-      background: linear-gradient(145deg, #0E231A 0%, #121614 100%);
-      border: 2px solid var(--emerald);
-      border-radius: 14px;
-      padding: 26px 22px;
-      text-align: center;
-      margin-bottom: 18px;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-    }
-
-    .textbook-cover-title {
-      font-family: 'Lora', Georgia, serif;
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: var(--text-white);
-      margin: 6px 0;
-    }
-
-    .chapter-heading {
-      font-family: 'Lora', Georgia, serif;
-      font-size: 1.12rem;
-      font-weight: 700;
-      color: var(--emerald);
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 6px;
-      margin: 18px 0 10px 0;
-    }
-
   </style>
 </head>
-<body>
+    <body>
 
-  <!-- LAUNCH SPLASH SCREEN -->
   <div id="splashScreen">
     <svg class="splash-emblem" viewBox="0 0 100 100" fill="none" xmlns="http://w3.org">
-      <circle cx="50" cy="50" r="46" stroke="#FFFFFF" stroke-width="4.5"/>
-      <polygon points="50,6 11,73 89,73" stroke="#FFFFFF" stroke-width="4.5" stroke-linejoin="round"/>
-      <rect x="28" y="34" width="44" height="39" stroke="#FFFFFF" stroke-width="4.2"/>
-      <circle cx="50" cy="53.5" r="19" stroke="#10B981" stroke-width="4.2"/>
+      <circle cx="50" cy="50" r="46" stroke="#FFFFFF" stroke-width="4.5" />
+      <polygon points="50,6 11,73 89,73" stroke="#FFFFFF" stroke-width="4.5" stroke-linejoin="round" />
+      <rect x="28" y="34" width="44" height="39" stroke="#FFFFFF" stroke-width="4.2" />
+      <circle cx="50" cy="53.5" r="19" stroke="#10B981" stroke-width="4.2" />
     </svg>
     <div style="text-align: center;">
-      <div class="brand-sub" style="font-size: 0.78rem; margin-bottom: 4px;">Alchemy Productions</div>
+      <div class="brand-sub" style="font-size: 0.75rem; margin-bottom: 4px;">Alchemy Productions</div>
       <div class="brand-title" style="font-size: 1.45rem;">Alchemy Writing Studio</div>
     </div>
   </div>
@@ -492,209 +502,275 @@
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 11px;">
         <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://w3.org" style="flex-shrink: 0;">
-          <circle cx="50" cy="50" r="46" stroke="#FFFFFF" stroke-width="5"/>
-          <polygon points="50,6 11,73 89,73" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round"/>
-          <rect x="28" y="34" width="44" height="39" stroke="#FFFFFF" stroke-width="4.5"/>
-          <circle cx="50" cy="53.5" r="19" stroke="#10B981" stroke-width="4.5"/>
+          <circle cx="50" cy="50" r="46" stroke="#FFFFFF" stroke-width="5" />
+          <polygon points="50,6 11,73 89,73" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" />
+          <rect x="28" y="34" width="44" height="39" stroke="#FFFFFF" stroke-width="4.5" />
+          <circle cx="50" cy="53.5" r="19" stroke="#10B981" stroke-width="4.5" />
         </svg>
         <div>
           <div class="brand-sub">Alchemy Productions</div>
           <div class="brand-title">Alchemy Writing Studio</div>
         </div>
       </div>
-      <span class="badge" id="streakBadge">🔥 0 Day Streak</span>
+      <span class="badge" id="streakBadge">0 Day Streak</span>
     </div>
   </header>
 
   <div class="app-container">
 
-    <!-- TAB 1: DAILY TIP + 15-MIN CHALLENGE + ALMANAC OF PREVIOUS TIPS -->
     <section id="tab-daily" class="tab-section active">
-      <div class="card card-emerald">
-                <span class="category-pill" id="todayCategory">Literary Craft</span>
-        <h1 class="tip-headline" id="todayHeadline">Loading Tip...</h1>
-        <span class="section-label">English-Major Deep-Dive</span>
-        <div class="deep-dive-text" id="todayDeepDive"></div>
+      <div class="segmented-bar">
+        <button class="seg-btn active" id="daily-seg-today" onclick="switchDailyView('today')">Today's Craft</button>
+        <button class="seg-btn" id="daily-seg-almanac" onclick="switchDailyView('almanac')">The Almanac</button>
       </div>
 
-      <div class="card">
-        <span class="section-label">Daily Challenge • 15-Minute Sprint</span>
-        <div class="prompt-box" id="todayPrompt"></div>
+      <div id="daily-view-today">
+        <div class="card card-accent">
+          <span class="category-pill" id="todayCategory">Literary Craft</span>
+          <h1 class="tip-headline" id="todayHeadline">Loading Tip...</h1>
+          <span class="section-label">Craft Deep-Dive</span>
+          <div class="deep-dive-text" id="todayDeepDive"></div>
+        </div>
 
-        <div class="timer-row">
-          <div class="timer-display" id="timerDisplay">15:00</div>
-          <div class="btn-group">
-            <button class="btn-primary" onclick="startTimer()">Start</button>
-            <button class="btn-secondary" onclick="pauseTimer()">Pause</button>
-            <button class="btn-secondary" onclick="resetTimer()">Reset</button>
+        <div class="card">
+          <span class="section-label">15-Minute Writing Sprint</span>
+          <div class="prompt-box" id="todayPrompt"></div>
+          <div class="timer-row">
+            <div class="timer-display" id="timerDisplay">15:00</div>
+            <div class="btn-group">
+              <button class="btn-primary" onclick="startTimer()">Start</button>
+              <button class="btn-secondary" onclick="pauseTimer()">Pause</button>
+              <button class="btn-ghost" onclick="resetTimer()">Reset</button>
+            </div>
+          </div>
+          <textarea class="sprint-pad" id="sprintNotes" style="min-height: 150px;" placeholder="Draft your 15-minute sprint right here..."></textarea>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="btn-secondary" id="uploadSprintBtn" onclick="uploadSprintToBinder()">Save to Binder</button>
+            <button class="btn-primary" id="completeChallengeBtn" onclick="completeDailyChallenge()">Complete Challenge</button>
           </div>
         </div>
-
-        <textarea class="sprint-pad" id="sprintNotes" style="min-height:140px;" placeholder="Draft your 15-minute challenge right here..."></textarea>
-
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-          <button class="btn-secondary" id="uploadSprintBtn" onclick="uploadSprintToBinder()">🗂️ Upload to Binder</button>
-          <button class="btn-primary" id="completeChallengeBtn" onclick="completeDailyChallenge()">✓ Complete &amp; Next Tip</button>
-        </div>
       </div>
 
-      <div style="margin-top: 26px;">
-        <span class="section-label">The Almanac</span>
-        <h2 class="tip-headline" style="font-size: 1.3rem;">Previously Studied Tips</h2>
-        <input type="text" class="search-input" id="almanacSearch" placeholder="Search your studied tips by keyword or category..." oninput="renderAlmanac()" />
+      <div id="daily-view-almanac" style="display: none;">
+        <div class="page-header">
+          <span class="section-label">Archive</span>
+          <h2 class="page-title">The Almanac</h2>
+          <p class="page-subtitle">Review any literary craft lesson you have studied so far.</p>
+        </div>
+        <input type="text" class="field-input" id="almanacSearch" placeholder="Search studied tips by title or category..." oninput="renderAlmanac()" />
         <div id="almanacList"></div>
       </div>
     </section>
-
-    <!-- TAB 2: CREAM-TONED WORKSHOP -->
     <section id="tab-workshop" class="tab-section">
-      <div style="margin-bottom: 14px;">
-        <span class="section-label">Daylight Study Desk</span>
-        <h1 class="tip-headline" style="font-size: 1.45rem; margin-bottom: 12px;">The Workshop</h1>
-
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px;">
-          <button class="btn-primary" id="ws-nav-desk" onclick="switchWorkshopView('desk')">📖 Desk &amp; Craft</button>
-          <button class="btn-secondary" id="ws-nav-binder" onclick="switchWorkshopView('binder')">🗂️ Binder</button>
-          <button class="btn-secondary" id="ws-nav-books" onclick="switchWorkshopView('books')">📚 Book Log</button>
-        </div>
+      <div class="page-header">
+        <span class="section-label">Author's Workspace</span>
+        <h1 class="page-title">The Workshop</h1>
       </div>
 
-      <!-- SUB-VIEW A: DESK & CRAFT REFERENCE -->
+      <div class="segmented-bar">
+        <button class="seg-btn active" id="ws-nav-desk" onclick="switchWorkshopView('desk')">Desk</button>
+        <button class="seg-btn" id="ws-nav-bible" onclick="switchWorkshopView('bible')">Story Bible</button>
+        <button class="seg-btn" id="ws-nav-binder" onclick="switchWorkshopView('binder')">Binder</button>
+        <button class="seg-btn" id="ws-nav-ref" onclick="switchWorkshopView('ref')">Reference</button>
+      </div>
+
       <div id="ws-view-desk">
-               <div class="sticky-note">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--emerald);">📌 Current Writing Goal</span>
-            <span style="font-size:0.74rem; color:var(--emerald);" id="stickyStatus">Saved</span>
+        <div class="sticky-note">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span class="section-label" style="margin-bottom: 0;">Current Manuscript Focus</span>
+            <span style="font-size: 0.74rem; color: var(--emerald); font-weight: 600;" id="stickyStatus">Saved</span>
           </div>
-          <textarea id="goalStickyInput" placeholder="Pin your current word-count goal, deadline, or story focus here..."></textarea>
+          <textarea id="goalStickyInput" placeholder="Pin your word-count target, deadline, or chapter goal here..."></textarea>
         </div>
-        <!-- WRITING TO-DO CHECKLIST -->
+
         <div class="card">
-          <span class="section-label">Writing To-Do Checklist</span>
-          <div style="display:flex; gap:8px; margin-bottom:12px;">
-            <input type="text" class="search-input" id="todoInput" placeholder="Add a revision task or chapter goal..." style="margin-bottom:0;" onkeypress="if(event.key==='Enter') addTodoItem()" />
+          <span class="section-label">Revision & Drafting Checklist</span>
+          <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+            <input type="text" class="field-input" id="todoInput" placeholder="Add a scene goal or revision task..." style="margin-bottom: 0;" onkeypress="if(event.key==='Enter') addTodoItem()" />
             <button class="btn-primary" onclick="addTodoItem()">Add</button>
           </div>
           <div id="todoListContainer"></div>
         </div>
+      </div>
 
-        <!-- WORD OF THE DAY -->
-        <div class="card card-emerald">
-          <span class="category-pill" style="margin-bottom:8px;">Word of the Day</span>
-          <h2 class="tip-headline" style="font-size:1.35rem; margin-bottom:4px;" id="wotdWord">Loading...</h2>
-          <div style="font-size:0.84rem; color:var(--emerald); font-style:italic; margin-bottom:8px;" id="wotdPos"></div>
-          <p style="font-size:0.95rem; margin-bottom:8px; color:#E5ECE8;" id="wotdDef"></p>
-          <div class="craft-quote" style="margin-bottom:0; font-size:0.9rem;" id="wotdExample"></div>
-        </div>
-                <!-- CLOSED TEXTBOOK COVER -->
-        <div id="grammarBookClosed" class="textbook-cover" onclick="toggleGrammarBook(true)">
-          <span class="category-pill" style="margin-bottom: 6px;">Alchemy Desk Reference</span>
-          <div class="textbook-cover-title">Grammar</div>
-          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 14px;">
-            Spelled with two <strong>m</strong>'s and an <strong>a</strong>—never <em>"gammer."</em><br>
-            Opens to the Top 100 Misspelled Words &amp; Complete High-School Mechanics.
-          </p>
-          <span class="btn-primary">📖 Open Textbook</span>
+      <div id="ws-view-bible" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+          <div class="btn-group">
+            <button class="btn-primary" id="bible-sub-chars" onclick="switchBibleSub('characters')">Characters</button>
+            <button class="btn-secondary" id="bible-sub-scenes" onclick="switchBibleSub('scenes')">Scenes</button>
+          </div>
+          <button class="btn-ghost" onclick="exportStoryBible()">Export .TXT</button>
         </div>
 
-        <!-- OPEN TEXTBOOK INTERIOR -->
-        <div id="grammarBookOpen" class="card card-emerald" style="display: none;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px;">
-            <span class="section-label" style="margin-bottom: 0;">Alchemy Desk Reference • Grammar</span>
-            <button class="btn-secondary" style="padding: 5px 10px; font-size: 0.78rem;" onclick="toggleGrammarBook(false)">✕ Close Book</button>
+        <div id="bible-panel-characters">
+          <div class="card card-accent">
+            <span class="section-label" id="charFormTitle">Add Character</span>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <input type="text" class="field-input" id="charNameInput" placeholder="Character Name..." style="margin-bottom: 8px;" />
+              <input type="text" class="field-input" id="charRoleInput" placeholder="Role (e.g., Protagonist, Foil)..." style="margin-bottom: 8px;" />
+            </div>
+            <input type="text" class="field-input" id="charGoalInput" placeholder="Core Desire, Flaw, or Secret..." />
+            <textarea class="sprint-pad" id="charNotesInput" style="min-height: 75px;" placeholder="Appearance, voice, abilities, or arc notes..."></textarea>
+            <div class="btn-group">
+              <button class="btn-primary" id="saveCharBtn" onclick="saveCharacter()">Save Character</button>
+              <button class="btn-ghost" id="cancelCharEditBtn" style="display: none;" onclick="resetCharForm()">Cancel</button>
+            </div>
           </div>
-
-          <h2 class="tip-headline" style="font-size: 1.45rem; margin-bottom: 6px;">Grammar: A Concise Handbook</h2>
-          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 14px;">
-            Master spelling, punctuation, and sentence architecture from the ground up.
-          </p>
-
-          <!-- CHAPTER I: TOP 100 MOST MISSPELLED WORDS -->
-          <div class="chapter-heading">Chapter I: Top 100 Most Misspelled Words</div>
-          <input type="text" class="search-input" id="spellSearch" placeholder="Search 100 tricky words (e.g., grammar, separate, definitely)..." oninput="renderMisspelled()" />
-          <div id="misspelledList" style="display:flex; flex-wrap:wrap; gap:7px; max-height:220px; overflow-y:auto; margin-bottom: 16px;"></div>
-
-          <!-- CHAPTER II: PUNCTUATION & BOUNDARIES -->
-          <div class="chapter-heading">Chapter II: Punctuation &amp; Sentence Boundaries</div>
-          <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:10px; color:#E5ECE8;">
-            <div><strong style="color:var(--emerald);">1. Oxford (Serial) Comma:</strong> Place a comma before <em>and/or</em> in lists of three or more items (<em>"ghosts, ghouls, and shadows"</em>).</div>
-            <div><strong style="color:var(--emerald);">2. FANBOYS + Complete Sentences:</strong> Use a comma before <em>for, and, nor, but, or, yet, so</em> only when joining two independent clauses.</div>
-            <div><strong style="color:var(--emerald);">3. Comma Splices &amp; Run-Ons:</strong> Never join two complete sentences with only a comma (<em>"The door slammed, she ran"</em>). Fix with a period, a semicolon, or a comma + FANBOYS.</div>
-            <div><strong style="color:var(--emerald);">4. Introductory Clauses:</strong> Put a comma after an opening dependent phrase (<em>"When the lantern flickered, she froze."</em>).</div>
-            <div><strong style="color:var(--emerald);">5. Nonessential Appositives:</strong> Wrap removable extra details in commas (<em>"The relic, forged in bog-iron, hummed."</em>).</div>
-            <div><strong style="color:var(--emerald);">6. Dialogue Tags vs. Action Beats:</strong> Use a comma for speech tags (<em>"Run," he whispered.</em>) and a period for action beats (<em>"Run." He drew his blade.</em>).</div>
-            <div><strong style="color:var(--emerald);">7. Semicolons (;) &amp; Colons (:):</strong> Semicolons link two closely related complete sentences; colons follow a complete sentence to introduce a list, quote, or explanation.</div>
-          </div>
-
-          <!-- CHAPTER III: AGREEMENT, MODIFIERS & STRUCTURE -->
-          <div class="chapter-heading">Chapter III: Agreement, Modifiers &amp; Structure</div>
-          <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:10px; color:#E5ECE8;">
-            <div><strong style="color:var(--emerald);">8. Subject-Verb Agreement:</strong> Match the verb to the true subject, ignoring prepositional phrases in between (<em>"The chest of ancient coins <strong>is</strong> heavy,"</em> not <em>"are"</em>).</div>
-            <div><strong style="color:var(--emerald);">9. Pronoun Case &amp; Agreement:</strong> Use subject pronouns (<em>I, he, she, we, they, who</em>) for actors and object pronouns (<em>me, him, her, us, them, whom</em>) after verbs or prepositions (<em>"between you and <strong>me</strong>"</em>).</div>
-            <div><strong style="color:var(--emerald);">10. Dangling &amp; Misplaced Modifiers:</strong> Place descriptive phrases directly beside the noun they modify (<em>"Covered in dust, <strong>the tome</strong> sat on the desk,"</em> not <em>"Covered in dust, <strong>he</strong> found the tome"</em>).</div>
-            <div><strong style="color:var(--emerald);">11. Parallel Structure (Parallelism):</strong> Keep items in lists or comparisons in the same grammatical form (<em>"She loved <strong>reading</strong> lore, <strong>brewing</strong> tonics, and <strong>exploring</strong> ruins"</em>).</div>
-            <div><strong style="color:var(--emerald);">12. Apostrophes &amp; Homophones:</strong> Use apostrophes for contractions (<em>it's</em> = it is) and possession (<em>the guild's seal</em> / <em>the writers' desks</em>)—never for simple plurals.</div>
-          </div>
+          <input type="text" class="field-input" id="charSearchInput" placeholder="Filter characters by name or role..." oninput="renderCharacters()" />
+          <div id="charactersList"></div>
         </div>
 
-        <!-- SUB-VIEW B: THE BINDER -->
-      <div id="ws-view-binder" style="display:none;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
-          <span class="section-label" style="margin-bottom:0;">Notebooks &amp; Sprints</span>
-          <div style="display:flex; gap:6px;">
-            <button class="btn-secondary" onclick="createNotebook()" style="padding:6px 10px; font-size:0.78rem;">+ Notebook</button>
-            <button class="btn-primary" onclick="createBinderPage()" style="padding:6px 12px; font-size:0.78rem;">+ New Page</button>
+        <div id="bible-panel-scenes" style="display: none;">
+          <div class="card card-accent">
+            <span class="section-label" id="sceneFormTitle">Add Scene</span>
+            <div style="display: grid; grid-template-columns: 90px 1fr; gap: 8px;">
+              <input type="text" class="field-input" id="sceneOrderInput" placeholder="Ch. / #" style="margin-bottom: 8px;" />
+              <input type="text" class="field-input" id="sceneTitleInput" placeholder="Scene Title..." style="margin-bottom: 8px;" />
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 140px; gap: 8px;">
+              <input type="text" class="field-input" id="sceneSettingInput" placeholder="POV Character & Setting..." />
+              <select class="field-input" id="sceneStatusInput">
+                <option value="Outline">Outline</option>
+                <option value="Drafting">Drafting</option>
+                <option value="Revised">Revised</option>
+              </select>
+            </div>
+            <textarea class="sprint-pad" id="sceneBeatInput" style="min-height: 75px;" placeholder="Goal, conflict, and outcome of this scene..."></textarea>
+            <div class="btn-group">
+              <button class="btn-primary" id="saveSceneBtn" onclick="saveScene()">Save Scene</button>
+              <button class="btn-ghost" id="cancelSceneEditBtn" style="display: none;" onclick="resetSceneForm()">Cancel</button>
+            </div>
+          </div>
+          <input type="text" class="field-input" id="sceneSearchInput" placeholder="Filter scenes by title, POV, or status..." oninput="renderScenes()" />
+          <div id="scenesList"></div>
+        </div>
+      </div>
+      <div id="ws-view-binder" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px;">
+          <span class="section-label" style="margin-bottom: 0;">Notebooks & Sprints</span>
+          <div class="btn-group">
+            <button class="btn-secondary" onclick="createNotebook()" style="padding: 6px 11px; font-size: 0.78rem;">+ Notebook</button>
+            <button class="btn-primary" onclick="createBinderPage()" style="padding: 6px 12px; font-size: 0.78rem;">+ New Page</button>
           </div>
         </div>
 
-        <div id="notebookTabsBar" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;"></div>
+        <div id="notebookTabsBar" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;"></div>
         <div id="binderPagesList"></div>
 
-        <div id="binderEditorCard" class="card card-emerald" style="display:none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <button class="btn-secondary" onclick="closeBinderEditor()" style="padding:6px 12px; font-size:0.82rem;">← Back to Notebook</button>
-            <span style="font-size:0.8rem; color:var(--emerald-dark); font-weight:600;" id="binderSaveStatus">✓ Saved</span>
+        <div id="binderEditorCard" class="card card-accent" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <button class="btn-secondary" onclick="closeBinderEditor()" style="padding: 6px 12px; font-size: 0.8rem;">← Back to Binder</button>
+            <span style="font-size: 0.78rem; color: var(--emerald); font-weight: 600;" id="binderSaveStatus">Saved</span>
           </div>
-          <input type="text" class="search-input" id="binderPageTitle" placeholder="Page Title..." style="font-family:'Lora', Georgia, serif; font-weight:700;" />
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px;">
-            <select id="binderNotebookSelect" class="search-input" style="margin-bottom:0; padding:8px 12px; font-size:0.84rem; width:auto;"></select>
-            <span style="font-size:0.8rem; color:var(--cream-muted);" id="binderWordCount">0 words</span>
+          <input type="text" class="field-input" id="binderPageTitle" placeholder="Page Title..." style="font-family: 'Lora', Georgia, serif; font-weight: 700; font-size: 1.05rem;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px;">
+            <select id="binderNotebookSelect" class="field-input" style="margin-bottom: 0; padding: 8px 10px; font-size: 0.82rem; width: auto;"></select>
+            <span style="font-size: 0.78rem; color: var(--text-muted);" id="binderWordCount">0 words</span>
           </div>
-          <textarea class="sprint-pad" id="binderPageContent" style="min-height:260px;" placeholder="Write your notes here..."></textarea>
+          <textarea class="sprint-pad" id="binderPageContent" style="min-height: 260px;" placeholder="Write your notes here..."></textarea>
           <div class="btn-group">
             <button class="btn-primary" onclick="copyBinderPage()">Copy Text</button>
             <button class="btn-secondary" onclick="downloadBinderPage()">Download .TXT</button>
-            <button class="btn-secondary" onclick="deleteBinderPage()">Delete Page</button>
+            <button class="btn-ghost" onclick="deleteBinderPage()">Delete</button>
           </div>
         </div>
       </div>
 
-      <!-- SUB-VIEW C: COMPLETED BOOKS NOTEBOOK -->
-      <div id="ws-view-books" style="display:none;">
-        <div class="card card-emerald">
-          <span class="section-label">Log a Completed Book</span>
-          <input type="text" class="search-input" id="bookTitleInput" placeholder="Book Title..." />
-          <input type="text" class="search-input" id="bookAuthorInput" placeholder="Author Name..." />
-          <textarea class="sprint-pad" id="bookTakeawayInput" style="min-height:85px;" placeholder="Craft takeaway or favorite quote from this book..."></textarea>
-          <button class="btn-primary btn-full" onclick="addCompletedBook()">+ Add to Completed Books</button>
+      <div id="ws-view-ref" style="display: none;">
+        <div class="btn-group" style="margin-bottom: 16px;">
+          <button class="btn-primary" id="ref-sub-lexicon" onclick="switchRefSub('lexicon')">Personal Lexicon</button>
+          <button class="btn-secondary" id="ref-sub-grammar" onclick="switchRefSub('grammar')">Grammar</button>
+          <button class="btn-secondary" id="ref-sub-books" onclick="switchRefSub('books')">Book Log</button>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <span class="section-label" style="margin-bottom:0;">Your Reading Ledger</span>
-          <button class="btn-secondary" style="padding:5px 10px; font-size:0.78rem;" onclick="downloadBookLog()">Download .TXT</button>
+        <div id="ref-panel-lexicon">
+          <div class="card card-accent">
+            <span class="category-pill" style="margin-bottom: 8px;">Word of the Day</span>
+            <h2 class="tip-headline" style="font-size: 1.4rem; margin-bottom: 2px;" id="wotdWord">Loading...</h2>
+            <div style="font-size: 0.84rem; color: var(--emerald); font-style: italic; margin-bottom: 10px;" id="wotdPos"></div>
+            <p style="font-size: 0.94rem; margin-bottom: 8px; color: var(--text-body);" id="wotdDef"></p>
+            <div class="craft-quote" style="margin-bottom: 0; font-size: 0.9rem;" id="wotdExample"></div>
+          </div>
+
+          <div style="margin-top: 22px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+              <span class="section-label" style="margin-bottom: 0;">Personal Dictionary</span>
+              <span style="font-size: 0.78rem; color: var(--text-muted);" id="lexiconCount">0 words collected</span>
+            </div>
+            <input type="text" class="field-input" id="lexiconSearch" placeholder="Search your collected words..." oninput="renderPersonalDictionary()" />
+            <div id="personalDictionaryList"></div>
+          </div>
         </div>
-        <div id="completedBooksList"></div>
+        <div id="ref-panel-grammar" style="display: none;">
+          <div id="grammarBookClosed" class="textbook-cover" onclick="toggleGrammarBook(true)">
+            <span class="category-pill" style="margin-bottom: 6px;">Alchemy Desk Reference</span>
+            <div class="textbook-cover-title">Grammar</div>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
+              Spelled with two <strong>m</strong>'s and an <strong>a</strong>—never <em>"gammer."</em><br />
+              Top 100 Misspelled Words &amp; Complete High-School Mechanics.
+            </p>
+            <span class="btn-primary">Open Handbook</span>
+          </div>
+
+          <div id="grammarBookOpen" class="card card-accent" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px;">
+              <span class="section-label" style="margin-bottom: 0;">Alchemy Desk Reference</span>
+              <button class="btn-ghost" onclick="toggleGrammarBook(false)">Close Book</button>
+            </div>
+            <h2 class="tip-headline" style="font-size: 1.38rem; margin-bottom: 4px;">Grammar: A Concise Handbook</h2>
+            <p style="color: var(--text-muted); font-size: 0.86rem; margin-bottom: 14px;">
+              Master spelling, punctuation, and sentence architecture.
+            </p>
+
+            <div class="chapter-heading">Chapter I: Top 100 Most Misspelled Words</div>
+            <input type="text" class="field-input" id="spellSearch" placeholder="Filter 100 tricky words..." oninput="renderMisspelled()" />
+            <div id="misspelledList" style="display: flex; flex-wrap: wrap; gap: 6px; max-height: 210px; overflow-y: auto; margin-bottom: 16px;"></div>
+
+            <div class="chapter-heading">Chapter II: Punctuation &amp; Sentence Boundaries</div>
+            <div style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 10px; color: var(--text-body);">
+              <div><strong style="color: var(--emerald);">1. Oxford (Serial) Comma:</strong> Place a comma before <em>and/or</em> in lists of three or more items (<em>"ghosts, ghouls, and shadows"</em>).</div>
+              <div><strong style="color: var(--emerald);">2. FANBOYS + Complete Sentences:</strong> Use a comma before <em>for, and, nor, but, or, yet, so</em> only when joining two independent clauses.</div>
+              <div><strong style="color: var(--emerald);">3. Comma Splices &amp; Run-Ons:</strong> Never join two complete sentences with only a comma (<em>"The door slammed, she ran"</em>). Fix with a period, a semicolon, or a comma + FANBOYS.</div>
+              <div><strong style="color: var(--emerald);">4. Introductory Clauses:</strong> Put a comma after an opening dependent phrase (<em>"When the lantern flickered, she froze."</em>).</div>
+              <div><strong style="color: var(--emerald);">5. Nonessential Appositives:</strong> Wrap removable extra details in commas (<em>"The relic, forged in bog-iron, hummed."</em>).</div>
+              <div><strong style="color: var(--emerald);">6. Dialogue Tags vs. Action Beats:</strong> Use a comma for speech tags (<em>"Run," he whispered.</em>) and a period for action beats (<em>"Run." He drew his blade.</em>).</div>
+              <div><strong style="color: var(--emerald);">7. Semicolons (;) &amp; Colons (:):</strong> Semicolons link two closely related complete sentences; colons follow a complete sentence to introduce a list, quote, or explanation.</div>
+            </div>
+
+            <div class="chapter-heading">Chapter III: Agreement, Modifiers &amp; Structure</div>
+            <div style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 10px; color: var(--text-body);">
+              <div><strong style="color: var(--emerald);">8. Subject-Verb Agreement:</strong> Match the verb to the true subject, ignoring prepositional phrases in between (<em>"The chest of ancient coins <strong>is</strong> heavy,"</em> not <em>"are"</em>).</div>
+              <div><strong style="color: var(--emerald);">9. Pronoun Case &amp; Agreement:</strong> Use subject pronouns (<em>I, he, she, we, they, who</em>) for actors and object pronouns (<em>me, him, her, us, them, whom</em>) after verbs or prepositions (<em>"between you and <strong>me</strong>"</em>).</div>
+              <div><strong style="color: var(--emerald);">10. Dangling &amp; Misplaced Modifiers:</strong> Place descriptive phrases directly beside the noun they modify (<em>"Covered in dust, <strong>the tome</strong> sat on the desk,"</em> not <em>"Covered in dust, <strong>he</strong> found the tome"</em>).</div>
+              <div><strong style="color: var(--emerald);">11. Parallel Structure (Parallelism):</strong> Keep items in lists or comparisons in the same grammatical form (<em>"She loved <strong>reading</strong> lore, <strong>brewing</strong> tonics, and <strong>exploring</strong> ruins"</em>).</div>
+              <div><strong style="color: var(--emerald);">12. Apostrophes &amp; Homophones:</strong> Use apostrophes for contractions (<em>it's</em> = it is) and possession (<em>the guild's seal</em> / <em>the writers' desks</em>)—never for simple plurals.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="ref-panel-books" style="display: none;">
+          <div class="card card-accent">
+            <span class="section-label">Log a Completed Book</span>
+            <input type="text" class="field-input" id="bookTitleInput" placeholder="Book Title..." />
+            <input type="text" class="field-input" id="bookAuthorInput" placeholder="Author Name..." />
+            <textarea class="sprint-pad" id="bookTakeawayInput" style="min-height: 80px;" placeholder="Craft takeaway or favorite quote from this book..."></textarea>
+            <button class="btn-primary btn-full" onclick="addCompletedBook()">+ Add to Reading Ledger</button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="section-label" style="margin-bottom: 0;">Your Reading Ledger</span>
+            <button class="btn-ghost" onclick="downloadBookLog()">Download .TXT</button>
+          </div>
+          <div id="completedBooksList"></div>
+        </div>
       </div>
     </section>
 
-      <!-- TAB 3: THE GUILD (Seamless Open Book vs. Paid Ad Showcase) -->
     <section id="tab-guild" class="tab-section">
-      <div style="margin-bottom: 16px;">
+      <div class="page-header">
         <span class="section-label">Featured Reading</span>
-        <h1 class="tip-headline" style="font-size: 1.45rem;">The Guild</h1>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Curated speculative fiction, dark tales, and independent releases.</p>
+        <h1 class="page-title">The Guild</h1>
+        <p class="page-subtitle">Curated speculative fiction, dark tales, and independent releases.</p>
       </div>
-
       <div id="guildShowcaseCard"></div>
     </section>
 
@@ -703,32 +779,27 @@
   <nav class="bottom-nav">
     <div class="nav-inner">
       <button class="nav-btn active" id="nav-daily" onclick="switchMainTab('daily')">
-        <span style="font-size:1.15rem;">✦</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <span>Daily</span>
       </button>
       <button class="nav-btn" id="nav-workshop" onclick="switchMainTab('workshop')">
-        <span style="font-size:1.15rem;">🛠️</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
         <span>Workshop</span>
       </button>
       <button class="nav-btn" id="nav-guild" onclick="switchMainTab('guild')">
-        <span style="font-size:1.15rem;">🕯️</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         <span>Guild</span>
       </button>
     </div>
   </nav>
-
-    <script>
-            // Fade out splash screen immediately after 1.4 seconds (or on tap)
+  <script>
     const splashEl = document.getElementById("splashScreen");
     if (splashEl) {
       splashEl.onclick = () => splashEl.classList.add("fade-out");
-      setTimeout(() => {
-        splashEl.classList.add("fade-out");
-      }, 1400);
+      setTimeout(() => splashEl.classList.add("fade-out"), 1300);
     }
-    // =========================================================================
-    // 1. THE GUILD CONFIG (Set GUILD_PAID_MODE to true when a paid ad is live!)
-    // =========================================================================
+
+    // 1. THE GUILD CONFIG
     const GUILD_PAID_MODE = false;
 
     const MY_GUILD_BOOKS = [
@@ -771,75 +842,69 @@
       coverLabel: "FEATURED TOME"
     };
 
-    // =========================================================================
-    // 2. DAILY TIPS DATABASE (Shuffles randomly without repeating!)
-    // =========================================================================
-  const DAILY_TIPS = [
-  {
-    id: 1,
-    category: "Worldbuilding & Magic Systems",
-    headline: "Brandon Sanderson’s First Law",
-    deepDive: [
-      "Magic works on a spectrum from soft to hard rules:",
-      "Soft Magic: Soft magic has undefined rules meant to invoke mystery and wonder, and should not be used to conveniently solve major plot conflicts if the author uses it to solve a major problem without prior setup. Soft magic often involves plot holes. One of the most famous soft magic books is Tolkien's Lord of The Rings.",
-      "Hard Magic: Hard magic systems have clear, visible rules that let the reader anticipate what characters can or cannot do. One of the best examples is Brandon Sanderson's Mistborn."
-    ],
-    quote: "An author's ability to solve conflict with magic is directly proportional to how well the reader understands said magic.",
-    prompt: "Practice prompt coming soon."
-  },
-  {
-    id: 2,
-    category: "Worldbuilding & Magic Systems",
-    headline: "Brandon Sanderson’s Second Law: Limitations > Powers",
-    deepDive: [
-      "Limitations create tension in a story and make the characters feel more grounded. In J.M. Miro's Ordinary Monsters, the Talents each have a unique cost depending on their type of magic. Being physically drained is the most common type of drawback."
-    ],
-    quote: "The limitations of a magic system are more interesting than its capabilities. What the magic can't do is more interesting than what it can.",
-    prompt: "Practice prompt coming soon."
-  },
-  {
-    id: 3,
-    category: "Worldbuilding & Magic Systems",
-    headline: "Brandon Sanderson’s Third Law",
-    deepDive: [
-      "Worldbuilding is essential to a story. Deepening the implications, culture, and side-effects of an existing magic system produces better worldbuilding than constantly inventing brand-new magical abilities or rules.",
-      "In Sung-il Kim's Blood of the Old Kings, instead of inventing dozens of separate powers, the story explores what happens when an entire empire uses dead sorcerers as magical power generators—shaping its cities, class system, and politics around one core idea."
-    ],
-    quote: "Expand what you already have before you add something new.",
-    prompt: "Practice prompt coming soon."
-  },
-  {
-    id: 4,
-    category: "Worldbuilding & Setting",
-    headline: "High Fantasy vs. Low Fantasy",
-    deepDive: [
-      "Choose the right setting for your story's worldbuilding. Fantasy worldbuilding generally uses two types of settings:",
-      "High Fantasy: High Fantasy (or Secondary World) creates an entirely new world, like Taran Matharu’s The Summoner series, which takes place in the Hominum Empire and the Ether.",
-      "Low Fantasy: Low Fantasy (including Urban Fantasy) takes place in the real world, like J.K. Rowling's Harry Potter, which takes place in London with a hidden community of wizards whose school, Hogwarts, is in Scotland."
-    ],
-    quote: "",
-    prompt: "Practice prompt coming soon."
-  },
-  {
-    id: 5,
-    category: "Worldbuilding & Magic Systems",
-    headline: "Brandon Sanderson’s Zeroth Law",
-    deepDive: [
-      "Rules and limitations exist to make your story stronger, not to trap your creativity. If a magical moment, scene, or ability is compelling enough to excite your readers, you can bend the rules as long as it serves the story.",
-      "In Brandon Sanderson's The Stormlight Archive, Kaladin's dramatic, gravity-defying battles break conventional physics in ways that feel earned because they heighten the emotion and spectacle of the scene."
-    ],
-    quote: "Always err on the side of awesome.",
-    prompt: "Practice prompt coming soon."
-  }
-];
-
-          // =========================================================================
-    // 3. WORD OF THE DAY & TOP 100 MOST MISSPELLED WORDS
-    // =========================================================================
+    // 2. DAILY TIPS DATABASE
+    const DAILY_TIPS = [
+      {
+        id: 1,
+        category: "Worldbuilding & Magic Systems",
+        headline: "Brandon Sanderson’s First Law",
+        deepDive: [
+          "Magic works on a spectrum from soft to hard rules:",
+          "Soft Magic: Soft magic has undefined rules meant to invoke mystery and wonder, and should not be used to conveniently solve major plot conflicts if the author uses it to solve a major problem without prior setup. Soft magic often involves plot holes. One of the most famous soft magic books is Tolkien's Lord of The Rings.",
+          "Hard Magic: Hard magic systems have clear, visible rules that let the reader anticipate what characters can or cannot do. One of the best examples is Brandon Sanderson's Mistborn."
+        ],
+        quote: "An author's ability to solve conflict with magic is directly proportional to how well the reader understands said magic.",
+        prompt: "Practice prompt coming soon."
+      },
+      {
+        id: 2,
+        category: "Worldbuilding & Magic Systems",
+        headline: "Brandon Sanderson’s Second Law: Limitations > Powers",
+        deepDive: [
+          "Limitations create tension in a story and make the characters feel more grounded. In J.M. Miro's Ordinary Monsters, the Talents each have a unique cost depending on their type of magic. Being physically drained is the most common type of drawback."
+        ],
+        quote: "The limitations of a magic system are more interesting than its capabilities. What the magic can't do is more interesting than what it can.",
+        prompt: "Practice prompt coming soon."
+      },
+      {
+        id: 3,
+        category: "Worldbuilding & Magic Systems",
+        headline: "Brandon Sanderson’s Third Law",
+        deepDive: [
+          "Worldbuilding is essential to a story. Deepening the implications, culture, and side-effects of an existing magic system produces better worldbuilding than constantly inventing brand-new magical abilities or rules.",
+          "In Sung-il Kim's Blood of the Old Kings, instead of inventing dozens of separate powers, the story explores what happens when an entire empire uses dead sorcerers as magical power generators—shaping its cities, class system, and politics around one core idea."
+        ],
+        quote: "Expand what you already have before you add something new.",
+        prompt: "Practice prompt coming soon."
+      },
+      {
+        id: 4,
+        category: "Worldbuilding & Setting",
+        headline: "High Fantasy vs. Low Fantasy",
+        deepDive: [
+          "Choose the right setting for your story's worldbuilding. Fantasy worldbuilding generally uses two types of settings:",
+          "High Fantasy: High Fantasy (or Secondary World) creates an entirely new world, like Taran Matharu’s The Summoner series, which takes place in the Hominum Empire and the Ether.",
+          "Low Fantasy: Low Fantasy (including Urban Fantasy) takes place in the real world, like J.K. Rowling's Harry Potter, which takes place in London with a hidden community of wizards whose school, Hogwarts, is in Scotland."
+        ],
+        quote: "",
+        prompt: "Practice prompt coming soon."
+      },
+      {
+        id: 5,
+        category: "Worldbuilding & Magic Systems",
+        headline: "Brandon Sanderson’s Zeroth Law",
+        deepDive: [
+          "Rules and limitations exist to make your story stronger, not to trap your creativity. If a magical moment, scene, or ability is compelling enough to excite your readers, you can bend the rules as long as it serves the story.",
+          "In Brandon Sanderson's The Stormlight Archive, Kaladin's dramatic, gravity-defying battles break conventional physics in ways that feel earned because they heighten the emotion and spectacle of the scene."
+        ],
+        quote: "Always err on the side of awesome.",
+        prompt: "Practice prompt coming soon."
+      }
+    ];
+    // 3. WORD OF THE DAY & TOP 100 MISSPELLED
     const WORD_OF_THE_DAY_LIST = [
-      // Manuscript & Mythic Craft Words
-      { word: "Psychopomp", pos: "noun • /ˈsīkōˌpämp/", def: "A mythical guide, spirit, or deity who escorts newly deceased souls from Earth to the afterlife.", example: "In classical myth, Hermes served as a psychopomp, leading wandering spirits across the threshold." },
       { word: "Curio", pos: "noun • /ˈkyo͝orēˌō/", def: "A rare, unusual, or intriguing object valued for its artistry, mystery, or historical story.", example: "Behind the glass cabinet sat a brass astrolabe and a dozen other curios collected from sunken ships." },
+      { word: "Psychopomp", pos: "noun • /ˈsīkōˌpämp/", def: "A mythical guide, spirit, or deity who escorts newly deceased souls from Earth to the afterlife.", example: "In classical myth, Hermes served as a psychopomp, leading wandering spirits across the threshold." },
       { word: "Palimpsest", pos: "noun • /ˈpaləm(p)ˌsest/", def: "A manuscript or surface reused or altered while still bearing visible traces of its earlier form.", example: "The old library was a palimpsest of scratched-out margin notes and hidden blueprints." },
       { word: "Susurrus", pos: "noun • /so͞oˈsərəs/", def: "A soft whispering, murmuring, or rustling sound.", example: "A dry susurrus of autumn leaves followed her down the garden path." },
       { word: "Effigy", pos: "noun • /ˈefəjē/", def: "A sculpture, model, or likeness of a person.", example: "A tall wooden effigy stood watch at the edge of the harvest field." },
@@ -849,8 +914,6 @@
       { word: "Espy", pos: "verb • /əˈspī/", def: "To catch sight of something distant, hidden, or partially concealed.", example: "From the cliffside, the lookout could espy lantern light across the bay." },
       { word: "Attenuate", pos: "verb • /əˈtenyəˌwāt/", def: "To taper to a fine point, grow slender, or reduce in force.", example: "The ancient tower attenuated into a needle-thin spire against the clouds." },
       { word: "Perspicacious", pos: "adjective • /ˌpərspəˈkāSHəs/", def: "Having a ready insight into and sharp understanding of things.", example: "Only a perspicacious reader notices the clue planted in the first line of dialogue." },
-
-      // Poetic & Lyrical Words
       { word: "Petrichor", pos: "noun • /ˈpetrīˌkôr/", def: "The pleasant, earthy scent produced when rain falls on dry soil.", example: "After weeks of drought, the evening storm filled the porch with petrichor." },
       { word: "Halcyon", pos: "adjective • /ˈhalsēən/", def: "Denoting a period of time in the past that was idyllically happy and peaceful.", example: "She wrote with longing about the halcyon summers spent reading by the lake." },
       { word: "Diaphanous", pos: "adjective • /dīˈafənəs/", def: "Light, delicate, and translucent, like sheer silk or morning mist.", example: "Diaphanous curtains billowed inward as the sea breeze swept through the room." },
@@ -858,8 +921,6 @@
       { word: "Mellifluous", pos: "adjective • /məˈliflo͞oəs/", def: "Sweet or musical; pleasant to hear.", example: "The narrator's mellifluous voice turned a simple bedtime tale into a spell." },
       { word: "Vesper", pos: "noun • /ˈvespər/", def: "Evening, or the evening star; a poetic word for dusk.", example: "By vesper, the blacksmith's forge had cooled to a dull ember." },
       { word: "Luminous", pos: "adjective • /ˈlo͞omənəs/", def: "Full of or shedding light; bright or shining, especially in the dark.", example: "A luminous full moon turned the cobblestone street into a silver river." },
-
-      // Words That Spark an Entire Story
       { word: "Defenestrate", pos: "verb • /dēˈfenəˌstrāt/", def: "To throw someone or something out of a window.", example: "Rather than argue with the royal tax collector, the duke chose to defenestrate the ledger." },
       { word: "Sonder", pos: "noun • /ˈsändər/", def: "The realization that every random passerby is living a life as vivid and complex as your own.", example: "Sitting in the crowded train station, a wave of sonder struck him as he watched a hundred strangers hurry past." },
       { word: "Apocryphal", pos: "adjective • /əˈpäkrəfəl/", def: "Of doubtful authenticity, although widely circulated as being true.", example: "Every town historian repeated the apocryphal tale of the clockmaker's hidden vault." },
@@ -867,20 +928,17 @@
       { word: "Labyrinthine", pos: "adjective • /ˌlabəˈrinTHən/", def: "Irregular, twisting, and intricate like a maze.", example: "Beneath the university library lay a labyrinthine archive of uncataloged maps." },
       { word: "Alkahest", pos: "noun • /ˈalkəˌhest/", def: "A hypothetical universal solvent sought by medieval alchemists that could dissolve any substance.", example: "She held the smoky vial up to the lamp, wondering if she had finally distilled the alkahest." },
       { word: "Eucatastrophe", pos: "noun • /ˌyo͞okəˈtastrəfē/", def: "A sudden and favorable resolution of events in a story; a joyous turn coined by J.R.R. Tolkien.", example: "Just when the siege seemed lost, a thrilling eucatastrophe turned the tide at dawn." },
-
-      // Words to Make You Laugh
       { word: "Snollygoster", pos: "noun • /ˈsnälēˌɡästər/", def: "A shrewd, unprincipled person—especially a self-serving politician.", example: "The mayor was a classic snollygoster who promised everyone a bridge and built a tollbooth instead." },
       { word: "Bumbershoot", pos: "noun • /ˈbəmbərˌSHo͞ot/", def: "A playful, old-fashioned slang word for an umbrella.", example: "A sudden gust of wind turned his bumbershoot completely inside out." },
       { word: "Nincompoop", pos: "noun • /ˈniNGkəmˌpo͞op/", def: "A foolish, silly, or scatterbrained person.", example: "Only a complete nincompoop would try to smuggle a live rooster into a silent reading room." },
       { word: "Flibbertigibbet", pos: "noun • /ˈflibərdēˌjibət/", def: "A frivolous, flighty, or excessively talkative person.", example: "The innkeeper's nephew was a cheerful flibbertigibbet who couldn't keep a secret for five minutes." },
       { word: "Collywobbles", pos: "noun • /ˈkälēˌwäbəlz/", def: "Stomach pain, queasiness, or nervous butterflies before a big moment.", example: "Stepping onto the stage to read his first chapter gave him a sudden case of the collywobbles." },
       { word: "Kerfuffle", pos: "noun • /kərˈfəfəl/", def: "A commotion or fuss, especially one caused by conflicting views.", example: "A minor kerfuffle broke out in the guild hall over who had eaten the last sweetroll." },
-
       { word: "Velleity", pos: "noun • /vəˈlēədē/", def: "A wish or inclination not strong enough to lead to action.", example: "His velleity to finish the novel vanished the moment the blank page stared back." },
       { word: "Lugubrious", pos: "adjective • /ləˈɡo͞obrēəs/", def: "Looking or sounding sad, dismal, or mournful, often to an exaggerated degree.", example: "The bell tower let out a lugubrious chime across the fog-choked valley." },
       { word: "Anathema", pos: "noun • /əˈnaTHəmə/", def: "Something or someone that one vehemently dislikes or considers cursed.", example: "To the guild archivist, burning an uncataloged ledger was pure anathema." },
-      { word: "Chthonic", pos: "adjective • /ˈTHänik/", def: "Concerning, belonging to, or inhabiting the underworld.", example: "The quarry split open to reveal chthonic roots older than the mountain itself." },
- ];
+      { word: "Chthonic", pos: "adjective • /ˈTHänik/", def: "Concerning, belonging to, or inhabiting the underworld.", example: "The quarry split open to reveal chthonic roots older than the mountain itself." }
+    ];
 
     const TOP_100_MISSPELLED = [
       "accommodate", "achieve", "acknowledge", "acquaintance", "acquire",
@@ -904,16 +962,15 @@
       "minuscule", "mischievous", "misspell", "necessary", "neighbor",
       "noticeable", "occasionally", "occurrence", "parallel", "perseverance"
     ];
-
-          // =========================================================================
-    // 4. RANDOM NON-REPEATING TIP ENGINE, TIMER, ALMANAC & SPRINT UPLOADER
-    // =========================================================================
+    // 4. CORE APP STATE, DAILY TIPS, TIMER & ALMANAC
     let appState = JSON.parse(localStorage.getItem("alchemy_v2_state")) || {
       streak: 0,
       seenTipIds: [],
       currentTipId: null,
-      sprintDrafts: {}
+      sprintDrafts: {},
+      unlockedWords: []
     };
+    if (!Array.isArray(appState.unlockedWords)) appState.unlockedWords = [];
 
     let timerSeconds = 15 * 60;
     let timerInterval = null;
@@ -922,10 +979,17 @@
       localStorage.setItem("alchemy_v2_state", JSON.stringify(appState));
     }
 
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
     function pickUnseenRandomTip() {
       let unseen = DAILY_TIPS.filter(t => !appState.seenTipIds.includes(t.id));
       if (unseen.length === 0) {
-        // Reset pool cleanly once every tip in the database has been studied
         appState.seenTipIds = appState.currentTipId ? [appState.currentTipId] : [];
         unseen = DAILY_TIPS.filter(t => !appState.seenTipIds.includes(t.id));
         if (unseen.length === 0) unseen = DAILY_TIPS;
@@ -957,19 +1021,18 @@
 
     function renderDailyScreen() {
       const tip = getActiveTip();
-      document.getElementById("streakBadge").textContent = "🔥 " + appState.streak + " Day Streak";
+      document.getElementById("streakBadge").textContent = appState.streak + " Day Streak";
       document.getElementById("todayCategory").textContent = tip.category;
       document.getElementById("todayHeadline").textContent = tip.headline;
 
       const deepDiveEl = document.getElementById("todayDeepDive");
-      let html = tip.deepDive.map(p => "<p>" + p + "</p>").join("");
+      let html = tip.deepDive.map(p => "<p>" + escapeHtml(p) + "</p>").join("");
       if (tip.quote) {
-        html += '<blockquote class="craft-quote">"' + tip.quote + '"</blockquote>';
+        html += '<blockquote class="craft-quote">"' + escapeHtml(tip.quote) + '"</blockquote>';
       }
       deepDiveEl.innerHTML = html;
 
       document.getElementById("todayPrompt").textContent = tip.prompt;
-
       const sprintBox = document.getElementById("sprintNotes");
       sprintBox.value = appState.sprintDrafts[tip.id] || "";
       sprintBox.oninput = () => {
@@ -979,10 +1042,10 @@
 
       const completeBtn = document.getElementById("completeChallengeBtn");
       if (appState.completedToday) {
-        completeBtn.textContent = "✓ Daily Challenge Complete — Come Back Tomorrow";
+        completeBtn.textContent = "Completed Today";
         completeBtn.style.opacity = "0.75";
       } else {
-        completeBtn.textContent = "✓ Complete Today's Challenge";
+        completeBtn.textContent = "Complete Challenge";
         completeBtn.style.opacity = "1";
       }
     }
@@ -996,12 +1059,11 @@
       renderAlmanac();
     }
 
-
     function uploadSprintToBinder() {
       const tip = getActiveTip();
       const text = document.getElementById("sprintNotes").value.trim();
       if (!text) {
-        alert("Write a few lines in the sprint box first before uploading to your Binder!");
+        alert("Write a few lines in the sprint box first before saving to your Binder.");
         return;
       }
       if (!binderData.notebooks.includes("Daily Sprints")) {
@@ -1016,8 +1078,8 @@
       });
       saveBinder();
       const btn = document.getElementById("uploadSprintBtn");
-      btn.textContent = "✓ Saved to Daily Sprints!";
-      setTimeout(() => { btn.textContent = "🗂️ Upload to Binder"; }, 2200);
+      btn.textContent = "Saved to Binder";
+      setTimeout(() => { btn.textContent = "Save to Binder"; }, 2000);
     }
 
     function renderAlmanac() {
@@ -1032,7 +1094,7 @@
         .filter(Boolean);
 
       if (studied.length === 0) {
-        list.innerHTML = '<div class="card" style="color:var(--text-muted); font-size:0.9rem;">Your studied tips will appear here automatically.</div>';
+        list.innerHTML = '<div class="card" style="color: var(--text-muted); font-size: 0.9rem;">Your studied lessons will appear here automatically.</div>';
         return;
       }
 
@@ -1042,19 +1104,21 @@
 
         const isCurrent = tip.id === appState.currentTipId;
         const item = document.createElement("div");
-        item.className = "almanac-item";
+        item.className = "list-card clickable";
         item.innerHTML =
-          '<div style="display:flex; justify-content:space-between; font-size:0.76rem; margin-bottom:4px;">' +
-            '<span style="color:var(--emerald); font-weight:700;">' + tip.category + '</span>' +
-            '<span style="color:var(--text-muted);">' + (isCurrent ? "• Active Above" : "Tap to Review") + '</span>' +
+          '<div style="display: flex; justify-content: space-between; font-size: 0.74rem; margin-bottom: 4px;">' +
+            '<span style="color: var(--emerald); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">' + escapeHtml(tip.category) + '</span>' +
+            '<span style="color: var(--text-muted);">' + (isCurrent ? "Active Lesson" : "Tap to Open") + '</span>' +
           '</div>' +
-          '<div style="font-family:\'Lora\', Georgia, serif; font-weight:700; font-size:1.02rem;">' + tip.headline + '</div>';
+          '<div style="font-family: \'Lora\', Georgia, serif; font-weight: 700; font-size: 1.04rem;">' + escapeHtml(tip.headline) + '</div>';
+
         item.onclick = () => {
           appState.currentTipId = tip.id;
           saveAppState();
           resetTimer();
           renderDailyScreen();
           renderAlmanac();
+          switchDailyView("today");
           window.scrollTo({ top: 0, behavior: "smooth" });
         };
         list.appendChild(item);
@@ -1090,18 +1154,16 @@
       timerSeconds = 15 * 60;
       updateTimerUI();
     }
-    // =========================================================================
-    // 5. WORKSHOP DESK (Sticky Note, To-Dos, WOTD & Top 100 Misspelled)
-    // =========================================================================
+
+    // 5. WORKSHOP DESK
     const stickyEl = document.getElementById("goalStickyInput");
     stickyEl.value = localStorage.getItem("alchemy_goal_sticky") || "";
     stickyEl.oninput = () => {
       localStorage.setItem("alchemy_goal_sticky", stickyEl.value);
-      document.getElementById("stickyStatus").textContent = "✓ Saved";
+      document.getElementById("stickyStatus").textContent = "Saved";
     };
 
     let todos = JSON.parse(localStorage.getItem("alchemy_todos")) || [];
-
     function saveTodos() {
       localStorage.setItem("alchemy_todos", JSON.stringify(todos));
     }
@@ -1109,16 +1171,16 @@
     function renderTodos() {
       const container = document.getElementById("todoListContainer");
       if (todos.length === 0) {
-        container.innerHTML = '<div style="font-size:0.86rem; color:var(--cream-muted);">No tasks yet. Add a chapter goal or revision item above.</div>';
+        container.innerHTML = '<div style="font-size: 0.86rem; color: var(--text-muted);">No tasks yet. Add a chapter goal or revision item above.</div>';
         return;
       }
       container.innerHTML = todos.map((item, idx) =>
         '<div class="todo-row">' +
-          '<label style="display:flex; align-items:center; gap:10px; cursor:pointer; flex:1;">' +
-            '<input type="checkbox" ' + (item.done ? "checked" : "") + ' onchange="toggleTodo(' + idx + ')" style="width:16px; height:16px; accent-color:var(--emerald-dark);" />' +
-            '<span style="' + (item.done ? "text-decoration:line-through; opacity:0.6;" : "") + '">' + item.text + '</span>' +
+          '<label style="display: flex; align-items: center; gap: 10px; cursor: pointer; flex: 1;">' +
+            '<input type="checkbox" ' + (item.done ? "checked" : "") + ' onchange="toggleTodo(' + idx + ')" style="width: 16px; height: 16px; accent-color: var(--emerald);" />' +
+            '<span style="' + (item.done ? "text-decoration: line-through; opacity: 0.55;" : "") + '">' + escapeHtml(item.text) + '</span>' +
           '</label>' +
-          '<button class="btn-secondary" style="padding:3px 8px; font-size:0.75rem;" onclick="deleteTodo(' + idx + ')">✕</button>' +
+          '<button class="btn-ghost" style="padding: 3px 8px; font-size: 0.74rem;" onclick="deleteTodo(' + idx + ')">Remove</button>' +
         '</div>'
       ).join("");
     }
@@ -1144,28 +1206,7 @@
       saveTodos();
       renderTodos();
     }
-
-    function renderWordOfTheDay() {
-      const dayIndex = Math.floor(Date.now() / 86400000) % WORD_OF_THE_DAY_LIST.length;
-      const item = WORD_OF_THE_DAY_LIST[dayIndex];
-      document.getElementById("wotdWord").textContent = item.word;
-      document.getElementById("wotdPos").textContent = item.pos;
-      document.getElementById("wotdDef").textContent = item.def;
-      document.getElementById("wotdExample").textContent = '"' + item.example + '"';
-    }
-
-    function renderMisspelled() {
-      const q = document.getElementById("spellSearch").value.toLowerCase();
-      const box = document.getElementById("misspelledList");
-      const filtered = TOP_100_MISSPELLED.filter(w => w.includes(q));
-      box.innerHTML = filtered.map(w =>
-        '<span style="background:var(--cream-elevated); border:1px solid var(--cream-border); padding:4px 10px; border-radius:6px; font-size:0.84rem; font-weight:600;">' + w + '</span>'
-      ).join("");
-    }
-
-    // =========================================================================
-    // 6. THE BINDER (Notebooks & Note Pages)
-    // =========================================================================
+    // 7. THE BINDER
     let binderData = JSON.parse(localStorage.getItem("alchemy_binder_v2")) || {
       notebooks: ["Story Ideas", "Daily Sprints", "Worldbuilding"],
       pages: []
@@ -1181,29 +1222,28 @@
       const bar = document.getElementById("notebookTabsBar");
       const allTabs = ["All", ...binderData.notebooks];
       bar.innerHTML = allTabs.map(nb =>
-        '<button class="' + (activeNotebook === nb ? "btn-primary" : "btn-secondary") + '" style="padding:6px 12px; font-size:0.8rem;" onclick="selectNotebook(\'' + nb.replace(/'/g, "\\'") + '\')">' + nb + '</button>'
+        '<button class="' + (activeNotebook === nb ? "btn-primary" : "btn-secondary") + '" style="padding: 6px 11px; font-size: 0.78rem;" onclick="selectNotebook(\'' + nb.replace(/'/g, "\\'") + '\')">' + escapeHtml(nb) + '</button>'
       ).join("");
 
       const list = document.getElementById("binderPagesList");
       const filtered = activeNotebook === "All" ? binderData.pages : binderData.pages.filter(p => p.notebook === activeNotebook);
 
       if (filtered.length === 0) {
-        list.innerHTML = '<div class="card" style="text-align:center; color:var(--cream-muted);"><p style="margin-bottom:10px;">No pages in <strong>' + activeNotebook + '</strong> yet.</p><button class="btn-primary" onclick="createBinderPage()">+ Create Page</button></div>';
+        list.innerHTML = '<div class="card" style="text-align: center; color: var(--text-muted);"><p style="margin-bottom: 12px;">No pages in <strong>' + escapeHtml(activeNotebook) + '</strong> yet.</p><button class="btn-primary" onclick="createBinderPage()">+ Create Page</button></div>';
         return;
       }
 
       list.innerHTML = filtered.map(p => {
         const words = p.content.trim() ? p.content.trim().split(/\s+/).length : 0;
-        return '<div class="card" style="padding:14px 16px; margin-bottom:10px; cursor:pointer;" onclick="openBinderEditor(' + p.id + ')">' +
-          '<div style="display:flex; justify-content:space-between; font-size:0.76rem; margin-bottom:4px;">' +
-            '<span style="color:var(--emerald-dark); font-weight:700;">📓 ' + p.notebook + '</span>' +
-            '<span style="color:var(--cream-muted);">' + words + ' words • ' + p.updated + '</span>' +
+        return '<div class="list-card clickable" onclick="openBinderEditor(' + p.id + ')">' +
+          '<div style="display: flex; justify-content: space-between; font-size: 0.74rem; margin-bottom: 4px;">' +
+            '<span style="color: var(--emerald); font-weight: 700;">' + escapeHtml(p.notebook) + '</span>' +
+            '<span style="color: var(--text-muted);">' + words + ' words • ' + escapeHtml(p.updated) + '</span>' +
           '</div>' +
-          '<div style="font-family:\'Lora\', Georgia, serif; font-weight:700; font-size:1.05rem;">' + (p.title || "Untitled Page") + '</div>' +
+          '<div style="font-family: \'Lora\', Georgia, serif; font-weight: 700; font-size: 1.04rem;">' + escapeHtml(p.title || "Untitled Page") + '</div>' +
         '</div>';
       }).join("");
     }
-
     function selectNotebook(nb) {
       activeNotebook = nb;
       closeBinderEditor();
@@ -1211,7 +1251,7 @@
     }
 
     function createNotebook() {
-      const name = prompt("Enter a name for your new notebook (e.g., Characters, Chapter Outlines):");
+      const name = prompt("Enter a name for your new notebook:");
       if (!name || !name.trim()) return;
       const clean = name.trim();
       if (!binderData.notebooks.includes(clean)) {
@@ -1224,7 +1264,7 @@
     }
 
     function createBinderPage() {
-      const targetNb = activeNotebook === "All" ? binderData.notebooks[0] : activeNotebook;
+      const targetNb = activeNotebook === "All" ? binderData.notebooks : activeNotebook;
       const newPage = {
         id: Date.now(),
         notebook: targetNb,
@@ -1241,14 +1281,13 @@
       const page = binderData.pages.find(p => p.id === id);
       if (!page) return;
       editingPageId = id;
-
       document.getElementById("notebookTabsBar").style.display = "none";
       document.getElementById("binderPagesList").style.display = "none";
       document.getElementById("binderEditorCard").style.display = "block";
 
       const select = document.getElementById("binderNotebookSelect");
       select.innerHTML = binderData.notebooks.map(nb =>
-        '<option value="' + nb + '"' + (nb === page.notebook ? " selected" : "") + '>Notebook: ' + nb + '</option>'
+        '<option value="' + escapeHtml(nb) + '"' + (nb === page.notebook ? " selected" : "") + '>Notebook: ' + escapeHtml(nb) + '</option>'
       ).join("");
 
       const titleEl = document.getElementById("binderPageTitle");
@@ -1264,9 +1303,8 @@
         page.updated = new Date().toLocaleDateString();
         saveBinder();
         updateBinderWordCount(page.content);
-        document.getElementById("binderSaveStatus").textContent = "✓ Saved";
+        document.getElementById("binderSaveStatus").textContent = "Saved";
       };
-
       titleEl.oninput = sync;
       select.onchange = sync;
       contentEl.oninput = sync;
@@ -1289,7 +1327,7 @@
       const txt = document.getElementById("binderPageContent").value;
       if (!txt) return;
       navigator.clipboard.writeText(txt);
-      document.getElementById("binderSaveStatus").textContent = "✓ Copied!";
+      document.getElementById("binderSaveStatus").textContent = "Copied";
     }
 
     function downloadBinderPage() {
@@ -1311,12 +1349,71 @@
         closeBinderEditor();
       }
     }
+    // 8. REFERENCE: WORD OF THE DAY, PERSONAL DICTIONARY, GRAMMAR & BOOK LOG
+    function renderWordOfTheDay() {
+      const dayIndex = Math.floor(Date.now() / 86400000) % WORD_OF_THE_DAY_LIST.length;
+      const item = WORD_OF_THE_DAY_LIST[dayIndex];
 
-          // =========================================================================
-    // 7. COMPLETED BOOKS NOTEBOOK
-    // =========================================================================
+      document.getElementById("wotdWord").textContent = item.word;
+      document.getElementById("wotdPos").textContent = item.pos;
+      document.getElementById("wotdDef").textContent = item.def;
+      document.getElementById("wotdExample").textContent = '"' + item.example + '"';
+
+      if (!appState.unlockedWords.includes(item.word)) {
+        appState.unlockedWords.unshift(item.word);
+        saveAppState();
+      }
+      renderPersonalDictionary();
+    }
+
+    function renderPersonalDictionary() {
+      const query = document.getElementById("lexiconSearch").value.toLowerCase();
+      const listEl = document.getElementById("personalDictionaryList");
+      const countEl = document.getElementById("lexiconCount");
+
+      const collectedEntries = appState.unlockedWords
+        .map(w => WORD_OF_THE_DAY_LIST.find(entry => entry.word === w))
+        .filter(Boolean);
+
+      countEl.textContent = collectedEntries.length + (collectedEntries.length === 1 ? " word collected" : " words collected");
+
+      const filtered = collectedEntries.filter(entry =>
+        entry.word.toLowerCase().includes(query) ||
+        entry.def.toLowerCase().includes(query)
+      );
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<div class="card" style="color: var(--text-muted); font-size: 0.9rem;">No matching words in your personal dictionary yet.</div>';
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(entry =>
+        '<div class="list-card">' +
+          '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 4px;">' +
+            '<span style="font-family: \'Lora\', Georgia, serif; font-weight: 700; font-size: 1.06rem; color: var(--text-white);">' + escapeHtml(entry.word) + '</span>' +
+            '<span style="font-size: 0.78rem; color: var(--emerald); font-style: italic;">' + escapeHtml(entry.pos) + '</span>' +
+          '</div>' +
+          '<p style="font-size: 0.88rem; color: var(--text-body); margin-bottom: 6px;">' + escapeHtml(entry.def) + '</p>' +
+          '<div style="font-size: 0.84rem; color: var(--text-muted); font-style: italic;">"' + escapeHtml(entry.example) + '"</div>' +
+        '</div>'
+      ).join("");
+    }
+
+    function renderMisspelled() {
+      const q = document.getElementById("spellSearch").value.toLowerCase();
+      const box = document.getElementById("misspelledList");
+      const filtered = TOP_100_MISSPELLED.filter(w => w.includes(q));
+      box.innerHTML = filtered.map(w =>
+        '<span style="background: var(--bg-elevated); border: 1px solid var(--border-subtle); padding: 4px 10px; border-radius: 6px; font-size: 0.82rem; font-weight: 600;">' + escapeHtml(w) + '</span>'
+      ).join("");
+    }
+
+    function toggleGrammarBook(open) {
+      document.getElementById("grammarBookClosed").style.display = open ? "none" : "block";
+      document.getElementById("grammarBookOpen").style.display = open ? "block" : "none";
+      if (open) renderMisspelled();
+    }
     let completedBooks = JSON.parse(localStorage.getItem("alchemy_completed_books")) || [];
-
     function saveBooks() {
       localStorage.setItem("alchemy_completed_books", JSON.stringify(completedBooks));
     }
@@ -1324,19 +1421,19 @@
     function renderCompletedBooks() {
       const list = document.getElementById("completedBooksList");
       if (completedBooks.length === 0) {
-        list.innerHTML = '<div class="card" style="color:var(--cream-muted); font-size:0.9rem;">No completed books logged yet. Record your first finished read above.</div>';
+        list.innerHTML = '<div class="card" style="color: var(--text-muted); font-size: 0.9rem;">No completed books logged yet. Record your first finished read above.</div>';
         return;
       }
       list.innerHTML = completedBooks.map((b, idx) =>
-        '<div class="card" style="padding:16px; margin-bottom:10px;">' +
-          '<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">' +
+        '<div class="list-card">' +
+          '<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">' +
             '<div>' +
-              '<div style="font-family:\'Lora\', Georgia, serif; font-weight:700; font-size:1.05rem;">' + b.title + '</div>' +
-              '<div style="font-size:0.82rem; color:var(--emerald-dark); font-weight:600; margin-bottom:6px;">by ' + (b.author || "Unknown Author") + ' • ' + b.date + '</div>' +
+              '<div style="font-family: \'Lora\', Georgia, serif; font-weight: 700; font-size: 1.04rem;">' + escapeHtml(b.title) + '</div>' +
+              '<div style="font-size: 0.8rem; color: var(--emerald); font-weight: 600; margin-bottom: 6px;">by ' + escapeHtml(b.author || "Unknown Author") + ' • ' + escapeHtml(b.date) + '</div>' +
             '</div>' +
-            '<button class="btn-secondary" style="padding:3px 8px; font-size:0.75rem;" onclick="deleteCompletedBook(' + idx + ')">✕</button>' +
+            '<button class="btn-ghost" style="padding: 3px 8px; font-size: 0.74rem;" onclick="deleteCompletedBook(' + idx + ')">Remove</button>' +
           '</div>' +
-          (b.takeaway ? '<p style="font-size:0.9rem; color:var(--cream-ink);">' + b.takeaway + '</p>' : '') +
+          (b.takeaway ? '<p style="font-size: 0.88rem; color: var(--text-body);">' + escapeHtml(b.takeaway) + '</p>' : '') +
         '</div>'
       ).join("");
     }
@@ -1350,9 +1447,9 @@
         return;
       }
       completedBooks.unshift({
-        title: title,
-        author: author,
-        takeaway: takeaway,
+        title,
+        author,
+        takeaway,
         date: new Date().toLocaleDateString()
       });
       document.getElementById("bookTitleInput").value = "";
@@ -1378,9 +1475,7 @@
       a.click();
     }
 
-    // =========================================================================
-    // 8. THE GUILD RENDERER & TAB NAVIGATION
-    // =========================================================================
+    // 9. THE GUILD & NAVIGATION CONTROLLERS
     function renderGuild() {
       const container = document.getElementById("guildShowcaseCard");
       const featured = GUILD_PAID_MODE
@@ -1388,52 +1483,70 @@
         : MY_GUILD_BOOKS[Math.floor(Math.random() * MY_GUILD_BOOKS.length)];
 
       const coverHtml = featured.coverImage
-        ? '<img src="' + featured.coverImage + '" alt="' + featured.title + '" style="width:82px; height:120px; object-fit:cover; border-radius:8px; border:1px solid var(--emerald-dark); flex-shrink:0;" />'
-        : '<div class="tome-cover">' + featured.coverLabel + '</div>';
+        ? '<img src="' + escapeHtml(featured.coverImage) + '" alt="' + escapeHtml(featured.title) + '" style="width: 88px; height: 130px; object-fit: cover; border-radius: 8px; border: 1px solid var(--emerald-dark); flex-shrink: 0;" />'
+        : '<div class="tome-cover">' + escapeHtml(featured.coverLabel) + '</div>';
 
       container.innerHTML =
-        '<div class="tome-card card-emerald">' +
+        '<div class="tome-card">' +
           coverHtml +
-          '<div style="flex:1;">' +
-            '<div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--emerald); font-weight:700; margin-bottom:4px;">' + featured.tag + '</div>' +
-            '<div style="font-family:\'Lora\', Georgia, serif; font-size:1.18rem; font-weight:700; margin-bottom:2px;">' + featured.title + '</div>' +
-            '<div style="font-size:0.84rem; color:var(--text-muted); margin-bottom:10px;">' + featured.author + '</div>' +
-            '<p style="font-size:0.9rem; color:#D1DDD6; margin-bottom:14px;">' + featured.blurb + '</p>' +
-            '<a class="btn-primary" href="' + featured.url + '" target="_blank" rel="noopener noreferrer">Read / Explore Externally ↗</a>' +
+          '<div style="flex: 1;">' +
+            '<div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--emerald); font-weight: 700; margin-bottom: 4px;">' + escapeHtml(featured.tag) + '</div>' +
+            '<div style="font-family: \'Lora\', Georgia, serif; font-size: 1.22rem; font-weight: 700; margin-bottom: 2px;">' + escapeHtml(featured.title) + '</div>' +
+            '<div style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 10px;">' + escapeHtml(featured.author) + '</div>' +
+            '<p style="font-size: 0.9rem; color: var(--text-body); margin-bottom: 16px;">' + escapeHtml(featured.blurb) + '</p>' +
+            '<a class="btn-primary" href="' + escapeHtml(featured.url) + '" target="_blank" rel="noopener noreferrer">Read / Explore ↗</a>' +
           '</div>' +
         '</div>';
     }
 
-     function switchMainTab(tab) {
+    function switchMainTab(tab) {
       document.querySelectorAll(".tab-section").forEach(el => el.classList.remove("active"));
       document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
-
       document.getElementById("tab-" + tab).classList.add("active");
       document.getElementById("nav-" + tab).classList.add("active");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function switchWorkshopView(view) {
-      ["desk", "binder", "books"].forEach(v => {
-        document.getElementById("ws-view-" + v).style.display = (v === view) ? "block" : "none";
-        document.getElementById("ws-nav-" + v).className = (v === view) ? "btn-primary" : "btn-secondary";
+    function switchDailyView(view) {
+      ["today", "almanac"].forEach(v => {
+        document.getElementById("daily-view-" + v).style.display = (v === view) ? "block" : "none";
+        document.getElementById("daily-seg-" + v).classList.toggle("active", v === view);
       });
     }
 
-    // Initialize Everything
+    function switchWorkshopView(view) {
+      ["desk", "bible", "binder", "ref"].forEach(v => {
+        document.getElementById("ws-view-" + v).style.display = (v === view) ? "block" : "none";
+        document.getElementById("ws-nav-" + v).classList.toggle("active", v === view);
+      });
+    }
+
+    function switchBibleSub(sub) {
+      document.getElementById("bible-panel-characters").style.display = (sub === "characters") ? "block" : "none";
+      document.getElementById("bible-panel-scenes").style.display = (sub === "scenes") ? "block" : "none";
+      document.getElementById("bible-sub-chars").className = (sub === "characters") ? "btn-primary" : "btn-secondary";
+      document.getElementById("bible-sub-scenes").className = (sub === "scenes") ? "btn-primary" : "btn-secondary";
+    }
+
+    function switchRefSub(sub) {
+      ["lexicon", "grammar", "books"].forEach(s => {
+        document.getElementById("ref-panel-" + s).style.display = (s === sub) ? "block" : "none";
+        document.getElementById("ref-sub-" + s).className = (s === sub) ? "btn-primary" : "btn-secondary";
+      });
+    }
+
+    // Initialize App
     renderDailyScreen();
     renderAlmanac();
     renderTodos();
-    renderWordOfTheDay();
-     function toggleGrammarBook(open) {
-      document.getElementById("grammarBookClosed").style.display = open ? "none" : "block";
-      document.getElementById("grammarBookOpen").style.display = open ? "block" : "none";
-      if (open) renderMisspelled();
-    }
-    renderMisspelled();
+    renderCharacters();
+    renderScenes();
     renderBinder();
+    renderWordOfTheDay();
+    renderMisspelled();
     renderCompletedBooks();
     renderGuild();
   </script>
 </body>
 </html>
+
