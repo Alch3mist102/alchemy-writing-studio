@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
     <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0B0D0C" />
   <script>
@@ -7,7 +8,6 @@
       navigator.serviceWorker.register("sw.js");
     }
   </script>
-<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alchemy Writing Studio | Alchemy Productions</title>
@@ -474,8 +474,6 @@
 </head>
 <body>
 
-  <body>
-
   <!-- LAUNCH SPLASH SCREEN -->
   <div id="splashScreen">
     <svg class="splash-emblem" viewBox="0 0 100 100" fill="none" xmlns="http://w3.org">
@@ -813,7 +811,6 @@
     // 3. WORD OF THE DAY & TOP 100 MOST MISSPELLED WORDS
     // =========================================================================
     const WORD_OF_THE_DAY_LIST = [
-            const WORD_OF_THE_DAY_LIST = [
       // Manuscript & Mythic Craft Words
       { word: "Psychopomp", pos: "noun • /ˈsīkōˌpämp/", def: "A mythical guide, spirit, or deity who escorts newly deceased souls from Earth to the afterlife.", example: "In classical myth, Hermes served as a psychopomp, leading wandering spirits across the threshold." },
       { word: "Palimpsest", pos: "noun • /ˈpaləm(p)ˌsest/", def: "A manuscript or surface reused or altered while still bearing visible traces of its earlier form.", example: "The old library was a palimpsest of scratched-out margin notes and hidden blueprints." },
@@ -851,7 +848,6 @@
       { word: "Flibbertigibbet", pos: "noun • /ˈflibərdēˌjibət/", def: "A frivolous, flighty, or excessively talkative person.", example: "The innkeeper's nephew was a cheerful flibbertigibbet who couldn't keep a secret for five minutes." },
       { word: "Collywobbles", pos: "noun • /ˈkälēˌwäbəlz/", def: "Stomach pain, queasiness, or nervous butterflies before a big moment.", example: "Stepping onto the stage to read his first chapter gave him a sudden case of the collywobbles." },
       { word: "Kerfuffle", pos: "noun • /kərˈfəfəl/", def: "A commotion or fuss, especially one caused by conflicting views.", example: "A minor kerfuffle broke out in the guild hall over who had eaten the last sweetroll." }
-    ];
 
       { word: "Velleity", pos: "noun • /vəˈlēədē/", def: "A wish or inclination not strong enough to lead to action.", example: "His velleity to finish the novel vanished the moment the blank page stared back." },
       { word: "Susurrus", pos: "noun • /so͞oˈsərəs/", def: "A whispering, murmuring, or rustling sound.", example: "A dry susurrus of dead leaves followed her down the cellar stairs." },
