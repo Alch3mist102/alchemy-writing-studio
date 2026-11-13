@@ -700,44 +700,12 @@
             <div id="personalDictionaryList"></div>
           </div>
         </div>
-              <div id="ref-panel-grammar" style="display: none;">
+                    <div id="ref-panel-grammar" style="display: none;">
           <div class="card card-accent">
             <span class="section-label">Alchemy Desk Reference</span>
             <h2 class="tip-headline" style="font-size: 1.38rem; margin-bottom: 4px;">Grammar: A Concise Handbook</h2>
             <p style="color: var(--text-muted); font-size: 0.86rem; margin-bottom: 14px;">
               Spelled with two <strong>m</strong>'s and an <strong>a</strong>—never <em>"gammer."</em> Master spelling, punctuation, and sentence architecture.
-            </p>
-
-            <div class="chapter-heading">Chapter I: Top 100 Most Misspelled Words</div>
-            <input type="text" class="field-input" id="spellSearch" placeholder="Filter 100 tricky words..." oninput="renderMisspelled()" />
-            <div id="misspelledList" style="display: flex; flex-wrap: wrap; gap: 6px; max-height: 210px; overflow-y: auto; margin-bottom: 16px;"></div>
-
-            <div class="chapter-heading">Chapter II: Punctuation &amp; Sentence Boundaries</div>
-            <div style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 10px; color: var(--text-body);">
-              <div><strong style="color: var(--emerald);">1. Oxford (Serial) Comma:</strong> Place a comma before <em>and/or</em> in lists of three or more items (<em>"ghosts, ghouls, and shadows"</em>).</div>
-              <div><strong style="color: var(--emerald);">2. FANBOYS + Complete Sentences:</strong> Use a comma before <em>for, and, nor, but, or, yet, so</em> only when joining two independent clauses.</div>
-              <div><strong style="color: var(--emerald);">3. Comma Splices &amp; Run-Ons:</strong> Never join two complete sentences with only a comma (<em>"The door slammed, she ran"</em>). Fix with a period, a semicolon, or a comma + FANBOYS.</div>
-              <div><strong style="color: var(--emerald);">4. Introductory Clauses:</strong> Put a comma after an opening dependent phrase (<em>"When the lantern flickered, she froze."</em>).</div>
-              <div><strong style="color: var(--emerald);">5. Nonessential Appositives:</strong> Wrap removable extra details in commas (<em>"The relic, forged in bog-iron, hummed."</em>).</div>
-              <div><strong style="color: var(--emerald);">6. Dialogue Tags vs. Action Beats:</strong> Use a comma for speech tags (<em>"Run," he whispered.</em>) and a period for action beats (<em>"Run." He drew his blade.</em>).</div>
-              <div><strong style="color: var(--emerald);">7. Semicolons (;) &amp; Colons (:):</strong> Semicolons link two closely related complete sentences; colons follow a complete sentence to introduce a list, quote, or explanation.</div>
-            </div>
-
-            <div class="chapter-heading">Chapter III: Agreement, Modifiers &amp; Structure</div>
-            <div style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 10px; color: var(--text-body);">
-              <div><strong style="color: var(--emerald);">8. Subject-Verb Agreement:</strong> Match the verb to the true subject, ignoring prepositional phrases in between (<em>"The chest of ancient coins <strong>is</strong> heavy,"</em> not <em>"are"</em>).</div>
-              <div><strong style="color: var(--emerald);">9. Pronoun Case &amp; Agreement:</strong> Use subject pronouns (<em>I, he, she, we, they, who</em>) for actors and object pronouns (<em>me, him, her, us, them, whom</em>) after verbs or prepositions (<em>"between you and <strong>me</strong>"</em>).</div>
-              <div><strong style="color: var(--emerald);">10. Dangling &amp; Misplaced Modifiers:</strong> Place descriptive phrases directly beside the noun they modify (<em>"Covered in dust, <strong>the tome</strong> sat on the desk,"</em> not <em>"Covered in dust, <strong>he</strong> found the tome"</em>).</div>
-              <div><strong style="color: var(--emerald);">11. Parallel Structure (Parallelism):</strong> Keep items in lists or comparisons in the same grammatical form (<em>"She loved <strong>reading</strong> lore, <strong>brewing</strong> tonics, and <strong>exploring</strong> ruins"</em>).</div>
-              <div><strong style="color: var(--emerald);">12. Apostrophes &amp; Homophones:</strong> Use apostrophes for contractions (<em>it's</em> = it is) and possession (<em>the guild's seal</em> / <em>the writers' desks</em>)—never for simple plurals.</div>
-            </div>
-          </div>
-        </div>
-
-         
-            <h2 class="tip-headline" style="font-size: 1.38rem; margin-bottom: 4px;">Grammar: A Concise Handbook</h2>
-            <p style="color: var(--text-muted); font-size: 0.86rem; margin-bottom: 14px;">
-              Master spelling, punctuation, and sentence architecture.
             </p>
 
             <div class="chapter-heading">Chapter I: Top 100 Most Misspelled Words</div>
@@ -1207,6 +1175,103 @@
       saveTodos();
       renderTodos();
     }
+    // 6. STORY BIBLE (Characters & Scenes)
+    let storyBible = JSON.parse(localStorage.getItem("alchemy_story_bible_v1")) || {
+      characters: [],
+      scenes: []
+    };
+    let editingCharId = null;
+    let editingSceneId = null;
+
+    function saveStoryBible() {
+      localStorage.setItem("alchemy_story_bible_v1", JSON.stringify(storyBible));
+    }
+
+    function saveCharacter() {
+      const name = document.getElementById("charNameInput").value.trim();
+      const role = document.getElementById("charRoleInput").value.trim();
+      const goal = document.getElementById("charGoalInput").value.trim();
+      const notes = document.getElementById("charNotesInput").value.trim();
+      if (!name) {
+        alert("Please enter a character name.");
+        return;
+      }
+      if (editingCharId) {
+        const idx = storyBible.characters.findIndex(c => c.id === editingCharId);
+        if (idx !== -1) {
+          storyBible.characters[idx] = { id: editingCharId, name, role, goal, notes };
+        }
+      } else {
+        storyBible.characters.unshift({ id: Date.now(), name, role, goal, notes });
+      }
+      saveStoryBible();
+      resetCharForm();
+      renderCharacters();
+    }
+
+    function editCharacter(id) {
+      const c = storyBible.characters.find(item => item.id === id);
+      if (!c) return;
+      editingCharId = id;
+      document.getElementById("charFormTitle").textContent = "Edit Character";
+      document.getElementById("charNameInput").value = c.name;
+      document.getElementById("charRoleInput").value = c.role;
+      document.getElementById("charGoalInput").value = c.goal;
+      document.getElementById("charNotesInput").value = c.notes;
+      document.getElementById("saveCharBtn").textContent = "Update Character";
+      document.getElementById("cancelCharEditBtn").style.display = "inline-flex";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function resetCharForm() {
+      editingCharId = null;
+      document.getElementById("charFormTitle").textContent = "Add Character";
+      document.getElementById("charNameInput").value = "";
+      document.getElementById("charRoleInput").value = "";
+      document.getElementById("charGoalInput").value = "";
+      document.getElementById("charNotesInput").value = "";
+      document.getElementById("saveCharBtn").textContent = "Save Character";
+      document.getElementById("cancelCharEditBtn").style.display = "none";
+    }
+
+    function deleteCharacter(id) {
+      if (!confirm("Delete this character card?")) return;
+      storyBible.characters = storyBible.characters.filter(c => c.id !== id);
+      saveStoryBible();
+      renderCharacters();
+    }
+
+    function renderCharacters() {
+      const q = document.getElementById("charSearchInput").value.toLowerCase();
+      const list = document.getElementById("charactersList");
+      const filtered = storyBible.characters.filter(c =>
+        c.name.toLowerCase().includes(q) ||
+        (c.role || "").toLowerCase().includes(q) ||
+        (c.notes || "").toLowerCase().includes(q)
+      );
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="card" style="color: var(--text-muted); font-size: 0.9rem;">No characters logged yet. Create your first character profile above.</div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(c =>
+        '<div class="list-card">' +
+          '<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px;">' +
+            '<div>' +
+              '<div style="font-family: \'Lora\', Georgia, serif; font-weight: 700; font-size: 1.08rem;">' + escapeHtml(c.name) + '</div>' +
+              (c.role ? '<span class="meta-pill" style="margin-top: 4px;">' + escapeHtml(c.role) + '</span>' : '') +
+            '</div>' +
+            '<div class="btn-group">' +
+              '<button class="btn-ghost" onclick="editCharacter(' + c.id + ')">Edit</button>' +
+              '<button class="btn-ghost" onclick="deleteCharacter(' + c.id + ')">Delete</button>' +
+            '</div>' +
+          '</div>' +
+          (c.goal ? '<div style="font-size: 0.86rem; color: var(--emerald); margin-top: 6px;"><strong>Core Drive:</strong> ' + escapeHtml(c.goal) + '</div>' : '') +
+          (c.notes ? '<p style="font-size: 0.88rem; color: var(--text-body); margin-top: 6px;">' + escapeHtml(c.notes) + '</p>' : '') +
+        '</div>'
+      ).join("");
+    }
 
         function saveScene() {
       const order = document.getElementById("sceneOrderInput").value.trim();
@@ -1325,8 +1390,6 @@
       a.download = "alchemy-story-bible.txt";
       a.click();
     }
-
-    // 7. THE BINDER
 
     function addTodoItem() {
       const input = document.getElementById("todoInput");
