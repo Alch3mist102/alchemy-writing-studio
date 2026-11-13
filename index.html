@@ -347,25 +347,19 @@
     .todo-row:last-child { border-bottom: none; padding-bottom: 0; }
 
     /* Story Bible Badges */
-    .meta-pill {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-         /* Story Bible Badges */
-    .meta-pill {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 3px 9px;
-      border-radius: 6px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-strong);
-      color: var(--emerald);
-    }
+.meta-pill {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--emerald);
+}
+
     .textbook-cover {
       background: linear-gradient(145deg, #0E2219 0%, #121614 100%);
       border: 1px solid rgba(16, 185, 129, 0.45);
@@ -399,8 +393,26 @@
       gap: 18px;
       align-items: flex-start;
     }
-    .tome-cover {
-          nav.bottom-nav {
+        .tome-cover {
+      width: 88px;
+      height: 130px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(145deg, #132A20, #0B0D0C);
+      border: 1px solid var(--emerald-dark);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px;
+      font-family: 'Lora', Georgia, serif;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--emerald);
+      letter-spacing: 0.04em;
+    }
+
+    nav.bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
@@ -722,11 +734,7 @@
           </div>
         </div>
 
-          <div id="grammarBookOpen" class="card card-accent" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px;">
-              <span class="section-label" style="margin-bottom: 0;">Alchemy Desk Reference</span>
-              <button class="btn-ghost" onclick="toggleGrammarBook(false)">Close Book</button>
-            </div>
+         
             <h2 class="tip-headline" style="font-size: 1.38rem; margin-bottom: 4px;">Grammar: A Concise Handbook</h2>
             <p style="color: var(--text-muted); font-size: 0.86rem; margin-bottom: 14px;">
               Master spelling, punctuation, and sentence architecture.
@@ -1194,6 +1202,131 @@
         '</div>'
       ).join("");
     }
+    function deleteTodo(idx) {
+      todos.splice(idx, 1);
+      saveTodos();
+      renderTodos();
+    }
+
+        function saveScene() {
+      const order = document.getElementById("sceneOrderInput").value.trim();
+      const title = document.getElementById("sceneTitleInput").value.trim();
+      const setting = document.getElementById("sceneSettingInput").value.trim();
+      const status = document.getElementById("sceneStatusInput").value;
+      const beat = document.getElementById("sceneBeatInput").value.trim();
+      if (!title) {
+        alert("Please enter a scene title.");
+        return;
+      }
+      if (editingSceneId) {
+        const idx = storyBible.scenes.findIndex(s => s.id === editingSceneId);
+        if (idx !== -1) {
+          storyBible.scenes[idx] = { id: editingSceneId, order, title, setting, status, beat };
+        }
+      } else {
+        storyBible.scenes.push({ id: Date.now(), order, title, setting, status, beat });
+      }
+      saveStoryBible();
+      resetSceneForm();
+      renderScenes();
+    }
+
+    function editScene(id) {
+      const s = storyBible.scenes.find(item => item.id === id);
+      if (!s) return;
+      editingSceneId = id;
+      document.getElementById("sceneFormTitle").textContent = "Edit Scene";
+      document.getElementById("sceneOrderInput").value = s.order;
+      document.getElementById("sceneTitleInput").value = s.title;
+      document.getElementById("sceneSettingInput").value = s.setting;
+      document.getElementById("sceneStatusInput").value = s.status || "Outline";
+      document.getElementById("sceneBeatInput").value = s.beat;
+      document.getElementById("saveSceneBtn").textContent = "Update Scene";
+      document.getElementById("cancelSceneEditBtn").style.display = "inline-flex";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function resetSceneForm() {
+      editingSceneId = null;
+      document.getElementById("sceneFormTitle").textContent = "Add Scene";
+      document.getElementById("sceneOrderInput").value = "";
+      document.getElementById("sceneTitleInput").value = "";
+      document.getElementById("sceneSettingInput").value = "";
+      document.getElementById("sceneStatusInput").value = "Outline";
+      document.getElementById("sceneBeatInput").value = "";
+      document.getElementById("saveSceneBtn").textContent = "Save Scene";
+      document.getElementById("cancelSceneEditBtn").style.display = "none";
+    }
+
+    function deleteScene(id) {
+      if (!confirm("Delete this scene card?")) return;
+      storyBible.scenes = storyBible.scenes.filter(s => s.id !== id);
+      saveStoryBible();
+      renderScenes();
+    }
+
+    function renderScenes() {
+      const q = document.getElementById("sceneSearchInput").value.toLowerCase();
+      const list = document.getElementById("scenesList");
+      const filtered = storyBible.scenes.filter(s =>
+        s.title.toLowerCase().includes(q) ||
+        (s.setting || "").toLowerCase().includes(q) ||
+        (s.status || "").toLowerCase().includes(q) ||
+        (s.beat || "").toLowerCase().includes(q)
+      );
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="card" style="color: var(--text-muted); font-size: 0.9rem;">No scenes mapped yet. Outline your first scene beat above.</div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(s =>
+        '<div class="list-card">' +
+          '<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px;">' +
+            '<div>' +
+              '<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">' +
+                (s.order ? '<span style="font-size: 0.78rem; font-weight: 700; color: var(--emerald);">' + escapeHtml(s.order) + '</span>' : '') +
+                '<span style="font-family: \'Lora\', Georgia, serif; font-weight: 700; font-size: 1.06rem;">' + escapeHtml(s.title) + '</span>' +
+              '</div>' +
+              '<div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 5px;">' +
+                '<span class="meta-pill">' + escapeHtml(s.status || "Outline") + '</span>' +
+                (s.setting ? '<span style="font-size: 0.8rem; color: var(--text-muted);">' + escapeHtml(s.setting) + '</span>' : '') +
+              '</div>' +
+            '</div>' +
+            '<div class="btn-group">' +
+              '<button class="btn-ghost" onclick="editScene(' + s.id + ')">Edit</button>' +
+              '<button class="btn-ghost" onclick="deleteScene(' + s.id + ')">Delete</button>' +
+            '</div>' +
+          '</div>' +
+          (s.beat ? '<p style="font-size: 0.88rem; color: var(--text-body); margin-top: 6px;">' + escapeHtml(s.beat) + '</p>' : '') +
+        '</div>'
+      ).join("");
+    }
+
+    function exportStoryBible() {
+      const charLines = storyBible.characters.map(c =>
+        "CHARACTER: " + c.name + (c.role ? " (" + c.role + ")" : "") +
+        (c.goal ? "\nCore Drive: " + c.goal : "") +
+        (c.notes ? "\nNotes: " + c.notes : "")
+      ).join("\n\n---\n\n");
+
+      const sceneLines = storyBible.scenes.map(s =>
+        "SCENE " + (s.order || "") + ": " + s.title + " [" + (s.status || "Outline") + "]" +
+        (s.setting ? "\nPOV / Setting: " + s.setting : "") +
+        (s.beat ? "\nBeat: " + s.beat : "")
+      ).join("\n\n---\n\n");
+
+      const fullText = "ALCHEMY WRITING STUDIO — STORY BIBLE\n\n=== CHARACTERS ===\n\n" +
+        (charLines || "None logged.") + "\n\n=== SCENES ===\n\n" + (sceneLines || "None logged.");
+
+      const blob = new Blob([fullText], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "alchemy-story-bible.txt";
+      a.click();
+    }
+
+    // 7. THE BINDER
 
     function addTodoItem() {
       const input = document.getElementById("todoInput");
@@ -1216,6 +1349,7 @@
       saveTodos();
       renderTodos();
     }
+    
     // 7. THE BINDER
     let binderData = JSON.parse(localStorage.getItem("alchemy_binder_v2")) || {
       notebooks: ["Story Ideas", "Daily Sprints", "Worldbuilding"],
