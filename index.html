@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
   <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
-  <style>
+<style>
     :root {
       --bg-obsidian: #0B0D0C;
       --bg-card: #121614;
@@ -568,7 +568,24 @@
           </div>
           <textarea id="goalStickyInput" placeholder="Pin your current word-count goal, deadline, or story focus here..."></textarea>
         </div>
+        <!-- WRITING TO-DO CHECKLIST -->
+        <div class="card">
+          <span class="section-label">Writing To-Do Checklist</span>
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <input type="text" class="search-input" id="todoInput" placeholder="Add a revision task or chapter goal..." style="margin-bottom:0;" onkeypress="if(event.key==='Enter') addTodoItem()" />
+            <button class="btn-primary" onclick="addTodoItem()">Add</button>
+          </div>
+          <div id="todoListContainer"></div>
+        </div>
 
+        <!-- WORD OF THE DAY -->
+        <div class="card card-emerald">
+          <span class="category-pill" style="margin-bottom:8px;">Word of the Day</span>
+          <h2 class="tip-headline" style="font-size:1.35rem; margin-bottom:4px;" id="wotdWord">Loading...</h2>
+          <div style="font-size:0.84rem; color:var(--emerald); font-style:italic; margin-bottom:8px;" id="wotdPos"></div>
+          <p style="font-size:0.95rem; margin-bottom:8px; color:#E5ECE8;" id="wotdDef"></p>
+          <div class="craft-quote" style="margin-bottom:0; font-size:0.9rem;" id="wotdExample"></div>
+        </div>
                 <!-- CLOSED TEXTBOOK COVER -->
         <div id="grammarBookClosed" class="textbook-cover" onclick="toggleGrammarBook(true)">
           <span class="category-pill" style="margin-bottom: 6px;">Alchemy Desk Reference</span>
@@ -701,6 +718,14 @@
   </nav>
 
     <script>
+            // Fade out splash screen immediately after 1.4 seconds (or on tap)
+    const splashEl = document.getElementById("splashScreen");
+    if (splashEl) {
+      splashEl.onclick = () => splashEl.classList.add("fade-out");
+      setTimeout(() => {
+        splashEl.classList.add("fade-out");
+      }, 1400);
+    }
     // =========================================================================
     // 1. THE GUILD CONFIG (Set GUILD_PAID_MODE to true when a paid ad is live!)
     // =========================================================================
@@ -1410,14 +1435,6 @@
     renderBinder();
     renderCompletedBooks();
     renderGuild();
-             // Fade out splash screen reliably after 1.4 seconds (or on tap)
-    const splashEl = document.getElementById("splashScreen");
-    if (splashEl) {
-      splashEl.onclick = () => splashEl.classList.add("fade-out");
-      setTimeout(() => {
-        splashEl.classList.add("fade-out");
-      }, 1400);
-    }
   </script>
 </body>
 </html>
