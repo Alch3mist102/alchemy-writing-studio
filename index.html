@@ -400,32 +400,12 @@
       align-items: flex-start;
     }
     .tome-cover {
-      width: 88px;
-      height: 130px;
-      border-radius: var(--radius-sm);
-      background: linear-gradient(145deg, #132A20, #0B0D0C);
-      border: 1px solid var(--emerald-dark);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 10px;
-      font-family: 'Lora', Georgia, serif;
-      font-size: 0.74rem;
-      font-weight: 700;
-      color: var(--emerald);
-      letter-spacing: 0.04em;
-    }
-
-    nav.bottom-nav {
+          nav.bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(11, 13, 12, 0.94);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(11, 13, 12, 0.96);
       border-top: 1px solid var(--border-subtle);
       display: flex;
       justify-content: center;
@@ -440,21 +420,27 @@
     .nav-btn {
       background: transparent;
       border: none;
-      border-top: 2px solid transparent;
       border-radius: 0;
-      padding: 11px 8px;
+      padding: 13px 8px;
       color: var(--text-dim);
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       font-weight: 600;
+      display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 4px;
     }
-    .nav-btn svg { width: 19px; height: 19px; stroke: currentColor; }
+    .nav-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+    }
     .nav-btn.active {
       color: var(--emerald);
-      border-top-color: var(--emerald);
+      border-top: 2px solid var(--emerald);
     }
 
+    /* Splash Screen */
     #splashScreen {
       position: fixed;
       inset: 0;
@@ -465,21 +451,22 @@
       align-items: center;
       justify-content: center;
       gap: 18px;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-      animation: splashBackupFade 0.5s ease 2.2s forwards;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
     }
     #splashScreen.fade-out {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
-    @keyframes splashBackupFade {
-      to { opacity: 0; visibility: hidden; pointer-events: none; }
-    }
     .splash-emblem {
-      width: 108px;
-      height: 108px;
+      width: 112px;
+      height: 112px;
       filter: drop-shadow(0 0 18px rgba(16, 185, 129, 0.25));
+      animation: pulseGlow 1.6s ease-in-out infinite alternate;
+    }
+    @keyframes pulseGlow {
+      from { transform: scale(0.98); filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.18)); }
+      to { transform: scale(1.02); filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.42)); }
     }
   </style>
 </head>
@@ -701,16 +688,39 @@
             <div id="personalDictionaryList"></div>
           </div>
         </div>
-        <div id="ref-panel-grammar" style="display: none;">
-          <div id="grammarBookClosed" class="textbook-cover" onclick="toggleGrammarBook(true)">
-            <span class="category-pill" style="margin-bottom: 6px;">Alchemy Desk Reference</span>
-            <div class="textbook-cover-title">Grammar</div>
-            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
-              Spelled with two <strong>m</strong>'s and an <strong>a</strong>—never <em>"gammer."</em><br />
-              Top 100 Misspelled Words &amp; Complete High-School Mechanics.
+              <div id="ref-panel-grammar" style="display: none;">
+          <div class="card card-accent">
+            <span class="section-label">Alchemy Desk Reference</span>
+            <h2 class="tip-headline" style="font-size: 1.38rem; margin-bottom: 4px;">Grammar: A Concise Handbook</h2>
+            <p style="color: var(--text-muted); font-size: 0.86rem; margin-bottom: 14px;">
+              Spelled with two <strong>m</strong>'s and an <strong>a</strong>—never <em>"gammer."</em> Master spelling, punctuation, and sentence architecture.
             </p>
-            <span class="btn-primary">Open Handbook</span>
+
+            <div class="chapter-heading">Chapter I: Top 100 Most Misspelled Words</div>
+            <input type="text" class="field-input" id="spellSearch" placeholder="Filter 100 tricky words..." oninput="renderMisspelled()" />
+            <div id="misspelledList" style="display: flex; flex-wrap: wrap; gap: 6px; max-height: 210px; overflow-y: auto; margin-bottom: 16px;"></div>
+
+            <div class="chapter-heading">Chapter II: Punctuation &amp; Sentence Boundaries</div>
+            <div style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 10px; color: var(--text-body);">
+              <div><strong style="color: var(--emerald);">1. Oxford (Serial) Comma:</strong> Place a comma before <em>and/or</em> in lists of three or more items (<em>"ghosts, ghouls, and shadows"</em>).</div>
+              <div><strong style="color: var(--emerald);">2. FANBOYS + Complete Sentences:</strong> Use a comma before <em>for, and, nor, but, or, yet, so</em> only when joining two independent clauses.</div>
+              <div><strong style="color: var(--emerald);">3. Comma Splices &amp; Run-Ons:</strong> Never join two complete sentences with only a comma (<em>"The door slammed, she ran"</em>). Fix with a period, a semicolon, or a comma + FANBOYS.</div>
+              <div><strong style="color: var(--emerald);">4. Introductory Clauses:</strong> Put a comma after an opening dependent phrase (<em>"When the lantern flickered, she froze."</em>).</div>
+              <div><strong style="color: var(--emerald);">5. Nonessential Appositives:</strong> Wrap removable extra details in commas (<em>"The relic, forged in bog-iron, hummed."</em>).</div>
+              <div><strong style="color: var(--emerald);">6. Dialogue Tags vs. Action Beats:</strong> Use a comma for speech tags (<em>"Run," he whispered.</em>) and a period for action beats (<em>"Run." He drew his blade.</em>).</div>
+              <div><strong style="color: var(--emerald);">7. Semicolons (;) &amp; Colons (:):</strong> Semicolons link two closely related complete sentences; colons follow a complete sentence to introduce a list, quote, or explanation.</div>
+            </div>
+
+            <div class="chapter-heading">Chapter III: Agreement, Modifiers &amp; Structure</div>
+            <div style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 10px; color: var(--text-body);">
+              <div><strong style="color: var(--emerald);">8. Subject-Verb Agreement:</strong> Match the verb to the true subject, ignoring prepositional phrases in between (<em>"The chest of ancient coins <strong>is</strong> heavy,"</em> not <em>"are"</em>).</div>
+              <div><strong style="color: var(--emerald);">9. Pronoun Case &amp; Agreement:</strong> Use subject pronouns (<em>I, he, she, we, they, who</em>) for actors and object pronouns (<em>me, him, her, us, them, whom</em>) after verbs or prepositions (<em>"between you and <strong>me</strong>"</em>).</div>
+              <div><strong style="color: var(--emerald);">10. Dangling &amp; Misplaced Modifiers:</strong> Place descriptive phrases directly beside the noun they modify (<em>"Covered in dust, <strong>the tome</strong> sat on the desk,"</em> not <em>"Covered in dust, <strong>he</strong> found the tome"</em>).</div>
+              <div><strong style="color: var(--emerald);">11. Parallel Structure (Parallelism):</strong> Keep items in lists or comparisons in the same grammatical form (<em>"She loved <strong>reading</strong> lore, <strong>brewing</strong> tonics, and <strong>exploring</strong> ruins"</em>).</div>
+              <div><strong style="color: var(--emerald);">12. Apostrophes &amp; Homophones:</strong> Use apostrophes for contractions (<em>it's</em> = it is) and possession (<em>the guild's seal</em> / <em>the writers' desks</em>)—never for simple plurals.</div>
+            </div>
           </div>
+        </div>
 
           <div id="grammarBookOpen" class="card card-accent" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px;">
