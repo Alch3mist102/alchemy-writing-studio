@@ -774,63 +774,63 @@
     // =========================================================================
     // 2. DAILY TIPS DATABASE (Shuffles randomly without repeating!)
     // =========================================================================
-    const DAILY_TIPS = [
-      {
-        id: 1,
-        category: "Gothic & Horror Craft",
-        headline: "The Uncanny (Das Unheimliche): Making the Familiar Terrifying",
-        deepDive: [
-          "In his 1919 essay 'Das Unheimliche,' Sigmund Freud defined the uncanny not as something foreign or alien, but as something deeply familiar and comforting that has been subtly twisted into something unfamiliar.",
-          "Modern horror often relies on shock gore, yet gothic literature achieves lasting dread by taking a safe domestic space—a childhood bedroom, a steady heartbeat, a trusted parent's voice—and altering one small detail so it feels wrong."
-        ],
-        quote: "The uncanny is that class of the terrifying which leads back to something long known to us, once very familiar.",
-        prompt: "Write a 15-minute scene in which a character returns to a childhood room or familiar kitchen and notices three subtle details that prove someone—or something—has been imitating their routine."
-      },
-      {
-        id: 2,
-        category: "Worldbuilding & Speculative Rules",
-        headline: "Sanderson's First Law: Satisfaction Scales with Understanding",
-        deepDive: [
-          "An author's ability to solve conflict with magic or speculative rules is directly proportional to how well the reader understands those rules beforehand.",
-          "If a protagonist escapes a lethal trap using a power never mentioned until the final paragraph, it reads as a Deus ex Machina. If you establish the cost and limitation of that ability in Chapter One, the climax feels earned."
-        ],
-        quote: "Limitations are far more interesting than powers. What a system cannot do creates the tension.",
-        prompt: "Invent a supernatural curse or magic rule with one strict physical cost. Write a scene where your protagonist must pay that cost to solve a small, immediate problem."
-      },
-      {
-        id: 3,
-        category: "Narrative Structure",
-        headline: "The MICE Quotient: Identifying Your Story's True Promise",
-        deepDive: [
-          "Orson Scott Card's MICE Quotient breaks every story into four threads: Milieu (a place explored), Inquiry (a mystery answered), Character (an internal transformation), and Event (a disrupted world restored).",
-          "Readers feel cheated when a story opens by promising an Inquiry (who killed the archivist?) but ends by resolving a Character arc without answering the murder. Always close your threads in the reverse order you opened them."
-        ],
-        quote: "Your opening page is a contract with the reader; your ending is the signature.",
-        prompt: "Write an opening paragraph that clearly establishes a Milieu or Inquiry promise, then draft the exact closing paragraph that fulfills that promise."
-      },
-      {
-        id: 4,
-        category: "Rhetoric & Diction",
-        headline: "Verisimilitude & Concrete Nouns Over Abstract Adjectives",
-        deepDive: [
-          "In classical literary theory, verisimilitude is the appearance of truth—the texture that convinces a reader a fictional world has weight and history.",
-          "Abstract adjectives like 'ancient,' 'terrifying,' or 'majestic' tell the reader what to feel without proving it. Replace them with specific, sensory nouns: instead of an 'ancient sword,' describe 'pitted bog-iron wrapped in cracked sharkskin.'"
-        ],
-        quote: "Don't tell me the moon is shining; show me the glint of light on broken glass. — Anton Chekhov",
-        prompt: "Describe an intimidating creature, fortress, or relic without using a single emotional adjective (no 'scary,' 'old,' 'huge,' or 'dark'). Rely strictly on concrete nouns and physical textures."
-      },
-      {
-        id: 5,
-        category: "Pacing & Tension",
-        headline: "Scene vs. Sequel: Controlling the Pulse of Your Chapters",
-        deepDive: [
-          "Dwight Swain divided narrative pacing into two alternating gears: Action Scenes (Goal, Conflict, Disaster) and Reflective Sequels (Reaction, Dilemma, Decision).",
-          "If a book is nonstop action scenes, readers go numb because nothing has time to hurt. Giving your character a brief Sequel to process a Disaster lets the emotional stakes sink in before the next decision."
-        ],
-        quote: "Action creates excitement; reaction creates empathy.",
-        prompt: "Write a short Sequel immediately after a character suffers a public humiliation or narrow escape. Show them processing the shock and making a flawed new decision."
-      }
-    ];
+   const DAILY_TIPS = [
+  {
+    id: 1,
+    category: "Worldbuilding & Magic Systems",
+    headline: "Brandon Sanderson's First Law: Soft vs. Hard Magic",
+    deepDive: [
+      "Magic works on a spectrum from soft to hard rules. Soft magic has undefined rules meant to invoke mystery and wonder—like J.R.R. Tolkien's The Lord of the Rings—and should not be used to conveniently solve major plot conflicts without prior setup, which often creates plot holes.",
+      "Hard magic systems have clear, visible rules that let the reader anticipate what characters can or cannot do, such as Brandon Sanderson's Mistborn."
+    ],
+    quote: "An author's ability to solve conflict with magic is directly proportional to how well the reader understands said magic.",
+    prompt: "Write a 15-minute scene where a character faces a locked door or pursuing enemy using a hard magic rule you establish in the very first paragraph."
+  },
+  {
+    id: 2,
+    category: "Worldbuilding & Magic Systems",
+    headline: "Brandon Sanderson's Second Law: Limitations > Powers",
+    deepDive: [
+      "Limitations create tension in a story and make characters feel grounded. When a character can do anything, the reader stops worrying about how they will survive.",
+      "In J.M. Miro's Ordinary Monsters, the Talents each carry a unique cost depending on their type of magic, with physical exhaustion serving as the most common drawback."
+    ],
+    quote: "The limitations of a magic system are more interesting than its capabilities. What the magic can't do is more interesting than what it can.",
+    prompt: "Give a character a powerful magical gift along with a steep physical or sensory drawback. Write a scene where they are forced to push right up to that limit."
+  },
+  {
+    id: 3,
+    category: "Worldbuilding & Magic Systems",
+    headline: "Brandon Sanderson's Third Law: Expand Before You Add",
+    deepDive: [
+      "Worldbuilding is essential to a story. Deepening the cultural implications, economy, and everyday side-effects of an existing magic system produces richer worldbuilding than constantly inventing brand-new abilities or rules.",
+      "In Sung-il Kim's Blood of the Old Kings, instead of inventing dozens of separate powers, the story explores what happens when an entire empire uses dead sorcerers as magical power generators—shaping its cities, class system, and politics around one core idea."
+    ],
+    quote: "Expand what you already have before you add something new.",
+    prompt: "Take one familiar magical ability (like healing, fire-starting, or telepathy) and write a scene showing how an entire town's architecture, laws, or economy revolves around it."
+  },
+  {
+    id: 4,
+    category: "Worldbuilding & Setting",
+    headline: "High Fantasy vs. Low Fantasy: Choosing Your World",
+    deepDive: [
+      "Fantasy worldbuilding generally uses two types of settings. High Fantasy (or Secondary World) builds an entirely new realm from the ground up, like Taran Matharu's The Summoner series, set in the Hominum Empire and the Ether.",
+      "Low Fantasy (including Urban Fantasy) takes place in the real world, like J.K. Rowling's Harry Potter, set in London with a hidden community of wizards whose school, Hogwarts, is in Scotland."
+    ],
+    quote: "Choose the right setting for your story's worldbuilding—whether an invented realm or magic hidden beneath our own.",
+    prompt: "Write an opening scene set in a real, modern location—like a subway station, diner, or library—where one subtle detail reveals a hidden magical society operating in plain sight."
+  },
+  {
+    id: 5,
+    category: "Worldbuilding & Magic Systems",
+    headline: "Brandon Sanderson's Zeroth Law: Always Err on the Side of Awesome",
+    deepDive: [
+      "Rules and limitations exist to make your story stronger, not to trap your creativity. If a magical moment, scene, or ability is compelling enough to excite your readers, you can bend the rules as long as it serves the story.",
+      "In Brandon Sanderson's The Stormlight Archive, Kaladin's dramatic, gravity-defying battles break conventional physics in ways that feel earned because they heighten the emotion and spectacle of the scene."
+    ],
+    quote: "Always err on the side of awesome.",
+    prompt: "Write a high-stakes action or climax scene where your protagonist bends their usual limits in a bold, unforgettable way that elevates the emotional payoff."
+  }
+];
 
           // =========================================================================
     // 3. WORD OF THE DAY & TOP 100 MOST MISSPELLED WORDS
