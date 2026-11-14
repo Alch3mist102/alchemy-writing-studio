@@ -346,7 +346,7 @@
     }
     .todo-row:last-child { border-bottom: none; padding-bottom: 0; }
 
-    /* Story Bible Badges */
+    /* Story Organizer Badges */
 .meta-pill {
   display: inline-block;
   font-size: 0.7rem;
@@ -568,7 +568,7 @@
 
       <div class="segmented-bar">
         <button class="seg-btn active" id="ws-nav-desk" onclick="switchWorkshopView('desk')">Desk</button>
-        <button class="seg-btn" id="ws-nav-bible" onclick="switchWorkshopView('bible')">Story Bible</button>
+        <button class="seg-btn" id="ws-nav-Organizer" onclick="switchWorkshopView('Organizer')">Story Organizer</button>
         <button class="seg-btn" id="ws-nav-binder" onclick="switchWorkshopView('binder')">Binder</button>
         <button class="seg-btn" id="ws-nav-ref" onclick="switchWorkshopView('ref')">Reference</button>
       </div>
@@ -592,16 +592,16 @@
         </div>
       </div>
 
-      <div id="ws-view-bible" style="display: none;">
+      <div id="ws-view-Organizer" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
           <div class="btn-group">
-            <button class="btn-primary" id="bible-sub-chars" onclick="switchBibleSub('characters')">Characters</button>
-            <button class="btn-secondary" id="bible-sub-scenes" onclick="switchBibleSub('scenes')">Scenes</button>
+            <button class="btn-primary" id="Organizer-sub-chars" onclick="switchOrganizerSub('characters')">Characters</button>
+            <button class="btn-secondary" id="Organizer-sub-scenes" onclick="switchOrganizerSub('scenes')">Scenes</button>
           </div>
-          <button class="btn-ghost" onclick="exportStoryBible()">Export .TXT</button>
+          <button class="btn-ghost" onclick="exportStoryOrganizer()">Export .TXT</button>
         </div>
 
-        <div id="bible-panel-characters">
+        <div id="Organizer-panel-characters">
           <div class="card card-accent">
             <span class="section-label" id="charFormTitle">Add Character</span>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
@@ -619,7 +619,7 @@
           <div id="charactersList"></div>
         </div>
 
-        <div id="bible-panel-scenes" style="display: none;">
+        <div id="Organizer-panel-scenes" style="display: none;">
           <div class="card card-accent">
             <span class="section-label" id="sceneFormTitle">Add Scene</span>
             <div style="display: grid; grid-template-columns: 90px 1fr; gap: 8px;">
@@ -1175,16 +1175,16 @@
       saveTodos();
       renderTodos();
     }
-    // 6. STORY BIBLE (Characters & Scenes)
-    let storyBible = JSON.parse(localStorage.getItem("alchemy_story_bible_v1")) || {
+    // 6. STORY ORGANIZER (Characters & Scenes)
+    let storyOrganizer = JSON.parse(localStorage.getItem("alchemy_story_Organizer_v1")) || {
       characters: [],
       scenes: []
     };
     let editingCharId = null;
     let editingSceneId = null;
 
-    function saveStoryBible() {
-      localStorage.setItem("alchemy_story_bible_v1", JSON.stringify(storyBible));
+    function saveStoryOrganizer() {
+      localStorage.setItem("alchemy_story_Organizer_v1", JSON.stringify(storyOrganizer));
     }
 
     function saveCharacter() {
@@ -1197,20 +1197,20 @@
         return;
       }
       if (editingCharId) {
-        const idx = storyBible.characters.findIndex(c => c.id === editingCharId);
+        const idx = storyOrganizer.characters.findIndex(c => c.id === editingCharId);
         if (idx !== -1) {
-          storyBible.characters[idx] = { id: editingCharId, name, role, goal, notes };
+          storyOrganizer.characters[idx] = { id: editingCharId, name, role, goal, notes };
         }
       } else {
-        storyBible.characters.unshift({ id: Date.now(), name, role, goal, notes });
+        storyOrganizer.characters.unshift({ id: Date.now(), name, role, goal, notes });
       }
-      saveStoryBible();
+      saveStoryOrganizer();
       resetCharForm();
       renderCharacters();
     }
 
     function editCharacter(id) {
-      const c = storyBible.characters.find(item => item.id === id);
+      const c = storyOrganizer.characters.find(item => item.id === id);
       if (!c) return;
       editingCharId = id;
       document.getElementById("charFormTitle").textContent = "Edit Character";
@@ -1236,15 +1236,15 @@
 
     function deleteCharacter(id) {
       if (!confirm("Delete this character card?")) return;
-      storyBible.characters = storyBible.characters.filter(c => c.id !== id);
-      saveStoryBible();
+      storyOrganizer.characters = storyOrganizer.characters.filter(c => c.id !== id);
+      saveStoryOrganizer();
       renderCharacters();
     }
 
     function renderCharacters() {
       const q = document.getElementById("charSearchInput").value.toLowerCase();
       const list = document.getElementById("charactersList");
-      const filtered = storyBible.characters.filter(c =>
+      const filtered = storyOrganizer.characters.filter(c =>
         c.name.toLowerCase().includes(q) ||
         (c.role || "").toLowerCase().includes(q) ||
         (c.notes || "").toLowerCase().includes(q)
@@ -1284,20 +1284,20 @@
         return;
       }
       if (editingSceneId) {
-        const idx = storyBible.scenes.findIndex(s => s.id === editingSceneId);
+        const idx = storyOrganizer.scenes.findIndex(s => s.id === editingSceneId);
         if (idx !== -1) {
-          storyBible.scenes[idx] = { id: editingSceneId, order, title, setting, status, beat };
+          storyOrganizer.scenes[idx] = { id: editingSceneId, order, title, setting, status, beat };
         }
       } else {
-        storyBible.scenes.push({ id: Date.now(), order, title, setting, status, beat });
+        storyOrganizer.scenes.push({ id: Date.now(), order, title, setting, status, beat });
       }
-      saveStoryBible();
+      saveStoryOrganizer();
       resetSceneForm();
       renderScenes();
     }
 
     function editScene(id) {
-      const s = storyBible.scenes.find(item => item.id === id);
+      const s = storyOrganizer.scenes.find(item => item.id === id);
       if (!s) return;
       editingSceneId = id;
       document.getElementById("sceneFormTitle").textContent = "Edit Scene";
@@ -1325,15 +1325,15 @@
 
     function deleteScene(id) {
       if (!confirm("Delete this scene card?")) return;
-      storyBible.scenes = storyBible.scenes.filter(s => s.id !== id);
-      saveStoryBible();
+      storyOrganizer.scenes = storyOrganizer.scenes.filter(s => s.id !== id);
+      saveStoryOrganizer();
       renderScenes();
     }
 
     function renderScenes() {
       const q = document.getElementById("sceneSearchInput").value.toLowerCase();
       const list = document.getElementById("scenesList");
-      const filtered = storyBible.scenes.filter(s =>
+      const filtered = storyOrganizer.scenes.filter(s =>
         s.title.toLowerCase().includes(q) ||
         (s.setting || "").toLowerCase().includes(q) ||
         (s.status || "").toLowerCase().includes(q) ||
@@ -1368,26 +1368,26 @@
       ).join("");
     }
 
-    function exportStoryBible() {
-      const charLines = storyBible.characters.map(c =>
+    function exportStoryOrganizer() {
+      const charLines = storyOrganizer.characters.map(c =>
         "CHARACTER: " + c.name + (c.role ? " (" + c.role + ")" : "") +
         (c.goal ? "\nCore Drive: " + c.goal : "") +
         (c.notes ? "\nNotes: " + c.notes : "")
       ).join("\n\n---\n\n");
 
-      const sceneLines = storyBible.scenes.map(s =>
+      const sceneLines = storyOrganizer.scenes.map(s =>
         "SCENE " + (s.order || "") + ": " + s.title + " [" + (s.status || "Outline") + "]" +
         (s.setting ? "\nPOV / Setting: " + s.setting : "") +
         (s.beat ? "\nBeat: " + s.beat : "")
       ).join("\n\n---\n\n");
 
-      const fullText = "ALCHEMY WRITING STUDIO — STORY BIBLE\n\n=== CHARACTERS ===\n\n" +
+      const fullText = "ALCHEMY WRITING STUDIO — STORY Organizer\n\n=== CHARACTERS ===\n\n" +
         (charLines || "None logged.") + "\n\n=== SCENES ===\n\n" + (sceneLines || "None logged.");
 
       const blob = new Blob([fullText], { type: "text/plain" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = "alchemy-story-bible.txt";
+      a.download = "alchemy-story-Organizer.txt";
       a.click();
     }
 
@@ -1722,17 +1722,17 @@
     }
 
     function switchWorkshopView(view) {
-      ["desk", "bible", "binder", "ref"].forEach(v => {
+      ["desk", "Organizer", "binder", "ref"].forEach(v => {
         document.getElementById("ws-view-" + v).style.display = (v === view) ? "block" : "none";
         document.getElementById("ws-nav-" + v).classList.toggle("active", v === view);
       });
     }
 
-    function switchBibleSub(sub) {
-      document.getElementById("bible-panel-characters").style.display = (sub === "characters") ? "block" : "none";
-      document.getElementById("bible-panel-scenes").style.display = (sub === "scenes") ? "block" : "none";
-      document.getElementById("bible-sub-chars").className = (sub === "characters") ? "btn-primary" : "btn-secondary";
-      document.getElementById("bible-sub-scenes").className = (sub === "scenes") ? "btn-primary" : "btn-secondary";
+    function switchOrganizerSub(sub) {
+      document.getElementById("Organizer-panel-characters").style.display = (sub === "characters") ? "block" : "none";
+      document.getElementById("Organizer-panel-scenes").style.display = (sub === "scenes") ? "block" : "none";
+      document.getElementById("Organizer-sub-chars").className = (sub === "characters") ? "btn-primary" : "btn-secondary";
+      document.getElementById("Organizer-sub-scenes").className = (sub === "scenes") ? "btn-primary" : "btn-secondary";
     }
 
     function switchRefSub(sub) {
