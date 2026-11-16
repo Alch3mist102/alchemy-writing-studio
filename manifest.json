@@ -1,17 +1,47 @@
 {
+  "id": "/alchemy-writing-studio/",
   "name": "Alchemy Writing Studio",
   "short_name": "Alchemy Studio",
   "start_url": "./index.html",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0B0D0C",
   "theme_color": "#0B0D0C",
   "description": "Daily literary craft breakdowns, 15-minute writing sprints, and an indie writer's studio.",
   "icons": [
     {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Alchemy Writing Studio mobile view"
+    },
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Alchemy Writing Studio desktop view"
     }
   ]
 }
